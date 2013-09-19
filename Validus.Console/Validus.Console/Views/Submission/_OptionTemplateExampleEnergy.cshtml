@@ -1,0 +1,42 @@
+﻿@model Validus.Models.Option
+
+<div class="row-fluid">
+	<div class="span12">
+		<div class="btn-group">
+			<button class="btn btn-small" type="button" data-bind="click: AddOptionVersion, enable: CurrentVersion().IsLocked"
+				title="Will be disabled until the current version has been quoted">New Version</button>
+			<button class="btn btn-small dropdown-toggle" type="button" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" data-bind="foreach: OptionVersions">
+				<li><a data-bind="text: Title, click: $parent.SetVersionIndex"></a></li>
+			</ul>
+		</div>
+		<button class="btn btn-small" type="button" data-bind="click: CurrentVersion().AddQuote_ExampleEnergySubmission, enable: !CurrentVersion().IsLocked() && CurrentVersion().VersionNumber() === 0">
+			New Quote
+		</button>
+		<button class="btn btn-small" type="button" data-bind="click: $parent.CopyOption, enable: CanCopyOption"
+			title="Will be disabled until all Quotes in the current Option have all required fields completed">
+			Copy Option
+		</button>
+	</div>
+</div>
+
+<hr />
+
+<div class="row-fluid">
+	<div class="span12" data-bind="with: CurrentVersion">
+		<div data-bind="bootstrap-carousel: { data: Quotes, afterRender: $root.InitialisePane }">
+			<ol class="carousel-indicators">
+				<li data-bind="text: COBId, css: { error: ValidationErrors().length > 0 }"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="item">
+					@Html.Action("_QuoteTemplateExampleEnergy", "Submission")
+				</div>
+			</div>
+			<a class="carousel-control left" href="#" data-slide="next">&lsaquo;</a>
+			<a class="carousel-control right" href="#" data-slide="prev">&rsaquo;</a>
+		</div>
+	</div>
+</div>

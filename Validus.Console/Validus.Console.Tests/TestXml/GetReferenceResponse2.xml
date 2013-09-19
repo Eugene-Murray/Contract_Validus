@@ -1,0 +1,36 @@
+﻿<?xml version="1.0"?>
+<PolicyContract xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UnitPsu>AGY</UnitPsu>
+  <PolTy>NONMARINE</PolTy>
+  <EntSt>PARTIAL</EntSt>
+  <InsdNm>- N/A</InsdNm>
+  <InsdId>182396</InsdId>
+  <Uwr>AFM</Uwr>
+  <DOM>AD</DOM>
+  <BkrSeqId>822</BkrSeqId>
+  <CtcNm>ALLAN MURRAY</CtcNm>
+  <IncpDt>20130523</IncpDt>
+  <ExpyDt>20131201</ExpyDt>
+  <AccYr>2013</AccYr>
+  <SettDueDt>20130523</SettDueDt>
+  <Brokerage>1.00000000</Brokerage>
+  <COB>BA</COB>
+  <MOA>FA</MOA>
+  <NonLonBkr>NA</NonLonBkr>
+  <OrigOff>LON</OrigOff>
+  <PolId>BAP165091A13</PolId>
+  <LmtCcy>USD</LmtCcy>
+  <LmtAmt xsi:nil="true" />
+  <ExsCcy>USD</ExsCcy>
+  <ExsAmt xsi:nil="true" />
+  <BindSt>PRE</BindSt>
+  <PctgAmt>Amt</PctgAmt>
+  <PricingCcy>USD</PricingCcy>
+  <TechPrm xsi:nil="true" />
+  <BenchPrm xsi:nil="true" />
+  <Status>SUBMITTED</Status>
+  <TimeStamp>2507324240</TimeStamp>
+  <BkrPsu>AAA</BkrPsu>
+  <BkrNo>1111</BkrNo>
+  <TechPmTy>TechPm</TechPmTy>
+</PolicyContract>

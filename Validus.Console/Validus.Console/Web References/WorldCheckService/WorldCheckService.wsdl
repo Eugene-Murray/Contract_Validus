@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://talbotuw.com/webservices/worldcheck" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://talbotuw.com/webservices/worldcheck" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://talbotuw.com/webservices/worldcheck">
+      <s:element name="GetCountries">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCountriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCountriesResult" type="tns:ArrayOfCountry" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCountry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Country" nillable="true" type="tns:Country" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Country">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCategories">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCategoriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCategoriesResult" type="tns:ArrayOfCategory" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCategory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Category" nillable="true" type="tns:Category" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Category">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetSearchMatches">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="keywords" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="country" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="category" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSearchMatchesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSearchMatchesResult" type="tns:ArrayOfSearchResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSearchResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SearchResult" nillable="true" type="tns:SearchResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SearchResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sanctioned" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetWorldCheckItemByUID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorldCheckItemByUIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorldCheckItemByUIDResult" type="tns:WorldCheckItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="WorldCheckItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="UID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Aliases" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AliasesList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="AlternativeSpelling" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AlternativeSpellingList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="colour" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubCategory" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Position" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Age" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DOB" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PlaceOfBirth" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Deceased" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Passports" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SSN" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Locations" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocationsList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Companies" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CompaniesList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="LinkedTo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LinkedToList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="FurtherInformation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Keywords" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="KeywordsList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalSources" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalSourcesList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="Entered" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Updated" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="E_i" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Ignored" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Reviewed" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ManualMatch" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="FurtherInformationList" type="tns:ArrayOfWorldCheckInfoItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfWorldCheckInfoItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WorldCheckInfoItem" nillable="true" type="tns:WorldCheckInfoItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WorldCheckInfoItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Header" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Body" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SetIgnoreStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ignored" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ignoredBy" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetIgnoreStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetIgnoreStatusResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetItemAsSaved">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="polId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetItemAsSavedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetItemAsSavedResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllInsureds">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="showIgnored" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllInsuredsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllInsuredsResult" type="tns:ArrayOfAutomaticSearchMatches" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAutomaticSearchMatches">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AutomaticSearchMatches" nillable="true" type="tns:AutomaticSearchMatches" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AutomaticSearchMatches">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ReviewFlag" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MatchCount" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MatchDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Insured" type="tns:Insured" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Insured">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="vInsuredKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RelatedNames" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SourceDatabase" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OriginatingOffice" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidFromDate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FlaggedMatch" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IngorneFlaggedMatch" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetInsuredMatches">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="showIgnored" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInsuredMatchesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInsuredMatchesResult" type="tns:ArrayOfWorldCheckItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfWorldCheckItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WorldCheckItem" nillable="true" type="tns:WorldCheckItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPoliciesForInsured">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPoliciesForInsuredResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPoliciesForInsuredResult" type="tns:ArrayOfPolicy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPolicy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Policy" nillable="true" type="tns:Policy" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Policy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="VPolicyKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VInsuredKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyReference" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountYear" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyNotes" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RelatedInsureds" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CoverStartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="CoverEndDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Underwriter" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WrittenDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SourceDatabase" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OriginatingOffice" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GeoCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DomicileCountry" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SetReviewedStatusForInsured">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="reviewed" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetReviewedStatusForInsuredResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetReviewedStatusForInsuredResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetInsuredAsIgnored">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetInsuredAsIgnoredResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetInsuredAsIgnoredResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcessMatches">
+        <s:complexType />
+      </s:element>
+      <s:element name="ProcessMatchesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProcessMatchesResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllUnmatchedInsuredsCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllUnmatchedInsuredsCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAllUnmatchedInsuredsCountResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetCountriesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCountries" />
+  </wsdl:message>
+  <wsdl:message name="GetCountriesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCountriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCategoriesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCategories" />
+  </wsdl:message>
+  <wsdl:message name="GetCategoriesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCategoriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSearchMatchesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSearchMatches" />
+  </wsdl:message>
+  <wsdl:message name="GetSearchMatchesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSearchMatchesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorldCheckItemByUIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorldCheckItemByUID" />
+  </wsdl:message>
+  <wsdl:message name="GetWorldCheckItemByUIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorldCheckItemByUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetIgnoreStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:SetIgnoreStatus" />
+  </wsdl:message>
+  <wsdl:message name="SetIgnoreStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:SetIgnoreStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetItemAsSavedSoapIn">
+    <wsdl:part name="parameters" element="tns:SetItemAsSaved" />
+  </wsdl:message>
+  <wsdl:message name="SetItemAsSavedSoapOut">
+    <wsdl:part name="parameters" element="tns:SetItemAsSavedResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllInsuredsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllInsureds" />
+  </wsdl:message>
+  <wsdl:message name="GetAllInsuredsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllInsuredsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuredMatchesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInsuredMatches" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuredMatchesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInsuredMatchesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPoliciesForInsuredSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPoliciesForInsured" />
+  </wsdl:message>
+  <wsdl:message name="GetPoliciesForInsuredSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPoliciesForInsuredResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetReviewedStatusForInsuredSoapIn">
+    <wsdl:part name="parameters" element="tns:SetReviewedStatusForInsured" />
+  </wsdl:message>
+  <wsdl:message name="SetReviewedStatusForInsuredSoapOut">
+    <wsdl:part name="parameters" element="tns:SetReviewedStatusForInsuredResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetInsuredAsIgnoredSoapIn">
+    <wsdl:part name="parameters" element="tns:SetInsuredAsIgnored" />
+  </wsdl:message>
+  <wsdl:message name="SetInsuredAsIgnoredSoapOut">
+    <wsdl:part name="parameters" element="tns:SetInsuredAsIgnoredResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcessMatchesSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcessMatches" />
+  </wsdl:message>
+  <wsdl:message name="ProcessMatchesSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcessMatchesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllUnmatchedInsuredsCountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllUnmatchedInsuredsCount" />
+  </wsdl:message>
+  <wsdl:message name="GetAllUnmatchedInsuredsCountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllUnmatchedInsuredsCountResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WorldCheckServiceSoap">
+    <wsdl:operation name="GetCountries">
+      <wsdl:input message="tns:GetCountriesSoapIn" />
+      <wsdl:output message="tns:GetCountriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCategories">
+      <wsdl:input message="tns:GetCategoriesSoapIn" />
+      <wsdl:output message="tns:GetCategoriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchMatches">
+      <wsdl:input message="tns:GetSearchMatchesSoapIn" />
+      <wsdl:output message="tns:GetSearchMatchesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorldCheckItemByUID">
+      <wsdl:input message="tns:GetWorldCheckItemByUIDSoapIn" />
+      <wsdl:output message="tns:GetWorldCheckItemByUIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetIgnoreStatus">
+      <wsdl:input message="tns:SetIgnoreStatusSoapIn" />
+      <wsdl:output message="tns:SetIgnoreStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetItemAsSaved">
+      <wsdl:input message="tns:SetItemAsSavedSoapIn" />
+      <wsdl:output message="tns:SetItemAsSavedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllInsureds">
+      <wsdl:input message="tns:GetAllInsuredsSoapIn" />
+      <wsdl:output message="tns:GetAllInsuredsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInsuredMatches">
+      <wsdl:input message="tns:GetInsuredMatchesSoapIn" />
+      <wsdl:output message="tns:GetInsuredMatchesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPoliciesForInsured">
+      <wsdl:input message="tns:GetPoliciesForInsuredSoapIn" />
+      <wsdl:output message="tns:GetPoliciesForInsuredSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetReviewedStatusForInsured">
+      <wsdl:input message="tns:SetReviewedStatusForInsuredSoapIn" />
+      <wsdl:output message="tns:SetReviewedStatusForInsuredSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetInsuredAsIgnored">
+      <wsdl:input message="tns:SetInsuredAsIgnoredSoapIn" />
+      <wsdl:output message="tns:SetInsuredAsIgnoredSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessMatches">
+      <wsdl:input message="tns:ProcessMatchesSoapIn" />
+      <wsdl:output message="tns:ProcessMatchesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnmatchedInsuredsCount">
+      <wsdl:input message="tns:GetAllUnmatchedInsuredsCountSoapIn" />
+      <wsdl:output message="tns:GetAllUnmatchedInsuredsCountSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WorldCheckServiceSoap" type="tns:WorldCheckServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCountries">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetCountries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCategories">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetCategories" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchMatches">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetSearchMatches" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorldCheckItemByUID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetWorldCheckItemByUID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetIgnoreStatus">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetIgnoreStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetItemAsSaved">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetItemAsSaved" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllInsureds">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetAllInsureds" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsuredMatches">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetInsuredMatches" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPoliciesForInsured">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetPoliciesForInsured" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetReviewedStatusForInsured">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetReviewedStatusForInsured" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetInsuredAsIgnored">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetInsuredAsIgnored" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessMatches">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/ProcessMatches" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnmatchedInsuredsCount">
+      <soap:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetAllUnmatchedInsuredsCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WorldCheckServiceSoap12" type="tns:WorldCheckServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCountries">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetCountries" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCategories">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetCategories" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchMatches">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetSearchMatches" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorldCheckItemByUID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetWorldCheckItemByUID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetIgnoreStatus">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetIgnoreStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetItemAsSaved">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetItemAsSaved" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllInsureds">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetAllInsureds" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsuredMatches">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetInsuredMatches" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPoliciesForInsured">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetPoliciesForInsured" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetReviewedStatusForInsured">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetReviewedStatusForInsured" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetInsuredAsIgnored">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/SetInsuredAsIgnored" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessMatches">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/ProcessMatches" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUnmatchedInsuredsCount">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/worldcheck/GetAllUnmatchedInsuredsCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WorldCheckService">
+    <wsdl:port name="WorldCheckServiceSoap" binding="tns:WorldCheckServiceSoap">
+      <soap:address location="http://services.talbotdev.com/WorldCheck/WorldCheckService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WorldCheckServiceSoap12" binding="tns:WorldCheckServiceSoap12">
+      <soap12:address location="http://services.talbotdev.com/WorldCheck/WorldCheckService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

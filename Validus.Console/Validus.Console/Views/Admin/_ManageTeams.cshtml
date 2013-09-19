@@ -1,0 +1,613 @@
+﻿@model Validus.Models.Team
+
+
+
+<style>
+    
+    body { font-family: arial; font-size: 14px; }
+.liveExample { padding: 1em; border: 1px solid #CCC; max-width: 655px; }
+.liveExample h2 { margin-top: 0.4em; }
+a { color: #0077A4;}
+/*section { 
+  margin-top: 0.9em; 
+  margin-bottom: 0.9em;
+  background: #ffffff;
+  padding: 10px;
+}*/
+
+section a {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+a.expert_container { 
+  display: block;
+  position: relative;
+  cursor: pointer;
+  min-height: 86px;
+  max-width: 350px;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+.expert_container div.profile_image { 
+  border: 1px solid #d57500;
+  float: left;
+  margin-right: 20px;
+}
+.expert_container img { 
+  border: 2px solid white;
+  height: 80px;
+  width: 80px;
+  max-height: 80px;
+  max-width: 80px;
+}
+.expert_container h3 { 
+  margin: 0 0 10px 0;
+  color: 0179AD;
+}
+.expert_container h4 { 
+  margin: 0;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}
+.expert_container span.expertise { 
+  color: black;
+  font-size: 0.85em;
+}
+
+.pagination {
+    margin: 20px 0;
+}
+
+.pagination ul {
+    display: inline-block;
+    
+}
+
+.pagination li {
+    display: inline-block;
+    font-size: 0.85em;
+    margin-left: -4px;
+    padding: 1px 5px;
+    border-left: 1px solid #999;
+}
+
+.pagination li:first-child {
+    border-left: none;
+}
+
+.pagination li.previous_page {
+}
+
+.pagination li.next_page {
+}
+
+.pagination li.active a {
+    color: #999;
+    font-weight: bold;
+    cursor: default;
+}
+
+.pagination li.disabled a {
+    color: #999;
+    cursor: default;
+}
+
+.pagination a {
+    display: block;
+    text-decoration: none;
+}
+
+.arrow-left {
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    margin-right: 5px;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-right: 4px solid #0077A4;
+}
+
+li.disabled .arrow-left {
+    border-right: 4px solid #999;
+}
+
+.arrow-right {
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    margin-left: 5px;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid #0077A4;
+}
+
+li.disabled .arrow-right {
+    border-left: 4px solid #999;
+}
+
+
+</style>
+
+
+<div class="container-fluid">
+<div class="row-fluid">
+    <div class="span12">
+
+
+        <p><a href="#" title="Create New Team" data-bind="click: click_OpenCreateEditTeamModal_Create" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Create New Team</a></p>
+   
+
+    
+     <section>
+      Filter Teams <input type="text" id="search" data-bind="value: selectedfilter, valueUpdate: 'afterkeydown'" />
+    </section>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+<div class="row-fluid">
+    <div class="span8">
+
+<!-- Team List -->
+
+    <table  class="table table-condensed table-striped table-bordered table-hover dataTables_paginate">
+    <caption>Teams</caption>
+       <thead>
+        <tr>
+                
+            @*<th>Id</th>*@
+            <th>Title</th>
+            <th>Default MOA</th>
+            <th>Default Domicile</th>
+            <th>Quote Expiry Days Default</th>
+            <th><img id="imageProcessingScreen" src="@Url.Content("~/Content/images/animated_progress.gif")"  style="height: 20px; width:20px;"  data-bind="style: {display : showImageProcessing_LoadingTeams}" /></th>
+        </tr>
+    </thead>
+        <tbody data-bind="template: { foreach: filteredItems, afterAdd: animateBackgroundColour }">
+                                  <tr data-bind="event: { click: $parent.onClickTeamItem }"> @*, css: { 'selectedTr' : $parent.selectedTr() }">*@ @* mouseover: $parent.onMouseOver, mouseout: $parent.onMouseOut }">*@                
+                                      
+                                        <td><span data-bind="text: Title" ></span></td>
+                                        <td><span data-bind="text: DefaultMOA"  ></span> </td>
+                                        <td><span data-bind="text: DefaultDomicile" ></span> </td>
+                                        <td><span data-bind="text: QuoteExpiryDaysDefault" ></span> </td>
+                                        <td>
+                                            <div class="btn-toolbar">
+                                                <div class="btn-group">
+                                                    <a href="#" title="Edit" data-bind="click: $parent.click_OpenCreateEditTeamModal_Edit, css:{  'disabled' : $parent.editTeamButton_Status() }" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a>
+                                                    <a href="#" title="Delete" data-bind="click: $parent.click_DeleteTeam, css: {'disabled' : $parent.deleteTeamButton_Status() }" class="btn btn-primary"><i class="icon-trash icon-white"></i></a>
+                                                    <a href="#" title="Get Users In Team" data-bind="click: $parent.click_GetUsersInTeam" class="btn btn-primary"><i class="icon-user icon-white"></i></a>
+                                                </div>
+                                             </div>
+                                        </td>
+                                  </tr>
+
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <ul>
+            <li class="previous_page">
+                <a href="#" data-bind="click: previousPage"><div class="arrow-left"></div>Previous</a>
+            </li>
+        </ul>
+        <ul data-bind="foreach: allPages">
+            <li class="index_page" data-bind="css: { active: $data.pageNumber === ($parent.pageIndex() + 1) }">
+                <a href="#" data-bind="text: $data.pageNumber, click: function() { $parent.moveToPage($data.pageNumber-1); }"></a>
+            </li>
+        </ul>
+      
+        <ul>
+            <li class="next_page">
+                <a href="#" data-bind="click: nextPage">Next<div class="arrow-right"></div></a>
+            </li>
+        </ul>
+        </div>
+
+   </div>
+
+<!-- Team List -->
+
+    <div class="span4">
+
+<!-- Users in Team -->
+
+   @*<legend>Users in Team</legend>*@
+<table class="table table-condensed table-striped table-bordered table-hover" border="0" >
+    <caption>Users in Team</caption>
+    <thead>
+        <tr>
+            <th>Logon Name</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody data-bind="template: { foreach: userList }">
+            <td><span data-bind="text: LogonName" ></span></td>
+            @*<td style="width:45px"><a href="#" title="Edit" data-bind="click: $parent.click_OpenEditUsersScreen, css:{  'disabled' : $parent.editUserButton_Status() }" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>*@
+            @*<td style="width:45px"><a href="#" title="Edit" data-bind="click: $root.selectedView(new ConsoleApp.View('Manage Users', 'ManageUsers.Template', ConsoleApp.vmManageUsers)), css:{  'disabled' : $parent.editUserButton_Status() }" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>*@
+            <td style="width:45px"><a href="#" title="Edit" data-bind="click: $root.click_GoToUserView, css:{  'disabled' : ConsoleApp.vmManageTeams.goToUserView_Status }, disable: ConsoleApp.vmManageTeams.goToUserView_Status" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+        </tbody>
+    </table>
+
+ </div>
+</ div>
+ </div>     
+
+<!-- Add Team -->
+<form id="formCreateEditTeam">
+     <div id="CreateEditTeam_ModalAlert" class="val-alert modal hide fade" data-bind="with: selectedTeam">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-bind="click: dirtyFlag.reset">
+               			<i class="icon-remove"></i>
+				</button>
+				<span data-bind="text: ConsoleApp.vmManageTeams.createEditTitle"></span>
+			</div>
+			<div class="modal-body">
+				
+                <!-- Create Team Body -->
+
+   
+    <table border="0" style="border-color:black"  width="100%">
+        
+        @Html.HiddenFor(model => model.Id, new Dictionary<string, object> { { "data-bind", "value: Id" }})
+        <tr>
+            <td>@Html.LabelFor(model => model.Title)*</td>
+              <td>@*@Html.TextBoxFor(model => model.Title, new Dictionary<string, object> { { "data-bind", "value: Title" }})*@
+                  <input type="text" id="txtTitle" data-bind="value: Title" required/>
+                <p class="text-error">@Html.ValidationMessageFor(model => model.Title)  </p>
+              </td>
+          </tr>
+            <tr>
+              <td>@Html.LabelFor(model => model.DefaultMOA)</td>
+              <td>@Html.TextBoxFor(model => model.DefaultMOA, new Dictionary<string, object> { { "data-bind", "value: DefaultMOA" }})
+              @*  @Html.ValidationMessageFor(model => model.DefaultMOA)  *@
+              </td>
+              </tr>
+
+        <tr>
+              <td>@Html.LabelFor(model => model.DefaultDomicile)</td>
+              <td>@Html.TextBoxFor(model => model.DefaultDomicile, new Dictionary<string, object> { { "data-bind", "value: DefaultDomicile" }})
+               @* @Html.ValidationMessageFor(model => model.DefaultDomicile)  *@
+              </td>
+          </tr>
+
+         <tr>
+              <td>@Html.LabelFor(model => model.QuoteExpiryDaysDefault)*</td>
+             <td><input type="text"  id="txtQuoteExpiryDaysDefault" data-bind="value: QuoteExpiryDaysDefault" style="width:50px" required/>
+                 <p class="text-error">@Html.ValidationMessageFor(model => model.QuoteExpiryDaysDefault)  </p>
+              </td>
+          </tr>
+        <tr>
+             <td colspan="2">
+           <hr />
+                 <!-- Table -->
+
+<table style="width:100%">
+                        
+    <tr>
+       <td align="center" ><span class="label label-info">Add/Remove Users</span>
+<div style="overflow: auto; width: auto; height:100px">
+   <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>All Memberships</caption>
+       <thead>
+        <tr>
+
+            <th>DomainLogon</th>
+        </tr>
+    </thead>
+      <tbody data-bind="template: { foreach: AllUsers }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+                             
+                                        <td><input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.DomainLogon" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <p >
+                                    <a href="#" title="Add" data-bind="click: ConsoleApp.vmManageTeams.click_AddUsers" class="btn btn-primary"><i class=" icon-chevron-down icon-white"></i></a>
+                                    <a href="#" title="Remove" data-bind="click: ConsoleApp.vmManageTeams.click_RemoveUsers" class="btn btn-primary"><i class=" icon-chevron-up icon-white"></i></a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+<div style="overflow: auto; width: auto; height:100px">
+                                <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>Current Memberships</caption>
+       <thead>
+        <tr>
+
+            <th>DomainLogon</th>
+           
+        </tr>
+    </thead>
+        <tbody data-bind="template: { foreach: Users }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+                                     
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.DomainLogon" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- End Table -->
+              </td>
+          </tr>
+
+
+    <tr>
+             <td colspan="2">
+            <hr />
+                 <!-- Table -->
+
+                     <table style="width:100%" >
+                        
+                        <tr>
+                            <td align="center" ><span class="label label-info">Add/Remove Links</span>
+<div style="overflow: auto; width: auto; height:100px">
+   <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>All Links</caption>
+       <thead>
+        <tr>
+
+            <th>Title</th>
+        </tr>
+    </thead>
+       <tbody data-bind="template: { foreach: AllLinks }"> 
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+                           
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.Title" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <p >
+                                    <a href="#" title="Add" data-bind="click: ConsoleApp.vmManageTeams.click_AddLinks" class="btn btn-primary"><i class=" icon-chevron-down icon-white"></i></a>
+                                    <a href="#" title="Remove" data-bind="click: ConsoleApp.vmManageTeams.click_RemoveLinks" class="btn btn-primary"><i class=" icon-chevron-up icon-white"></i></a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+<div style="overflow: auto; width: auto; height:100px">
+   <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>Current Links</caption>
+       <thead>
+        <tr>
+            
+            <th>Title</th>
+           
+        </tr>
+    </thead>
+        <tbody data-bind="template: { foreach: Links }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.Title" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- End Table -->
+              </td>
+          </tr>
+    <tr>
+             <td colspan="2">
+            <hr />
+                 <!-- Table -->
+
+                     <table style="width:100%">
+                        
+                        <tr>
+                            <td align="center" ><span class="label label-info">Add/Remove Related COBs</span>
+<div style="overflow: auto; width: auto; height:100px">
+   <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>All Filter COBs</caption>
+       <thead>
+        <tr>
+            
+            
+            <th>Title</th>
+        </tr>
+    </thead>
+       <tbody data-bind="template: { foreach: AllRelatedCOBs }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+   
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.Narrative" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <p > 
+                                    <a href="#" title="Add" data-bind="click: ConsoleApp.vmManageTeams.click_AddRelatedCOBs" class="btn btn-primary"><i class=" icon-chevron-down icon-white"></i></a>
+                                    <a href="#" title="Remove" data-bind="click: ConsoleApp.vmManageTeams.click_RemoveRelatedCOBs" class="btn btn-primary"><i class=" icon-chevron-up icon-white"></i></a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+<div style="overflow: auto; width: auto; height:100px">
+                                <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>Current Filter COBs</caption>
+       <thead>
+        <tr>
+            <th>Title</th>
+           
+        </tr>
+    </thead>
+        <tbody data-bind="template: { foreach: RelatedCOBs }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.Narrative" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- End Table -->
+              </td>
+          </tr>
+
+    <tr>
+             <td colspan="2">
+            <hr />
+                 <!-- Table -->
+
+                     <table style="width:100%">
+                        
+                        <tr>
+                            <td align="center" ><span class="label label-info">Add/Remove Filter RelatedOffices</span>
+<div style="overflow: auto; width: auto; height:100px">
+   <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>All Filter Offices</caption>
+       <thead>
+        <tr>
+            <th>Title</th>
+        </tr>
+    </thead>
+       <tbody data-bind="template: { foreach: AllRelatedOffices }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.Title" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <p >
+                                    <a href="#" title="Add" data-bind="click: ConsoleApp.vmManageTeams.click_AddRelatedOffices" class="btn btn-primary"><i class=" icon-chevron-down icon-white"></i></a>
+                                    <a href="#" title="Remove" data-bind="click: ConsoleApp.vmManageTeams.click_RemoveRelatedOffices" class="btn btn-primary"><i class=" icon-chevron-up icon-white"></i></a>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+<div style="overflow: auto; width: auto; height:100px">
+                                <table class="table table-condensed table-striped table-bordered table-hover dataTables_paginate" width="100%">
+    <caption>Current Filter Offices</caption>
+       <thead>
+        <tr>
+            
+            <th>Narrative</th>
+           
+        </tr>
+    </thead>
+        <tbody data-bind="template: { foreach: RelatedOffices }">
+            
+                                  <tr data-bind="event: { click: ConsoleApp.vmManageTeams.onClickSetSelectedItem }">
+
+                                        <td>
+                                            <input type="hidden" data-bind="value: $data.Id" />
+                                            <span data-bind="text: $data.Title" ></span>
+
+                                        </td>
+                                        
+                                  </tr>
+        </tbody>
+    </table>
+</div>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- End Table -->
+              </td>
+          </tr>
+
+
+
+    </table>
+          
+
+                <!-- Create Team Body -->
+
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-small" data-dismiss="modal" data-bind="click: dirtyFlag.reset">Cancel</a>
+				<a href="#" class="btn btn-small btn-primary" data-bind="click: ConsoleApp.vmManageTeams.click_CreateTeam, visible: ConsoleApp.vmManageTeams.createButtonVisible" >Save New Team</a>
+                <a href="#" class="btn btn-small btn-primary" data-bind="click: ConsoleApp.vmManageTeams.click_EditTeam, visible: ConsoleApp.vmManageTeams.editButtonVisible" >Save Team</a>
+			</div>
+		</div>
+
+<!-- Add Team -->
+
+</form>           

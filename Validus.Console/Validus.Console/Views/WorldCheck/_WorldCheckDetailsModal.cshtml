@@ -1,0 +1,190 @@
+﻿@using Validus.Console.WorldCheckService
+@model Validus.Console.WorldCheckService.WorldCheckItem
+<div class="modal-header">
+    <button type="button" class="close val-worldcheck-close" data-dismiss="modal" aria-hidden="true">
+        <i class="icon-remove"></i>
+    </button>
+    <span><h3>WorldCheck</h3></span>
+</div>
+<div class="modal-body">
+    <div class="row-fluid">
+        <div class="span10 val-worldcheck-header" style="background-color:@Model.colour">@Html.DisplayTextFor(model => model.LastName)</div>
+        <div class="span2 val-worldcheck-header val-log-worldcheck"><a href="javascript:LogWorldCheckMatch('@Model.UID')" class="val-link"><i class="icon-check"></i> Log</a></div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3 val-worldcheck-detail-lastname"><strong>Last Name:</strong></div>
+        <div class="span3 val-worldcheck-detail-lastname-value">@Html.DisplayTextFor(model => model.LastName)</div>
+        <div class="span3 val-worldcheck-detail-category"><strong>Category:</strong></div>
+        <div class="span3 val-worldcheck-detail-category-value">@Html.DisplayTextFor(model => model.Category)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3 val-worldcheck-detail-firstname"><strong>First Name:</strong></div>
+        <div class="span3 val-worldcheck-detail-firstname-value">@Html.DisplayTextFor(model => model.FirstName)</div>
+        <div class="span3 val-worldcheck-detail-country"><strong>Sub-Category:</strong></div>
+        <div class="span3 val-worldcheck-detail-country-value">@Html.DisplayTextFor(model => model.SubCategory)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span2 val-worldcheck-detail-lists"><strong>Official list(s):</strong></div>
+        <div class="span10 val-worldcheck-detail-lists-value">@{if (Model.KeywordsList != null){foreach (string keyword in Model.KeywordsList){@keyword}}}</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 val-worldcheck-detail-alias">
+            <table class="val-worldcheck-detail-alias-datatable table table-condensed table-bordered table-hover">
+                <caption>Alias(es)</caption>
+                <thead>
+                    <tr>
+                        <th class="val-insddet-polid">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.AliasesList != null)
+                        {
+                            foreach (string alias in Model.AliasesList)
+                            {
+                                <tr><td class="val-worldcheck-detail-alias-value"><div title="@alias">@alias</div></td></tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="span6 val-worldcheck-detail-spelling">
+            <table class="val-worldcheck-detail-spelling-datatable table table-condensed table-bordered table-hover">
+                <caption>Alternative Spelling</caption>
+                <thead>
+                    <tr>
+                        <th class="val-worldcheck-detail-spelling-value">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.AlternativeSpellingList != null)
+                        {
+                            foreach (string spelling in Model.AlternativeSpellingList)
+                            {
+                                <tr><td class="val-worldcheck-detail-spelling-value"><div title="@spelling">@spelling</div></td></tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3 val-worldcheck-detail-title"><strong>Title:</strong></div>
+        <div class="span3 val-worldcheck-detail-title-value">@Html.DisplayTextFor(model => model.Title)</div>
+        <div class="span3 val-worldcheck-detail-position"><strong>Position:</strong></div>
+        <div class="span3 val-worldcheck-detail-position-value">@Html.DisplayTextFor(model => model.Position)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3 val-worldcheck-detail-age"><strong>Age:</strong></div>
+        <div class="span3 val-worldcheck-detail-age-value">@Html.DisplayTextFor(model => model.Age)</div>
+        <div class="span3 val-worldcheck-detail-dob"><strong>DOB:</strong></div>
+        <div class="span3 val-worldcheck-detail-dob-value">@Html.DisplayTextFor(model => model.DOB)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3 val-worldcheck-detail-birthplace"><strong>Place of birth:</strong></div>
+        <div class="span3 val-worldcheck-detail-birthplace-value">@Html.DisplayTextFor(model => model.PlaceOfBirth)</div>
+        <div class="span3 val-worldcheck-detail-deceased"><strong>Deceased:</strong></div>
+        <div class="span3 val-worldcheck-detail-deceased-value">@Html.DisplayTextFor(model => model.Deceased)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span2 val-worldcheck-detail-passports"><strong>Passports:</strong></div>
+        <div class="span10 val-worldcheck-detail-passports-value">@Html.DisplayTextFor(model => model.Passports)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3 val-worldcheck-detail-ssn"><strong>SSN:</strong></div>
+        <div class="span3 val-worldcheck-detail-birthplace-value">@Html.DisplayTextFor(model => model.SSN)</div>
+        <div class="span3 val-worldcheck-detail-deceased"><strong>Country:</strong></div>
+        <div class="span3 val-worldcheck-detail-deceased-value">@Html.DisplayTextFor(model => model.Country)</div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 val-worldcheck-detail-locations">
+            <table class="val-worldcheck-detail-locations-datatable table table-condensed table-bordered table-hover">
+                <caption>Locations</caption>
+                <thead>
+                    <tr role="row">
+                        <th class="val-worldcheck-detail-locations-value">Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.LocationsList != null)
+                        {
+                            foreach (string locn in Model.LocationsList)
+                            {
+                                <tr><td class="val-worldcheck-detail-locations-value"><div title="@locn">@locn</div></td></tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="span6 val-worldcheck-detail-companies">
+            <table class="val-worldcheck-detail-companies-datatable table table-condensed table-bordered table-hover">
+                <caption>Assocated Companies</caption>
+                <thead>
+                    <tr role="row">
+                        <th class="val-worldcheck-detail-spelling-value">Company</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.CompaniesList != null)
+                        {
+                            foreach (string company in Model.CompaniesList)
+                            {
+                                <tr><td class="val-worldcheck-detail-spelling-value"><div title="@company">@company</div></td></tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 val-worldcheck-detail-linkedto">
+            <table class="val-worldcheck-detail-linkedto-datatable table table-condensed table-bordered table-hover">
+                <caption>Linked to</caption>
+                <thead>
+                    <tr role="row">
+                        <th class="val-worldcheck-detail-linkedto-value">TO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.LinkedToList != null)
+                        {
+                            foreach (string linkedTo in Model.LinkedToList)
+                            {
+                                <tr><td class="val-worldcheck-detail-linkedto-value"><div title="@linkedTo">@linkedTo</div></td></tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="span6 val-worldcheck-detail-infosource">
+            <table class="val-worldcheck-detail-infosource-datatable table table-condensed table-bordered table-hover">
+                <caption>Info Sources</caption>
+                <thead>
+                    <tr role="row">
+                        <th class="val-worldcheck-detail-infosource-value">Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.ExternalSourcesList != null)
+                        {
+                            foreach (string listItem in Model.ExternalSourcesList)
+                            {
+                                <tr><td class="val-worldcheck-detail-infosource-value"><div title="@listItem">@listItem</div></td></tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model Validus.Models.OptionVersionPV
+
+<div class="span2">
+	<label class="control-label">
+	    @Html.DisplayNameFor(model => model.TSICurrency)
+	</label>
+	@Html.TextBoxFor(model => model.TSICurrency, new Dictionary<string, object> 
+	    { 
+	        { "id", ""},
+	        { "class", "input-large span12 typeahead" },
+	        { "data-bind", "value: _TSICurrency, valueUpdate: 'afterkeydown', enable: !IsLocked()" },
+            { "data-rest", "Currency" }
+	    })
+	@Html.ValidationMessageFor(model => model.TSICurrency, null, new { @class = "help-block" })
+</div>
+<div class="span2">
+	<label class="control-label">
+	    @Html.DisplayNameFor(model => model.TSIPD)
+	</label>
+	@Html.TextBoxFor(model => model.TSIPD, new Dictionary<string, object> 
+	    { 
+	        { "id", ""},
+	        { "class", "input-large span12 val-currency" },
+	        { "data-bind", "value: TSIPD, enable: !IsLocked()" }
+	    })
+	@Html.ValidationMessageFor(model => model.TSIPD, null, new { @class = "help-block" })
+</div>
+<div class="span2">
+	<label class="control-label">
+	    @Html.DisplayNameFor(model => model.TSIBI)
+	</label>
+	@Html.TextBoxFor(model => model.TSIBI, new Dictionary<string, object> 
+	    { 
+	        { "id", ""},
+	        { "class", "input-large span12 val-currency" },
+	        { "data-bind", "value: TSIBI, enable: !IsLocked()" }
+	    })
+	@Html.ValidationMessageFor(model => model.TSIBI, null, new { @class = "help-block" })
+</div>
+<div class="span2">
+	<label class="control-label">
+	    @Html.DisplayNameFor(model => model.TSITotal)
+	</label>
+	@Html.TextBoxFor(model => model.TSITotal, new Dictionary<string, object> 
+	    { 
+	        { "id", ""},
+	        { "class", "input-large span12 val-currency" },
+	        { "data-bind", "value: TSITotal, enable: !IsLocked()" }
+	    })
+	@Html.ValidationMessageFor(model => model.TSITotal, null, new { @class = "help-block" })
+</div>

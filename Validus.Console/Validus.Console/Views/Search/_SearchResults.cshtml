@@ -1,0 +1,116 @@
+﻿@using Validus.Console.DTO
+@model SearchResponseDto
+<div class="val-padding">
+    @if (Model.HasResults)
+    {
+        <div class="row-fluid">        
+            <div class="span12">
+                @foreach (SearchResultsBaseDto item in @Model.SearchResults)
+                {
+                    if (item.HasHitHighlightSummary)
+                    {
+                        <div class="val-xslt-spacer val-search-row" data-html="true" data-placement="right" data-content="@item.HitHighlightSummaryHtml" data-trigger="hover" data-title="Hit Summary" rel="popover">
+                            @Html.Partial(item.View, item)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="val-xslt-spacer val-search-row">
+                            @Html.Partial(item.View, item)
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span7 dataTables_info">@Model.StartRow to @Model.EndRow of @Model.TotalAvailable</div>
+            <div class="span5">
+                @if (Model.HasPaging)
+                {
+                    <div class="pagination pagination-mini">
+                        <ul>
+                            @if (Model.PreviousEnabled)
+                            {
+                                <li class="prev"><a href="#">← Previous</a></li>
+                            }
+                            else
+                            {
+                                <li class="prev disabled"><a href="#">← Previous</a></li>
+                            }
+                            @if (Model.FirstPagingPosition.Display)
+                            {
+                                if (Model.FirstPagingPosition.Active)
+                                {
+                                    <li class="active"><a href="#">@Model.FirstPagingPosition.Value</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#">@Model.FirstPagingPosition.Value</a></li>
+                                }
+
+                            }
+                            @if (Model.SecondPagingPosition.Display)
+                            {
+                                if (Model.SecondPagingPosition.Active)
+                                {
+                                    <li class="active"><a href="#">@Model.SecondPagingPosition.Value</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#">@Model.SecondPagingPosition.Value</a></li>
+                                }
+
+                            }
+                            @if (Model.ThirdPagingPosition.Display)
+                            {
+                                if (Model.ThirdPagingPosition.Active)
+                                {
+                                    <li class="active"><a href="#">@Model.ThirdPagingPosition.Value</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#">@Model.ThirdPagingPosition.Value</a></li>
+                                }
+
+                            }
+                            @if (Model.ForthPagingPosition.Display)
+                            {
+                                if (Model.ForthPagingPosition.Active)
+                                {
+                                    <li class="active"><a href="#">@Model.ForthPagingPosition.Value</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#">@Model.ForthPagingPosition.Value</a></li>
+                                }
+                            }
+                            @if (Model.FifthPagingPosition.Display)
+                            {
+                                if (Model.FifthPagingPosition.Active)
+                                {
+                                    <li class="active"><a href="#">@Model.FifthPagingPosition.Value</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#">@Model.FifthPagingPosition.Value</a></li>
+                                }
+                            }
+                            @if (Model.NextEnabled)
+                            {
+                                <li class="next"><a href="#">Next → </a></li>
+                            }
+                            else
+                            {
+                                <li class="next disabled"><a href="#">Next → </a></li>
+                            }
+                        </ul>
+                    </div>
+                }    
+            </div>
+        </div>
+    }
+    else
+    {
+        <span>No search results</span>
+    }
+</div>

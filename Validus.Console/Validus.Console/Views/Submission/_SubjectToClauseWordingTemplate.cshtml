@@ -1,0 +1,71 @@
+﻿<div class="row-fluid">
+    <div class="row-fluid">
+        <div class="span5">
+            <p>
+                <span class="label label-info">Custom Subjectivity</span>
+                <br />
+                <textarea  data-bind='value: customSubjectToClauseWording' class="form-control input-xlarge span12" rows="11" placeholder="Enter Custom Description" />
+            </p>
+        </div>
+        <div class="span2 pagination-centered">
+            <p>
+                <a href="#" title="Remove Custom Subjectivity" data-bind="click: onClick_RemoveCustomSubjectToClauseWordingToSubmission,enable: enableRemoveCustomSubjectToClauseWordingFromSubmission" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></a>
+                <a href="#" title="Add Custom Subjectivity" data-bind="click: onClick_AddCustomSubjectToClauseWordingToSubmission, enable: enableAddCustomSubjectToClauseWordingToSubmission" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></a>
+            </p>
+        </div>
+           <div class="span5">
+        
+         <table class="table table-condensed table-bordered table-hover"
+                data-bind="dataTable3: {
+dataSource: Model.CustomSubmissionSubjectToClauseWordingsList, rowClick: onClick_CustomSubmissionSubjectToClauseWordingItem,  itemClick: onClickCheckCustomSubjectToClauseWordingItem, rowTemplate: 'tableCustomSubmissionSubjectToClauseWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'CustomSubmissionSubjectToClauseWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
+    columns:
+	[
+	    { 'name': 'Title' },
+        { 'name': 'IsStrikeThrough' }
+	]
+,
+    options:
+    { 'bSort': false }
+}">
+                <caption>
+                    <span>Selected Subjectivities</span>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Strikethrough</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+    </div>
+    </div>
+      <div class="row-fluid">
+        <div class="span5">
+        </div>
+        <div class="span2">
+        </div>
+        <div class="span5 pagination-centered">
+            <a href="#" title="Move up" data-bind="click: onClick_selectedCustomSubmissionSubjectToClauseWordingMoveUp, enable:enableSCustomSubmissionSubjectToClauseWordingMoveUp" class="btn btn-primary">Move up</a>
+            <a href="#" title="Move down" data-bind="click: onClick_selectedCustomSubmissionSubjectToClauseWordingMoveDown, enable:enableSelectedCustomSubmissionSubjectToClauseWordingMoveDown" class="btn btn-primary">Move down</a>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <br />
+        </div>
+    </div>
+  
+    <script id="tableCustomSubmissionSubjectToClauseWordingsList" type="text/html">
+        <td>
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 250px"
+                 data-bind="attr: { title: Title }, text: Title ">
+            </div>
+        </td>
+         <td>
+                        <input type="checkbox" data-bind="checked: IsStrikeThrough, event:{click : ItemClick},clickBubble: true" /></td>
+    </script>
+
+</div>
+

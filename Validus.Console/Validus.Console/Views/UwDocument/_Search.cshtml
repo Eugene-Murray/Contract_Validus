@@ -1,0 +1,44 @@
+﻿@using System.Configuration
+@using System.Data
+
+@model DataTable
+
+<table class="val-relateddocuments-datatable table table-condensed table-bordered table-hover">
+	<caption>Related Documents</caption>
+	<thead>
+		<tr>
+			@* TODO: Remove inline styles *@
+			<th style="white-space: nowrap;">Policy Id</th>
+			<th style="white-space: nowrap;">Document Type</th>
+			<th style="white-space: nowrap;">Created On</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if ((Model != null) && (Model.Rows != null))
+		{
+			foreach (DataRow uwRow in Model.Rows)
+			{
+				var policyUrl = @ConfigurationManager.AppSettings["WebPolicyURL"] + uwRow["PolicyID"];
+				var documentUrl = @ConfigurationManager.AppSettings["UWDmsFileDownloadURL"] + "?FileID=" + uwRow["ObjectID"] + "&ObjectStore=Underwriting";
+				var createdOn = (DateTime)uwRow["CreatedOn"];
+
+				<tr>
+					<td>
+						<a class="val-subscribe-policyid" href="@policyUrl" title="@uwRow["PolicyID"]">
+							@uwRow["PolicyID"]
+						</a>
+					</td>
+					<td>
+						<a class="val-filenet-document" href="@documentUrl" title="@uwRow["DocumentType"]">
+							@uwRow["DocumentType"]
+						</a>
+					</td>
+					@* TODO: Remove inline styles *@
+					<td style="white-space: nowrap;">
+						@createdOn.ToString("dd MMM yyyy HH:mm:ss")
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="Subscribe.Service.DataContract" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/Subcribe.Services.BusinessLogic" />
+  <xs:element name="CreateQuote">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="Subscribe.Service.DataContract" minOccurs="0" name="objPolicyContract" nillable="true" type="q1:PolicyContract" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateQuoteResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="CreateQuoteResult" nillable="true" type="q2:StandardOutput" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Subcribe.Services.BusinessLogic" minOccurs="0" name="objInfoCollection" nillable="true" type="q3:InfoCollection" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdatePolicy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="Subscribe.Service.DataContract" minOccurs="0" name="objPolicyContract" nillable="true" type="q4:PolicyContract" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdatePolicyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="UpdatePolicyResult" nillable="true" type="q5:StandardOutput" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Subcribe.Services.BusinessLogic" minOccurs="0" name="objInfoCollection" nillable="true" type="q6:InfoCollection" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetReference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="strPolId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetReferenceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/" minOccurs="0" name="GetReferenceResult" nillable="true" type="q7:StandardOutput" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Subcribe.Services.BusinessLogic" minOccurs="0" name="objInfoCollection" nillable="true" type="q8:InfoCollection" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

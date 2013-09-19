@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfInsuredMeasures">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InsuredMeasures" nillable="true" type="tns:InsuredMeasures" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInsuredMeasures" nillable="true" type="tns:ArrayOfInsuredMeasures" />
+  <xs:complexType name="InsuredMeasures">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GrossIncurredLossRatio" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="GrossSyndicateEPI" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="InsuredName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SyndicateEPI" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="USMPremium" nillable="true" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InsuredMeasures" nillable="true" type="tns:InsuredMeasures" />
+  <xs:complexType name="ArrayOfInsuredDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InsuredDetails" nillable="true" type="tns:InsuredDetails" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInsuredDetails" nillable="true" type="tns:ArrayOfInsuredDetails" />
+  <xs:complexType name="InsuredDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountYear" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="COB" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GrossIncurredClaims" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="GrossIncurredLossRatio" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="InsdNm" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LossRatio" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="NewClaimCount" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="PolID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PrecentagePaid" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="SyndicateEPI" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="SyndicateGrossOutstandingClaim" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="SyndicateGrossPaidClaim" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="TechnicalPremium" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="USMPremium" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="UWR" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InsuredDetails" nillable="true" type="tns:InsuredDetails" />
+</xs:schema>

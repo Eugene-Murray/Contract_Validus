@@ -1,0 +1,30 @@
+﻿@model Validus.Console.DTO.SearchResultClaimDto
+<a href="@System.Configuration.ConfigurationManager.AppSettings["CMSURL"]@Model.BPR" target="_blank" title="@Model.BPR">@Model.BPR (CMS) </a>
+<table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+    <tbody>
+        <tr style="color: #FFFFFF; font-size: 8pt; text-align: left; font-family: Tahoma">
+            <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">BPR</td>
+            <td />
+            <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Policy Id</td>
+            <td />
+            <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">LdrCd</td>
+            <td />
+            <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Status</td>
+            <td />
+            <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">DOL</td>
+            <td />
+        </tr>
+        <tr style="color: #FFFFFF; font-size: 8pt; text-align: left; font-family: Tahoma">
+            <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px; border-left: 1px solid #73AEE6;">@Model.BPR</td>
+            <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+            <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;"><a href="@System.Configuration.ConfigurationManager.AppSettings["WebPolicyURL"]@Model.PolicyId" target="_blank" title="@Model.PolicyId">@Model.PolicyId</a></td>
+            <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+            <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Leader</td>
+            <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+            <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Status</td>
+            <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+            <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.DOL</td>
+            <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+        </tr>
+    </tbody>
+</table>

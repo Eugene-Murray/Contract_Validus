@@ -1,0 +1,1889 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://talbotuw.com/webservices" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://talbotuw.com/webservices" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://talbotuw.com/webservices">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUWDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="isDetailed" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="policyID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="policyIDCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitleCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="indexPerson" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="indexPersonCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="accountingYear" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="underwriter" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="underwriterCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="classOfBusiness" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="entryStatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowStatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="inceptionFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="inceptionToDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="writtenFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="writtenToDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="opsInfo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdBy" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdByCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUWDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUWDocumentsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUWDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uwDocument" type="tns:UWDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UWDocument">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RowLimit" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsDetailed" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ObjectID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IndexPerson" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountingYear" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Underwriter" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClassOfBusiness" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WorkflowStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InceptionFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InceptionToDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WrittenFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WrittenToDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OPSInfo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedToDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyIDCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentTitleCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescriptionCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IndexPersonCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredNameCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnderwriterCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedByCondition" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUWDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUWDocumentsByObjectResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUWDocumentByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUWDocumentByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUWDocumentByIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetUWDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="isDetailed" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="policyID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="policyIDCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitleCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="indexPerson" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="indexPersonCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="accountingYear" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="underwriter" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="underwriterCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="classOfBusiness" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="entryStatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="workflowStatus" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="inceptionFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="inceptionToDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="writtenFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="writtenToDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="opsInfo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdBy" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdByCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetUWDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetUWDocumentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetUWDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="uwDocument" type="tns:UWDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetUWDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetUWDocumentsByObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetUWDocumentByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetUWDocumentByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetUWDocumentByIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDMSDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PolicyID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DocumentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Underwriter" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="InsuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PolicyIDCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDMSDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDMSDocumentsResult" type="tns:ArrayOfDocVersion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDocVersion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DocVersion" nillable="true" type="tns:DocVersion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DocVersion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Guid" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountingYearr" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryStatus" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InceptionDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="COB" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UWR" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LoadToDMSDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentTitle" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDMSUWDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="policyIDCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="underwriter" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDMSUWDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDMSUWDocumentsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetITDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="searchType" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="capacityFormType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="completedBy" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="completedByCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="securityFormType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="formDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="manufacturer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="manufacturerCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="softwareName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="softwareNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="versionNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="versionNumberCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitleCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetITDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetITDocumentsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetITDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="itDocument" type="tns:ITDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ITDocument">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RowLimit" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ObjectID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CompletedBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CapacityFormType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SecurityFormType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FormDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Manufacturer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SoftwareName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VersionNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedToDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentTitleCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescriptionCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserNameCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CompletedByCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ManufacturerCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SoftwareNameCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VersionNumberCondition" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetITDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetITDocumentsByObjectResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetITDocumentByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetITDocumentByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetITDocumentByIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetITDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="searchType" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="capacityFormType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="completedBy" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="completedByCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="securityFormType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="formDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="manufacturer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="manufacturerCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="softwareName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="softwareNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="versionNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="versionNumberCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitleCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetITDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetITDocumentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetITDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="itDocument" type="tns:ITDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetITDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetITDocumentsByObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetITDocumentByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetITDocumentByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetITDocumentByIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetURSLDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="certificateNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="certificateNumberCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="claimNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="claimNumberCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredProperty" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredPropertyCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="boxName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pageNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateInputFrom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateInputTo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetURSLDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetURSLDocumentsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetURSLDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="urslDocument" type="tns:URSLDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="URSLDocument">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RowLimit" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ObjectID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CertificateNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClaimNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredProperty" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PageNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BoxName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DateInputFrom" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DateInputTo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedToDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescriptionCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CertificateNumberCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClaimNumberCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredNameCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyCondition" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetURSLDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetURSLDocumentsByObjectResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetURSLDocumentsByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetURSLDocumentsByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetURSLDocumentsByIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetURSLDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="certificateNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="certificateNumberCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="claimNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="claimNumberCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredNameCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredProperty" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="insuredPropertyCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="boxName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pageNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateInputFrom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateInputTo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetURSLDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetURSLDocumentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetURSLDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="urslDocument" type="tns:URSLDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetURSLDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetURSLDocumentsByObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetURSLDocumentsByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetURSLDocumentsByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetURSLDocumentsByIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplianceDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="subType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentOwner" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentOwnerCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="accountYear" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplianceDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetComplianceDocumentsResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplianceDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="complianceDocument" type="tns:ComplianceDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ComplianceDocument">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RowLimit" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ObjectID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentOwner" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountYear" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedFromDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedToDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescriptionCondition" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentOwnerCondition" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetComplianceDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetComplianceDocumentsByObjectResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplianceDocumentsByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetComplianceDocumentsByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetComplianceDocumentsByIDResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetComplianceDocuments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="rowLimit" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="subType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="descriptionCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentOwner" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentOwnerCondition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="accountYear" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdFromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="createdToDate" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetComplianceDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetComplianceDocumentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetComplianceDocumentsByObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="complianceDocument" type="tns:ComplianceDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetComplianceDocumentsByObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetComplianceDocumentsByObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetComplianceDocumentsByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objectID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="JSONGetComplianceDocumentsByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="JSONGetComplianceDocumentsByIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNUploadDocument">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentContent" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentClass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNUploadDocumentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FNUploadDocumentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNUpdateDocumentProperty">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentClass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="propertyKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="propertyValue" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNUpdateDocumentPropertyResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FNUpdateDocumentProperties">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentClass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentProperties" type="tns:ArrayOfFileNetProperty" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFileNetProperty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FileNetProperty" nillable="true" type="tns:FileNetProperty" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FileNetProperty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" />
+          <s:element minOccurs="0" maxOccurs="1" name="Delimiter" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FNUpdateDocumentPropertiesResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FNFileDocument">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentTitle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentClass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="folderPath" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNFileDocumentResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FNUnfileDocument">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="folderID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNUnfileDocumentResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FNDeleteDocument">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentClass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNDeleteDocumentResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FNFindDocument">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNFindDocumentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FNFindDocumentResult" type="tns:ArrayOfFileNetProperty" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNFindDocumentFolders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="documentID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentClass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objectStore" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FNFindDocumentFoldersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FNFindDocumentFoldersResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUWDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUWDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetUWDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUWDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUWDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUWDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="GetUWDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUWDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUWDocumentByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUWDocumentByID" />
+  </wsdl:message>
+  <wsdl:message name="GetUWDocumentByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUWDocumentByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetUWDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetUWDocuments" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetUWDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetUWDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetUWDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetUWDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetUWDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetUWDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetUWDocumentByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetUWDocumentByID" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetUWDocumentByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetUWDocumentByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDMSDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDMSDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetDMSDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDMSDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDMSUWDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDMSUWDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetDMSUWDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDMSUWDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetITDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetITDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetITDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetITDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetITDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:GetITDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="GetITDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:GetITDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetITDocumentByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetITDocumentByID" />
+  </wsdl:message>
+  <wsdl:message name="GetITDocumentByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetITDocumentByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetITDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetITDocuments" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetITDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetITDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetITDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetITDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetITDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetITDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetITDocumentByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetITDocumentByID" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetITDocumentByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetITDocumentByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetURSLDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetURSLDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetURSLDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetURSLDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetURSLDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:GetURSLDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="GetURSLDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:GetURSLDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetURSLDocumentsByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetURSLDocumentsByID" />
+  </wsdl:message>
+  <wsdl:message name="GetURSLDocumentsByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetURSLDocumentsByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetURSLDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetURSLDocuments" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetURSLDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetURSLDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetURSLDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetURSLDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetURSLDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetURSLDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetURSLDocumentsByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetURSLDocumentsByID" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetURSLDocumentsByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetURSLDocumentsByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetComplianceDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetComplianceDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetComplianceDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetComplianceDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetComplianceDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:GetComplianceDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="GetComplianceDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:GetComplianceDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetComplianceDocumentsByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetComplianceDocumentsByID" />
+  </wsdl:message>
+  <wsdl:message name="GetComplianceDocumentsByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetComplianceDocumentsByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetComplianceDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetComplianceDocuments" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetComplianceDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetComplianceDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetComplianceDocumentsByObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetComplianceDocumentsByObject" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetComplianceDocumentsByObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetComplianceDocumentsByObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetComplianceDocumentsByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:JSONGetComplianceDocumentsByID" />
+  </wsdl:message>
+  <wsdl:message name="JSONGetComplianceDocumentsByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:JSONGetComplianceDocumentsByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNUploadDocumentSoapIn">
+    <wsdl:part name="parameters" element="tns:FNUploadDocument" />
+  </wsdl:message>
+  <wsdl:message name="FNUploadDocumentSoapOut">
+    <wsdl:part name="parameters" element="tns:FNUploadDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNUpdateDocumentPropertySoapIn">
+    <wsdl:part name="parameters" element="tns:FNUpdateDocumentProperty" />
+  </wsdl:message>
+  <wsdl:message name="FNUpdateDocumentPropertySoapOut">
+    <wsdl:part name="parameters" element="tns:FNUpdateDocumentPropertyResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNUpdateDocumentPropertiesSoapIn">
+    <wsdl:part name="parameters" element="tns:FNUpdateDocumentProperties" />
+  </wsdl:message>
+  <wsdl:message name="FNUpdateDocumentPropertiesSoapOut">
+    <wsdl:part name="parameters" element="tns:FNUpdateDocumentPropertiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNFileDocumentSoapIn">
+    <wsdl:part name="parameters" element="tns:FNFileDocument" />
+  </wsdl:message>
+  <wsdl:message name="FNFileDocumentSoapOut">
+    <wsdl:part name="parameters" element="tns:FNFileDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNUnfileDocumentSoapIn">
+    <wsdl:part name="parameters" element="tns:FNUnfileDocument" />
+  </wsdl:message>
+  <wsdl:message name="FNUnfileDocumentSoapOut">
+    <wsdl:part name="parameters" element="tns:FNUnfileDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNDeleteDocumentSoapIn">
+    <wsdl:part name="parameters" element="tns:FNDeleteDocument" />
+  </wsdl:message>
+  <wsdl:message name="FNDeleteDocumentSoapOut">
+    <wsdl:part name="parameters" element="tns:FNDeleteDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNFindDocumentSoapIn">
+    <wsdl:part name="parameters" element="tns:FNFindDocument" />
+  </wsdl:message>
+  <wsdl:message name="FNFindDocumentSoapOut">
+    <wsdl:part name="parameters" element="tns:FNFindDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="FNFindDocumentFoldersSoapIn">
+    <wsdl:part name="parameters" element="tns:FNFindDocumentFolders" />
+  </wsdl:message>
+  <wsdl:message name="FNFindDocumentFoldersSoapOut">
+    <wsdl:part name="parameters" element="tns:FNFindDocumentFoldersResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DMSServiceSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocuments">
+      <wsdl:input message="tns:GetUWDocumentsSoapIn" />
+      <wsdl:output message="tns:GetUWDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocumentsByObject">
+      <wsdl:input message="tns:GetUWDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:GetUWDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocumentByID">
+      <wsdl:input message="tns:GetUWDocumentByIDSoapIn" />
+      <wsdl:output message="tns:GetUWDocumentByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocuments">
+      <wsdl:input message="tns:JSONGetUWDocumentsSoapIn" />
+      <wsdl:output message="tns:JSONGetUWDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocumentsByObject">
+      <wsdl:input message="tns:JSONGetUWDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:JSONGetUWDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocumentByID">
+      <wsdl:input message="tns:JSONGetUWDocumentByIDSoapIn" />
+      <wsdl:output message="tns:JSONGetUWDocumentByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDMSDocuments">
+      <wsdl:input message="tns:GetDMSDocumentsSoapIn" />
+      <wsdl:output message="tns:GetDMSDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDMSUWDocuments">
+      <wsdl:input message="tns:GetDMSUWDocumentsSoapIn" />
+      <wsdl:output message="tns:GetDMSUWDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocuments">
+      <wsdl:input message="tns:GetITDocumentsSoapIn" />
+      <wsdl:output message="tns:GetITDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocumentsByObject">
+      <wsdl:input message="tns:GetITDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:GetITDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocumentByID">
+      <wsdl:input message="tns:GetITDocumentByIDSoapIn" />
+      <wsdl:output message="tns:GetITDocumentByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocuments">
+      <wsdl:input message="tns:JSONGetITDocumentsSoapIn" />
+      <wsdl:output message="tns:JSONGetITDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocumentsByObject">
+      <wsdl:input message="tns:JSONGetITDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:JSONGetITDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocumentByID">
+      <wsdl:input message="tns:JSONGetITDocumentByIDSoapIn" />
+      <wsdl:output message="tns:JSONGetITDocumentByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocuments">
+      <wsdl:input message="tns:GetURSLDocumentsSoapIn" />
+      <wsdl:output message="tns:GetURSLDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocumentsByObject">
+      <wsdl:input message="tns:GetURSLDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:GetURSLDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocumentsByID">
+      <wsdl:input message="tns:GetURSLDocumentsByIDSoapIn" />
+      <wsdl:output message="tns:GetURSLDocumentsByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocuments">
+      <wsdl:input message="tns:JSONGetURSLDocumentsSoapIn" />
+      <wsdl:output message="tns:JSONGetURSLDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocumentsByObject">
+      <wsdl:input message="tns:JSONGetURSLDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:JSONGetURSLDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocumentsByID">
+      <wsdl:input message="tns:JSONGetURSLDocumentsByIDSoapIn" />
+      <wsdl:output message="tns:JSONGetURSLDocumentsByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocuments">
+      <wsdl:input message="tns:GetComplianceDocumentsSoapIn" />
+      <wsdl:output message="tns:GetComplianceDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocumentsByObject">
+      <wsdl:input message="tns:GetComplianceDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:GetComplianceDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocumentsByID">
+      <wsdl:input message="tns:GetComplianceDocumentsByIDSoapIn" />
+      <wsdl:output message="tns:GetComplianceDocumentsByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocuments">
+      <wsdl:input message="tns:JSONGetComplianceDocumentsSoapIn" />
+      <wsdl:output message="tns:JSONGetComplianceDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocumentsByObject">
+      <wsdl:input message="tns:JSONGetComplianceDocumentsByObjectSoapIn" />
+      <wsdl:output message="tns:JSONGetComplianceDocumentsByObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocumentsByID">
+      <wsdl:input message="tns:JSONGetComplianceDocumentsByIDSoapIn" />
+      <wsdl:output message="tns:JSONGetComplianceDocumentsByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNUploadDocument">
+      <wsdl:input message="tns:FNUploadDocumentSoapIn" />
+      <wsdl:output message="tns:FNUploadDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNUpdateDocumentProperty">
+      <wsdl:input message="tns:FNUpdateDocumentPropertySoapIn" />
+      <wsdl:output message="tns:FNUpdateDocumentPropertySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNUpdateDocumentProperties">
+      <wsdl:input message="tns:FNUpdateDocumentPropertiesSoapIn" />
+      <wsdl:output message="tns:FNUpdateDocumentPropertiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNFileDocument">
+      <wsdl:input message="tns:FNFileDocumentSoapIn" />
+      <wsdl:output message="tns:FNFileDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNUnfileDocument">
+      <wsdl:input message="tns:FNUnfileDocumentSoapIn" />
+      <wsdl:output message="tns:FNUnfileDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNDeleteDocument">
+      <wsdl:input message="tns:FNDeleteDocumentSoapIn" />
+      <wsdl:output message="tns:FNDeleteDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNFindDocument">
+      <wsdl:input message="tns:FNFindDocumentSoapIn" />
+      <wsdl:output message="tns:FNFindDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FNFindDocumentFolders">
+      <wsdl:input message="tns:FNFindDocumentFoldersSoapIn" />
+      <wsdl:output message="tns:FNFindDocumentFoldersSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DMSServiceSoap" type="tns:DMSServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://talbotuw.com/webservices/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetUWDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetUWDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocumentByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetUWDocumentByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetUWDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetUWDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocumentByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetUWDocumentByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDMSDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetDMSDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDMSUWDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetDMSUWDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetITDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetITDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocumentByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetITDocumentByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetITDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetITDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocumentByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetITDocumentByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetURSLDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetURSLDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocumentsByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetURSLDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetURSLDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetURSLDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocumentsByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetURSLDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetComplianceDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetComplianceDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocumentsByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetComplianceDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetComplianceDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocumentsByObject">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetComplianceDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocumentsByID">
+      <soap:operation soapAction="http://talbotuw.com/webservices/JSONGetComplianceDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUploadDocument">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNUploadDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUpdateDocumentProperty">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNUpdateDocumentProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUpdateDocumentProperties">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNUpdateDocumentProperties" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNFileDocument">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNFileDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUnfileDocument">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNUnfileDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNDeleteDocument">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNDeleteDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNFindDocument">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNFindDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNFindDocumentFolders">
+      <soap:operation soapAction="http://talbotuw.com/webservices/FNFindDocumentFolders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="DMSServiceSoap12" type="tns:DMSServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetUWDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetUWDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUWDocumentByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetUWDocumentByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetUWDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetUWDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetUWDocumentByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetUWDocumentByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDMSDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetDMSDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDMSUWDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetDMSUWDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetITDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetITDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetITDocumentByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetITDocumentByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetITDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetITDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetITDocumentByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetITDocumentByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetURSLDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetURSLDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetURSLDocumentsByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetURSLDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetURSLDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetURSLDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetURSLDocumentsByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetURSLDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetComplianceDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetComplianceDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetComplianceDocumentsByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetComplianceDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetComplianceDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocumentsByObject">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetComplianceDocumentsByObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JSONGetComplianceDocumentsByID">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/JSONGetComplianceDocumentsByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUploadDocument">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNUploadDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUpdateDocumentProperty">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNUpdateDocumentProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUpdateDocumentProperties">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNUpdateDocumentProperties" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNFileDocument">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNFileDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNUnfileDocument">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNUnfileDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNDeleteDocument">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNDeleteDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNFindDocument">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNFindDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FNFindDocumentFolders">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/FNFindDocumentFolders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DMSService">
+    <wsdl:port name="DMSServiceSoap" binding="tns:DMSServiceSoap">
+      <soap:address location="http://services.talbotdev.com/FileNetService/DMSService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="DMSServiceSoap12" binding="tns:DMSServiceSoap12">
+      <soap12:address location="http://services.talbotdev.com/FileNetService/DMSService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

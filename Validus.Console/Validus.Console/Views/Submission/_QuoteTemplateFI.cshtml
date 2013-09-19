@@ -1,0 +1,529 @@
+﻿@model Validus.Models.QuoteFI
+
+<div class="row-fluid">
+	<div class="span1"></div>
+
+	<div class="span10">
+		<div class="row-fluid">
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.SubscribeReference)
+				</label>
+				@Html.TextBoxFor(model => model.SubscribeReference, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-small span12 val-webpolicy" },
+						{ "data-bind", "value: SubscribeReference" },
+						{ "readonly", "readonly"}
+					})
+				@Html.ValidationMessageFor(model => model.SubscribeReference, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.SubmissionStatus)
+					<abbr title="Submission status is required">*</abbr>
+				</label>
+				@Html.DropDownListFor(model => model.SubmissionStatus, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: SubmissionStatusList, value: SubmissionStatus, enable: IsSubscribeMaster() && !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.SubmissionStatus, null, new { @class = "help-block" })
+			</div>
+			<div class="span2" data-bind="visible: SubmissionStatus() === 'DECLINED'">
+				@* TODO: Remove inline styles *@
+				@* TODO: Use HTML helpers to render controls *@
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.DeclinatureReason)
+					<a href="#" title="Edit Declinature" style="float: right;"
+						data-bind="click: ShowDeclinatureDialog">Edit</a>
+				</label>
+				@Html.DropDownListFor(model => model.DeclinatureReason, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: DeclinatureReasonList, value: DeclinatureReason, enable: IsSubscribeMaster() && !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.DeclinatureReason, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.FacilityRef)
+				</label>
+				@Html.TextBoxFor(model => model.FacilityRef, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-small span12 typeahead" },
+						{ "data-bind", "value: _FacilityRef, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+						{ "data-rest", "Facility" }
+					})
+				@Html.ValidationMessageFor(model => model.FacilityRef, null, new { @class = "help-block" })
+			</div>
+			<!-- ko if: RenPolId().length > 0 -->
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.RenPolId)
+				</label>
+				@Html.TextBoxFor(model => model.RenPolId, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-small span12 val-webpolicy" },
+						{ "data-bind", "value: RenPolId, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+						{ "readonly", "readonly"}
+					})
+				@Html.ValidationMessageFor(model => model.RenPolId, null, new { @class = "help-block" })
+			</div>
+			<!-- /ko -->
+			<div class="span1">
+				<i title="Signifies whether or not the current quote is synchronised to Subscribe"
+					data-bind="css: { 'icon-star': IsSubscribeMaster(), 'icon-star-empty': !IsSubscribeMaster() }, event: { click: function(data, event) { IsSubscribeMaster(true) } }"></i>
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.COB)
+					<abbr title="COB is required">*</abbr>
+				</label>
+				@Html.TextBoxFor(model => model.COB, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-mini span12 typeahead" },
+						{ "data-bind", "value: _COB, enable: IsSubscribeMaster() && !$parent.IsLocked(), attr: { readonly: SubscribeReference().length > 0 }" },
+						{ "data-rest", "COB" }
+					})
+				@Html.ValidationMessageFor(model => model.COB, null, new { @class = "help-block" })
+			</div>
+            <div class="span2" data-bind="visible: COBId() == 'CF'">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.RiskCodeId)					
+				</label>
+				@Html.DropDownListFor(model => model.RiskCodeId, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-mini span12" },
+						{ "data-bind", "options: $root.RiskCodeOptionsDropDownList, optionsValue: 'Code', optionsText: 'Name', value: RiskCodeId, enable: IsSubscribeMaster() && !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.COB, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.MOA)
+					<abbr title="MOA is required">*</abbr>
+				</label>
+				@Html.TextBoxFor(model => model.MOA, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-mini span12 typeahead" },
+						{ "data-bind", "value: _MOA, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+						{ "data-rest", "MOA" }
+					})
+				@Html.ValidationMessageFor(model => model.MOA, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.OriginatingOffice)
+					<abbr title="Office is required">*</abbr>
+				</label>
+				@Html.DropDownListFor(model => model.OriginatingOffice, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: ConsoleApp.OfficesList, optionsValue: 'Code', optionsText: 'Name', value: OriginatingOfficeId, enable: IsSubscribeMaster() && !$parent.IsLocked()" },						
+					})
+				@Html.ValidationMessageFor(model => model.OriginatingOffice, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.PolicyType)
+					<abbr title="Policy type is required">*</abbr>
+				</label>
+				@Html.DropDownListFor(model => model.PolicyType, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: PolicyTypeList, value: SelectedPolicyType, optionsText: 'value', enable: IsSubscribeMaster() && !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.PolicyType, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.EntryStatus)
+					<abbr title="Entry status is required">*</abbr>
+				</label>
+				<!-- ko if: IsLiveOrCancelled -->
+				@Html.TextBoxFor(model => model.EntryStatus, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-small span12 typeahead" },
+						{ "data-bind", "value: EntryStatus" },
+						{ "readonly", "readonly" }
+					})
+				<!-- /ko -->
+				<!-- ko ifnot: IsLiveOrCancelled -->
+				@Html.DropDownListFor(model => model.EntryStatus, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: EntryStatusList, value: EntryStatus, enable: IsSubscribeMaster() && !$parent.IsLocked()" }
+					})
+				<!-- /ko -->
+				@Html.ValidationMessageFor(model => model.EntryStatus, null, new { @class = "help-block" })
+			</div>
+		</div>
+
+	    <div class="row-fluid">
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.InceptionDate)
+	            </label>
+	            <button class="btn btn-mini pull-right datepicker" type="button" data-bind="enable: IsSubscribeMaster() && !$parent.IsLocked()">
+	                <i class="icon-calendar"></i>
+	            </button>
+	            @Html.TextBoxFor(model => model.InceptionDate, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-small span9 datepicker" },
+	                    { "data-bind", "value: InceptionDate, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+	                    { "placeholder", "Inception Date" },
+                        { "readonly", "readonly" }
+	                })
+	            @Html.ValidationMessageFor(model => model.InceptionDate, null, new { @class = "help-block" })
+	        </div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.ExpiryDate)
+	            </label>
+	            <button class="btn btn-mini pull-right datepicker" type="button" data-bind="enable: IsSubscribeMaster() && !$parent.IsLocked()">
+	                <i class="icon-calendar"></i>
+	            </button>
+	            @Html.TextBoxFor(model => model.ExpiryDate, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-small span9 datepicker" },
+	                    { "data-bind", "value: ExpiryDate, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+	                    { "placeholder", "Expiry Date" },
+                        { "readonly", "readonly" }
+	                })
+	            @Html.ValidationMessageFor(model => model.ExpiryDate, null, new { @class = "help-block" })
+	        </div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.AccountYear)
+					<abbr title="Account Year is required">*</abbr>
+				</label>
+				@Html.TextBoxFor(model => model.AccountYear, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-small span12" },
+	                    { "data-bind", "value: AccountYear, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+	                    { "placeholder", "Account Year" }
+	                })
+				@Html.ValidationMessageFor(model => model.AccountYear, null, new { @class = "help-block" })
+			</div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.QuoteExpiryDate)
+	                <abbr title="Quote expiry date is required">*</abbr>
+	            </label>
+	            <button class="btn btn-mini pull-right datepicker" type="button" data-bind="enable: !$parent.IsLocked()">
+	                <i class="icon-calendar"></i>
+	            </button>
+	            @Html.TextBoxFor(model => model.QuoteExpiryDate, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-small span9 datepicker" },
+	                    { "data-bind", "value: QuoteExpiryDate, enable: !$parent.IsLocked()" },
+	                    { "placeholder", "Quote Expiry Date" },
+	                    { "readonly", "readonly" }
+	                })
+	            @Html.ValidationMessageFor(model => model.ExpiryDate, null, new { @class = "help-block" })
+	        </div>
+	    </div>
+
+		<div class="row-fluid">
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.Currency)
+				</label>
+				@Html.TextBoxFor(model => model.Currency, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-small span12 typeahead" },
+						{ "data-bind", "value: _Currency, enable: !$parent.IsLocked()" },
+						{ "data-rest", "Currency" }
+					})
+				@Html.ValidationMessageFor(model => model.Currency, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.TechnicalPremium)
+				</label>
+				@Html.TextBoxFor(model => model.TechnicalPremium, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12 val-currency" },
+						{ "data-bind", "value: TechnicalPremium, valueUpdate: 'afterkeydown', enable: !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.TechnicalPremium, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.BenchmarkPremium)
+				</label>
+				@Html.TextBoxFor(model => model.BenchmarkPremium, new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12 val-currency" },
+						{ "data-bind", "value: BenchmarkPremium, valueUpdate: 'afterkeydown', enable: !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.BenchmarkPremium, null, new { @class = "help-block" })
+			</div>
+			<div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.TechnicalPricingMethod)
+				</label>
+				@Html.DropDownListFor(model => model.TechnicalPricingMethod, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: TechnicalPricingMethodList, value: TechnicalPricingMethod, enable: !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.TechnicalPricingMethod, null, new { @class = "help-block" })
+			</div>
+			<div class="span1">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.TechnicalPricingBindStatus)
+				</label>
+				@Html.DropDownListFor(model => model.TechnicalPricingBindStatus, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: TechnicalPricingBindStatusList, value: TechnicalPricingBindStatus, enable: !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.TechnicalPricingBindStatus, null, new { @class = "help-block" })
+			</div>
+			<div class="span1">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.TechnicalPricingPremiumPctgAmt)
+				</label>
+				@Html.DropDownListFor(model => model.TechnicalPricingPremiumPctgAmt, new List<SelectListItem>(), new Dictionary<string, object> 
+					{ 
+						{ "id", ""},
+						{ "class", "input-large span12" },
+						{ "data-bind", "options: TechnicalPricingPremiumPctgAmtList, value: TechnicalPricingPremiumPctgAmt, enable: !$parent.IsLocked()" }
+					})
+				@Html.ValidationMessageFor(model => model.TechnicalPricingPremiumPctgAmt, null, new { @class = "help-block" })
+			</div>
+		</div>
+
+	    <div class="row-fluid">
+            <div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.AmountOrOPL)
+				</label>
+				@Html.DropDownListFor(model => model.AmountOrOPL, new List<SelectListItem>(), new Dictionary<string, object> 
+				{ 
+					{ "id", ""},
+					{ "class", "input-large span12" },
+					{ "data-bind", "options: ['Amt', 'OPL'], value: AmountOrOPL, enable: !$parent.IsLocked()" }
+				})
+				@Html.ValidationMessageFor(model => model.AmountOrOPL, null, new { @class = "help-block" })
+			</div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.LimitCCY)
+	            </label>
+	            @Html.TextBoxFor(model => model.LimitCCY, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-small span12 typeahead" },
+	                    { "data-bind", "value: _LimitCCY, enable: !$parent.IsLocked() && AmountOrOPL() === 'Amt'" },
+	                    { "data-rest", "Currency" }
+	                })
+	            @Html.ValidationMessageFor(model => model.LimitCCY, null, new { @class = "help-block" })
+	        </div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.LimitAmount)
+	            </label>
+	            @Html.TextBoxFor(model => model.LimitAmount, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-large span12 val-currency" },
+	                    { "data-bind", "value: LimitAmount, valueUpdate: 'afterkeydown', enable: !$parent.IsLocked()" },
+	                    { "data-rest", "Currency" }
+	                })
+	            @Html.ValidationMessageFor(model => model.LimitAmount, null, new { @class = "help-block" })
+	        </div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.ExcessCCY)
+	            </label>
+	            @Html.TextBoxFor(model => model.ExcessCCY, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-small span12 typeahead" },
+	                    { "data-bind", "value: _ExcessCCY, enable: !$parent.IsLocked()" },
+	                    { "data-rest", "Currency" }
+	                })
+	            @Html.ValidationMessageFor(model => model.ExcessCCY, null, new { @class = "help-block" })
+	        </div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.ExcessAmount)
+	            </label>
+	            @Html.TextBoxFor(model => model.ExcessAmount, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-large span12 val-currency" },
+	                    { "data-bind", "value: ExcessAmount, valueUpdate: 'afterkeydown'" }
+	                })
+	            @Html.ValidationMessageFor(model => model.ExcessAmount, null, new { @class = "help-block" })
+	        </div>
+	    </div>
+        
+        <div class="row-fluid">	        
+            <div class="span2">
+				<label class="control-label">
+					@Html.DisplayNameFor(model => model.AmountOrONP)
+				</label>
+				@Html.DropDownListFor(model => model.AmountOrONP, new List<SelectListItem>(), new Dictionary<string, object> 
+				{ 
+					{ "id", ""},
+					{ "class", "input-large span12" },
+					{ "data-bind", "options: ['%', 'Amt', '% ONP'], value: AmountOrONP, enable: !$parent.IsLocked()" }
+				})
+				@Html.ValidationMessageFor(model => model.AmountOrONP, null, new { @class = "help-block" })
+			</div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.QuotedPremium)
+	            </label>
+	            @Html.TextBoxFor(model => model.QuotedPremium, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-large span12 val-currency" },
+	                    { "data-bind", "value: QuotedPremium, valueUpdate: 'afterkeydown', enable: !$parent.IsLocked()" }
+	                })
+	            @Html.ValidationMessageFor(model => model.QuotedPremium, null, new { @class = "help-block" })
+	        </div>
+	        <div class="span2">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.LineSize)
+	            </label>
+	            @Html.TextBoxFor(model => model.LineSize, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-large span12" },
+	                    { "data-bind", "value: LineSize, enable: !$parent.IsLocked()" }
+	                })
+	            @Html.ValidationMessageFor(model => model.LineSize, null, new { @class = "help-block" })
+	        </div>
+	        <div class="span2 text-center">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.LineToStand)
+	            </label>
+	            @Html.CheckBoxFor(model => model.LineToStand, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "" },
+	                    { "data-bind", "checked: LineToStand, enable: !$parent.IsLocked()" }
+	                })
+	            @Html.ValidationMessageFor(model => model.LineToStand, null, new { @class = "help-block" })
+	        </div>
+            <div class="span2 text-center">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.IsReinstatement)
+	            </label>
+	            @Html.CheckBoxFor(model => model.IsReinstatement, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "" },
+	                    { "data-bind", "checked: IsReinstatement, enable: !$parent.IsLocked()" }
+	                })
+	            @Html.ValidationMessageFor(model => model.IsReinstatement, null, new { @class = "help-block" })
+	        </div>
+	    </div>
+
+        <div class="row-fluid">	        
+	        <div class="span12">
+	            <label class="control-label">
+	                @Html.DisplayNameFor(model => model.Comment)
+	            </label>
+	            @Html.TextBoxFor(model => model.Comment, new Dictionary<string, object> 
+	                { 
+	                    { "id", ""},
+	                    { "class", "input-large span12" },
+	                    { "data-bind", "value: Comment, enable: !$parent.IsLocked()" }
+	                })
+	            @Html.ValidationMessageFor(model => model.Comment, null, new { @class = "help-block" })
+	        </div>
+	    </div>
+  
+	    <div class="row-fluid" data-bind="visible: ValidationErrors().length > 0">
+			<div class="span12">
+				<div class="alert alert-error">
+					<b>Validation Errors:</b><br /><br />
+					<ul data-bind="html: ValidationErrors">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="span1"></div>
+</div>
+
+<div class="val-declinature modal hide" role="dialog" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			<i class="icon-remove"></i>
+		</button>
+		<h5>Declinature</h5>
+	</div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.LabelFor(model => model.DeclinatureReason, new Dictionary<string, object> 
+                    { 
+                        { "class", "control-label" }
+                    })
+                @Html.DropDownListFor(model => model.DeclinatureReason, new List<SelectListItem>(), new Dictionary<string, object> 
+                    { 
+                        { "id", ""},
+                        { "class", "input-xxlarge span12" },
+                        { "data-bind", "options: DeclinatureReasonList, value: DeclinatureReason, enable: IsSubscribeMaster() && !$parent.IsLocked()" }
+                    })
+                @Html.ValidationMessageFor(model => model.DeclinatureReason, null, new { @class = "help-block" })
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.LabelFor(model => model.DeclinatureComments, new Dictionary<string, object> 
+                    { 
+                        { "class", "control-label" }
+                    })
+                @Html.TextAreaFor(model => model.DeclinatureComments, new Dictionary<string, object> 
+                    { 
+                        { "id", ""},
+                        { "class", "input-xxlarge span12" },
+                        { "data-bind", "value: DeclinatureComments, enable: IsSubscribeMaster() && !$parent.IsLocked()" },
+                        { "rows", "12" }
+                    })
+                @Html.ValidationMessageFor(model => model.DeclinatureComments, null, new { @class = "help-block" })
+            </div>
+        </div>
+    </div>
+    
+   
+
+    <div class="modal-footer">
+		@* TODO: Implement Cancel()
+		<a href="#" class="btn btn-small" data-dismiss="modal">Cancel</a>
+		*@
+		<a href="#" class="btn btn-small btn-primary" data-dismiss="modal">OK</a>
+	</div>
+</div>

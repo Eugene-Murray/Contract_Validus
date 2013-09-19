@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" />
+  <xs:element name="ListInsuredMeasures">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListInsuredMeasuresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" minOccurs="0" name="ListInsuredMeasuresResult" nillable="true" type="q1:ArrayOfInsuredMeasures" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInsuredMeasuresById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="insuredName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInsuredMeasuresByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" minOccurs="0" name="GetInsuredMeasuresByIdResult" nillable="true" type="q2:InsuredMeasures" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInsuredDetailsByName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="insuredName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInsuredDetailsByNameResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" minOccurs="0" name="GetInsuredDetailsByNameResult" nillable="true" type="q3:ArrayOfInsuredDetails" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInsuredDetailsByNameAndCobs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="insuredName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cobs" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInsuredDetailsByNameAndCobsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Validus.Services.DataContract.ASWarehouse" minOccurs="0" name="GetInsuredDetailsByNameAndCobsResult" nillable="true" type="q4:ArrayOfInsuredDetails" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
