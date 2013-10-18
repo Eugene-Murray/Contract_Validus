@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Validus.Console.Data;
 using Validus.Core.HttpContext;
 using Validus.Models;
@@ -41,6 +39,7 @@ namespace Validus.Console.BusinessLogic
                                             us => us.AdditionalUsers,
                                             us => us.OpenTabs,
                                             us => us.TeamMemberships.Select(tm => tm.Team.RelatedRisks),
+                                            us => us.TeamMemberships.Select(tm => tm.Team.Links),
                                             us => us.DefaultOrigOffice,
                                             us => us.DefaultUW,
                                             us => us.Underwriter,

@@ -35,6 +35,8 @@ namespace Validus.Console.BusinessLogic
 		    var quoteSheetTemplateId = dto.QuoteSheetTemplateId;
 		    dto.QuoteSheetTemplateUrl = this.ConsoleRepository.Query<QuoteTemplate>()
 		                                    .FirstOrDefault(qt => qt.Id == dto.QuoteSheetTemplateId).RdlPath;
+            dto.QuoteSheetTemplateName = this.ConsoleRepository.Query<QuoteTemplate>()
+                                            .FirstOrDefault(qt => qt.Id == dto.QuoteSheetTemplateId).Name;
 
             submission = this.SubmissionModule.GetSubmissionById(dto.SubmissionId);
             

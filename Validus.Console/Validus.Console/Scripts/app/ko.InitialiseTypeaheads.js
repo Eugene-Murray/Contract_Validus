@@ -185,10 +185,10 @@ ConsoleApp.InitialiseTypeaheads = function(element, submission)
 
 					if (apiController === "BrokerContact")
 					{
-						var brokerSequenceId = ko.utils.peekObservable(submission.Model.BrokerSequenceId);
+					    var brokerCode = ko.utils.peekObservable(submission.Model.BrokerCode);
 
-						if (brokerSequenceId)
-							dataQuery.brokerSequenceId = brokerSequenceId;
+					    if (brokerCode)
+					        dataQuery.brokerCode = brokerCode;
 					}
 					else if (apiController === "NonLondonBroker")
 					{

@@ -8,7 +8,7 @@
 	    { 
 	        { "id", ""},
 	        { "class", "input-large span12 typeahead" },
-	        { "data-bind", "value: _TSICurrency, valueUpdate: 'afterkeydown', enable: !IsLocked()" },
+	        { "data-bind", "value: _TSICurrency, valueUpdate: 'keyup', enable: !IsLocked()" },
             { "data-rest", "Currency" }
 	    })
 	@Html.ValidationMessageFor(model => model.TSICurrency, null, new { @class = "help-block" })
@@ -21,7 +21,7 @@
 	    { 
 	        { "id", ""},
 	        { "class", "input-large span12 val-currency" },
-	        { "data-bind", "value: TSIPD, enable: !IsLocked()" }
+	        { "data-bind", "auto-numeric: { data: TSIPD }, enable: !IsLocked()" }
 	    })
 	@Html.ValidationMessageFor(model => model.TSIPD, null, new { @class = "help-block" })
 </div>
@@ -33,7 +33,7 @@
 	    { 
 	        { "id", ""},
 	        { "class", "input-large span12 val-currency" },
-	        { "data-bind", "value: TSIBI, enable: !IsLocked()" }
+	        { "data-bind", "auto-numeric: { data: TSIBI }, enable: !IsLocked()" }
 	    })
 	@Html.ValidationMessageFor(model => model.TSIBI, null, new { @class = "help-block" })
 </div>
@@ -45,7 +45,7 @@
 	    { 
 	        { "id", ""},
 	        { "class", "input-large span12 val-currency" },
-	        { "data-bind", "value: TSITotal, enable: !IsLocked()" }
+	        { "data-bind", "auto-numeric: { data: TSITotal }, enable: !IsLocked()" }
 	    })
 	@Html.ValidationMessageFor(model => model.TSITotal, null, new { @class = "help-block" })
 </div>

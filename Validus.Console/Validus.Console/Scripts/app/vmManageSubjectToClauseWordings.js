@@ -52,14 +52,9 @@ $(function () {
                 );
 
                 self.selectedAllSubjectToClauseWording(new ConsoleApp.SubjectToClauseWording());
-                toastr["info"]("SubjectToClauseWording successfully created");
+                toastr.info("SubjectToClauseWording successfully created");
 
                 $('#CreateEditSubjectToClauseWording_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -73,13 +68,8 @@ $(function () {
 
             response.success(function (data) {
 
-                toastr["info"]("SubjectToClauseWording successfully updated");
+                toastr.info("SubjectToClauseWording successfully updated");
                 $('#CreateEditSubjectToClauseWording_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -95,16 +85,11 @@ $(function () {
                 if (data == "Success") {
                 self.allSubjectToClauseWordingsList.remove(function (item) { return item.Id == self.selectedAllSubjectToClauseWording().Id; });
 
-                toastr["info"]("Subjectivity successfully deleted");
+                toastr.info("Subjectivity successfully deleted");
                 }
                 else {
-                    toastr["info"]("Subjectivity not deleted");
+                    toastr.info("Subjectivity not deleted");
                 }
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -128,20 +113,13 @@ $(function () {
                     });
                 }
                 else {
-                    toastr["info"]("No SubjectToClauseWordings Found");
+                    toastr.info("No SubjectToClauseWordings Found");
                 }
 
 
                 self.showImageProcessing_LoadingSubjectToClauseWordings('none');
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr);
-                console.log(textStatus);
-            });
-
         };
 
         self.GetTeamsFullData = function () {
@@ -164,13 +142,7 @@ $(function () {
 
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
-
-
 
         self.GetSubjectToClauseWordingsForTeamOffice = function () {
 
@@ -183,7 +155,7 @@ $(function () {
 
             response.success(function (data) {
 
-                console.log(data);
+                //console.log(data);
 
                 if (data.length > 0) {
 
@@ -226,12 +198,6 @@ $(function () {
                                 .Title(value.Title()));
                     });
                 }
-
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -256,12 +222,7 @@ $(function () {
             var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
-                toastr["info"]("Team SubjectToClauseWordings successfully updated");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Team SubjectToClauseWordings successfully updated");
             });
         };
 
@@ -358,7 +319,7 @@ $(function () {
         self.onClickAllSubjectToClauseWordingsItem = function (e) {
 
             self.selectedAllSubjectToClauseWording(this);
-            console.log(self.selectedAllSubjectToClauseWording());
+            //console.log(self.selectedAllSubjectToClauseWording());
         };
 
         self.click_DeleteSubjectToClauseWording = function () {

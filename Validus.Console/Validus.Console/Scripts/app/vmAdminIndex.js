@@ -13,13 +13,14 @@
             new ConsoleApp.View("Accelerators", "ManageAccelerators.Template", ConsoleApp.vmManageAccelerators, false),
             new ConsoleApp.View("MarketWordings", "ManageMarketWordings.Template", ConsoleApp.vmManageMarketWordings, false),
             new ConsoleApp.View("TermsNConditionWordings", "ManageTermsNConditionWordings.Template", ConsoleApp.vmManageTermsNConditionWordings, false),
-            new ConsoleApp.View("Subjectivities", "ManageSubjectToClauseWordings.Template", ConsoleApp.vmManageSubjectToClauseWordings, false)
+            new ConsoleApp.View("Subjectivities", "ManageSubjectToClauseWordings.Template", ConsoleApp.vmManageSubjectToClauseWordings, false),
+            new ConsoleApp.View("UnderwriterSignature", "ManageUnderwriterSignature.Template", ConsoleApp.vmManageUnderwriterSignature, false)
         ]);
 
         self.selectedView = ko.observable(new ConsoleApp.View("Manage Teams", "ManageTeams.Template", ConsoleApp.vmManageTeams, true));
         
 
-        // Events
+    	// Events
         self.click_GoToUserView = function (e) {
             if (e.LogonName != null) {
                 self.selectedView(self.views()[1]); // Navigate to the ManageUser View
@@ -28,17 +29,23 @@
         };
 
         // Subscribe
-        self.selectedView.subscribe(function (data) {
-            $.each(self.views(), function (key, view) {
-                if (data.title == view.title) {
-                    view.active(true);
-                }
-                else
-                {
-                    view.active(false);
-                }
-            });
-        });
+	    self.selectedView.subscribe(function(data)
+	    {
+	    	// TODO: Should not need to loop through every view, especially when active is already found
+		    $.each(self.views(), function(key, view)
+		    {
+		    	// TODO: view.active(data.title === view.title);
+			    
+			    if (data.title == view.title)
+			    {
+				    view.active(true);
+			    }
+			    else
+			    {
+				    view.active(false);
+			    }
+		    });
+	    });
 
         return self;
     };

@@ -15,7 +15,7 @@
     <AssemblyName>Validus.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
@@ -116,18 +116,10 @@
     <Reference Include="RazorEngine">
       <HintPath>..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
     </Reference>
-    <Reference Include="SourceCode.HostClientAPI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=16a2c5aaaa1b130d, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\SourceCode.HostClientAPI.dll</HintPath>
-    </Reference>
     <Reference Include="SourceCode.Workflow.Client, Version=4.0.0.0, Culture=neutral, PublicKeyToken=16a2c5aaaa1b130d, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\SourceCode.Workflow.Client.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="SourceCode.Workflow.Management, Version=4.0.0.0, Culture=neutral, PublicKeyToken=16a2c5aaaa1b130d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\SourceCode.Workflow.Management.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
@@ -246,6 +238,7 @@
     <Compile Include="BusinessLogic\QuoteSheetModule.cs" />
     <Compile Include="BusinessLogic\WebSiteModuleManager.cs" />
     <Compile Include="BusinessLogic\WorldCheckBusinessModule.cs" />
+    <Compile Include="Common\Constants.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="BusinessLogic\IRiskCodeModuleManager.cs" />
     <Compile Include="Controllers\SubmissionApiController.cs" />
@@ -278,6 +271,7 @@
     <Compile Include="DTO\RenewalDataDto.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DTO\RiskPreviewDto.cs" />
     <Compile Include="DTO\SearchResponseDto.cs" />
     <Compile Include="DTO\SearchResultBrokerDto.cs" />
     <Compile Include="DTO\SearchResultClaimDto.cs" />
@@ -330,10 +324,8 @@
     <Compile Include="BusinessLogic\ISubmissionModule.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
-    <Compile Include="Controllers\SiteManagementController.cs" />
     <Compile Include="Controllers\SubmissionController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
-    <Compile Include="Data\DbInitializer\UnderwritingConsoleDbInitializer.cs" />
     <Compile Include="Data\IInsuredData.cs" />
     <Compile Include="Data\InsuredData.cs" />
     <Compile Include="Data\IPolicyData.cs" />
@@ -374,6 +366,22 @@
     <Compile Include="Migrations\201309121101340_R2_201312_4.Designer.cs">
       <DependentUpon>201309121101340_R2_201312_4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201309201137458_R2_201309_5.cs" />
+    <Compile Include="Migrations\201309201137458_R2_201309_5.Designer.cs">
+      <DependentUpon>201309201137458_R2_201309_5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201309271336238_R3_201309_6.cs" />
+    <Compile Include="Migrations\201309271336238_R3_201309_6.Designer.cs">
+      <DependentUpon>201309271336238_R3_201309_6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201310081437107_R3_201310_7.cs" />
+    <Compile Include="Migrations\201310081437107_R3_201310_7.Designer.cs">
+      <DependentUpon>201310081437107_R3_201310_7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201310181100113_R3_201310_8.cs" />
+    <Compile Include="Migrations\201310181100113_R3_201310_8.Designer.cs">
+      <DependentUpon>201310181100113_R3_201310_8.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -382,6 +390,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Service References\InsuredService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\PolicyService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -502,6 +515,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\images\Sorting icons.psd" />
     <Content Include="Content\images\animated_progress.gif" />
+    <Content Include="Migrations\R3_201309_6S.sql" />
     <Content Include="Migrations\R2_201309_3S.sql" />
     <Content Include="Migrations\R2_201309_3M.sql" />
     <Content Include="Migrations\R1_InitialCreate.sql" />
@@ -510,8 +524,12 @@
     <Content Include="Migrations\R2_201309_2M.sql" />
     <Content Include="Migrations\R2_201308_1S.sql" />
     <Content Include="Migrations\R2_201309_2S.sql" />
+    <Content Include="Migrations\R2_201309_5M.sql" />
     <Content Include="Migrations\R2_201312_4M.sql" />
     <Content Include="Migrations\R2_201312_4S.sql" />
+    <Content Include="Migrations\R3_201309_6M.sql" />
+    <Content Include="Migrations\R3_201310_7M.sql" />
+    <Content Include="Migrations\R3_201310_8M.sql" />
     <Content Include="Parameters.xml" />
     <Content Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -519,16 +537,23 @@
     </Content>
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
+    <Content Include="Scripts\app\knockout-autonumeric.js" />
+    <Content Include="Scripts\app\knockout-bootstrap-typeahead.js" />
+    <Content Include="Scripts\app\vmManageUnderwriterSignature.js" />
+    <Content Include="Scripts\app\knockout-datepicker.js" />
+    <Content Include="Scripts\app\knockout-validation.js" />
+    <Content Include="Scripts\app\vmSubmissionHM.js" />
+    <Content Include="Scripts\app\vmSubmissionME.js" />
+    <Content Include="Scripts\app\vmSubmissionCA.js" />
+    <Content Include="Scripts\app\knockout-bootstrap.js" />
     <Content Include="Scripts\app\vmSubmissionFI.js" />
     <Content Include="Scripts\app\knockout-datatables.js" />
     <Content Include="Scripts\app\Models\AuditTrail.js" />
-    <Content Include="Scripts\app\vmSubmissionExampleEnergy.js" />
     <Content Include="Scripts\app\Dtos\MarketWordingSettingDto.js" />
     <Content Include="Scripts\app\Dtos\SubjectToClauseWordingSettingDto.js" />
     <Content Include="Scripts\app\Dtos\TeamTermsNConditionWordingsDto.js" />
     <Content Include="Scripts\app\Dtos\TeamSubjectToClauseWordingsDto.js" />
     <Content Include="Scripts\app\Dtos\TermsNConditionWordingSettingDto.js" />
-    <Content Include="Scripts\app\knockout.bindingHandlers.dataTable.js" />
     <Content Include="Scripts\app\ko.pageGrid.js" />
     <Content Include="Scripts\app\Models\SubjectToClauseWording.js" />
     <Content Include="Scripts\app\Models\TermsNConditionWording.js" />
@@ -562,12 +587,12 @@
     <Content Include="Scripts\app\ko.bootstrap-tabs.js" />
     <Content Include="Scripts\app\ko.cancelBubbleClickEvent.js" />
     <Content Include="Scripts\app\ko.dirtyFlag.js" />
-    <Content Include="Scripts\app\ko.editPageGrid.js" />
     <None Include="Properties\PublishProfiles\QuickDeploy.pubxml" />
     <Content Include="Scripts\app\ko.dumpObservable.js" />
+    <Content Include="Scripts\lib\auto-numeric.js" />
+    <Content Include="Scripts\lib\bootstrap-datepicker.js" />
     <Content Include="Scripts\lib\jquery.pubsub.js" />
     <Content Include="Scripts\app\ko.defaultValueDropDown.js" />
-    <None Include="Scripts\lib\jquery.validate-vsdoc.js" />
     <Content Include="Content\images\validus_logo.png" />
     <Content Include="Scripts\app\vmAdminIndex.js" />
     <Content Include="Scripts\app\vmManageLinks.js" />
@@ -578,28 +603,17 @@
     <Content Include="Scripts\app\vmSubmissionBase.js" />
     <Content Include="Scripts\app\vmSubmissionEN.js" />
     <Content Include="Scripts\app\vmSubmissionPV.js" />
-    <Content Include="Scripts\lib\bootstrap-datepicker.js" />
     <Content Include="Scripts\lib\bootstrap-typeahead.js" />
-    <Content Include="Scripts\lib\jquery.ui.combobox.js" />
+    <Content Include="Scripts\lib\jquery.validate.js" />
+    <Content Include="Scripts\lib\jquery.validate.min.js" />
+    <Content Include="Scripts\lib\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\lib\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lib\kendo.dataviz.js" />
     <Content Include="Scripts\lib\knockout-2.2.1.min.js" />
     <Content Include="Scripts\lib\moment.js" />
     <Content Include="Scripts\lib\moment.min.js" />
     <Content Include="Scripts\lib\toastr.custom.min.js" />
-    <Content Include="Scripts\lib\infuser-amd.js" />
-    <Content Include="Scripts\lib\infuser-amd.min.gz.js" />
-    <Content Include="Scripts\lib\infuser-amd.min.js" />
-    <Content Include="Scripts\lib\infuser.js" />
-    <Content Include="Scripts\lib\infuser.min.gz.js" />
-    <Content Include="Scripts\lib\infuser.min.js" />
-    <Content Include="Scripts\lib\koExternalTemplateEngine-amd.js" />
-    <Content Include="Scripts\lib\koExternalTemplateEngine-amd.min.js" />
-    <Content Include="Scripts\lib\koExternalTemplateEngine.js" />
-    <Content Include="Scripts\lib\koExternalTemplateEngine.min.js" />
-    <Content Include="Scripts\lib\koExternalTemplateEngine_all.js" />
-    <Content Include="Scripts\lib\koExternalTemplateEngine_all.min.js" />
     <Content Include="Scripts\lib\knockout-2.2.1.js" />
-    <Content Include="Scripts\lib\obf.knockout-2.2.1.js" />
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
     <Content Include="Scripts\lib\jquery-1.9.0.js" />
@@ -609,26 +623,13 @@
     <Content Include="Scripts\lib\jquery.bootstrap.datatables.js" />
     <Content Include="Scripts\lib\jquery.datatables.js" />
     <Content Include="Scripts\lib\jquery.datatables.min.js" />
-    <Content Include="Scripts\lib\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\lib\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\lib\jquery.validate.js" />
-    <Content Include="Scripts\lib\jquery.validate.min.js" />
-    <Content Include="Scripts\lib\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\lib\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lib\knockout.mapping-2.4.1.js" />
-    <Content Include="Scripts\lib\modernizr-2.5.3.js" />
     <Content Include="Scripts\lib\toastr.custom.js" />
-    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\lib\toastr.js" />
     <Content Include="Scripts\lib\toastr.min.js" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\lib\qunit.js" />
-    <Content Include="Scripts\lib\TrafficCop-amd.js" />
-    <Content Include="Scripts\lib\TrafficCop-amd.min.gz.js" />
-    <Content Include="Scripts\lib\TrafficCop-amd.min.js" />
-    <Content Include="Scripts\lib\TrafficCop.js" />
-    <Content Include="Scripts\lib\TrafficCop.min.gz.js" />
-    <Content Include="Scripts\lib\TrafficCop.min.js" />
-    <Content Include="Scripts\main_DebugActionLinks.js" />
+    <Content Include="Scripts\debug.js" />
     <Content Include="Scripts\mainHelpers.js" />
     <Content Include="Scripts\Tests\SubmissionFixture.Quote.js" />
     <Content Include="Scripts\Tests\SubmissionFixture.OptionVersion.js" />
@@ -649,6 +650,7 @@
     <Content Include="Scripts\lib\kendo.dataviz.min.js.map">
       <DependentUpon>kendo.dataviz.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\lib\jquery.validate.unobtrusive.min.js.map" />
     <None Include="Service References\BrokerService\service2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -669,6 +671,82 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\InsuredService\Validus.Services.DataContract.ASWarehouse1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\PolicyService\service.wsdl" />
+    <None Include="Service References\PolicyService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetAggregatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetAnlyInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetClaimsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetConstructionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetDeductionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetGroupedPoliciesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetHistoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetInsuredsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetLimitsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetMonitorsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetNotesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetOldWorkflowHistoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetPoliciesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetPolicyBPCResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetPolicyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetPremiumResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetReInsuranceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetRenewalInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetRevisionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetStatisticsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetUSMsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Validus.Console.PolicyService.GetVesselsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\PolicyService\Validus.Services.DataContract.Subscribe.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\SubscribeService\configuration91.svcinfo" />
@@ -709,6 +787,12 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Service References\PolicyService\configuration91.svcinfo" />
+    <Content Include="Service References\PolicyService\configuration.svcinfo" />
+    <Content Include="Service References\PolicyService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <Content Include="Views\Broker\_BrokerSearchResultPreview.cshtml" />
     <Content Include="Views\Insured\_InsuredSearchResultPreview.cshtml" />
     <Content Include="Views\Search\_SearchBroker.cshtml" />
@@ -716,6 +800,7 @@
     <Content Include="Views\Search\_SearchInsured.cshtml" />
     <Content Include="Views\Search\_SearchResults.cshtml" />
     <Content Include="Views\Search\_SearchSubscribe.cshtml" />
+    <Content Include="Views\Submission\_SubmissionIndexDetailed.cshtml" />
     <Content Include="Web References\SPQueryService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -778,9 +863,6 @@
     <Content Include="Views\Admin\_ManageTeams.cshtml" />
     <Content Include="Views\Admin\_ManageUsers.cshtml" />
     <Content Include="Views\Admin\_ManageLinks.cshtml" />
-    <Content Include="Scripts\lib\jquery.validate.unobtrusive.min.js.map">
-      <DependentUpon>jquery.validate.unobtrusive.js</DependentUpon>
-    </Content>
     <Content Include="Views\WorkItem\_Preview.cshtml" />
     <Content Include="Web References\SPQueryService\search.wsdl" />
     <Content Include="Views\Admin\PersonalSettings.cshtml" />
@@ -1009,9 +1091,6 @@
     <Content Include="Views\Submission\_MarketWordingTemplate.cshtml" />
     <Content Include="Views\Submission\_SubjectToClauseWordingTemplate.cshtml" />
     <Content Include="Views\Submission\_TermsNConditionTemplate.cshtml" />
-    <Content Include="Views\Submission\_TemplateExampleEnergy.cshtml" />
-    <Content Include="Views\Submission\_QuoteTemplateExampleEnergy.cshtml" />
-    <Content Include="Views\Submission\_OptionTemplateExampleEnergy.cshtml" />
     <Content Include="Views\Submission\_OptionVersionTemplatePV.cshtml" />
     <Content Include="Views\Submission\_QuoteComparisonTable.cshtml" />
     <Content Include="Views\Submission\_CrossSellingCheck.cshtml" />
@@ -1021,6 +1100,20 @@
     <Content Include="Views\Submission\_TemplateFI.cshtml" />
     <Content Include="Views\Submission\_OptionTemplateFI.cshtml" />
     <Content Include="Views\Submission\_QuoteTemplateFI.cshtml" />
+    <Content Include="Views\Submission\_TemplateCA.cshtml" />
+    <Content Include="Views\Submission\_QuoteTemplateCA.cshtml" />
+    <Content Include="Views\Submission\_OptionTemplateCA.cshtml" />
+    <Content Include="Views\Submission\_OptionVersionTemplateCA.cshtml" />
+    <Content Include="Views\Submission\_TemplateHM.cshtml" />
+    <Content Include="Views\Submission\_OptionTemplateHM.cshtml" />
+    <Content Include="Views\Submission\_OptionVersionTemplateHM.cshtml" />
+    <Content Include="Views\Submission\_QuoteTemplateHM.cshtml" />
+    <Content Include="Views\Submission\_TemplateME.cshtml" />
+    <Content Include="Views\Submission\_OptionTemplateME.cshtml" />
+    <Content Include="Views\Submission\_QuoteTemplateME.cshtml" />
+    <Content Include="Views\Submission\_SaveQuoteSheetButtons.cshtml" />
+    <Content Include="Views\Admin\_ManangeUnderwriterSignature.cshtml" />
+    <Content Include="Views\Policy\_RiskPreview.cshtml" />
     <None Include="Web References\ReportingService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -1122,6 +1215,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\BrokerService\" />
     <WCFMetadataStorage Include="Service References\InsuredService\" />
+    <WCFMetadataStorage Include="Service References\PolicyService\" />
     <WCFMetadataStorage Include="Service References\SubscribeService\" />
     <WCFMetadataStorage Include="Service References\VersionService\" />
     <WCFMetadataStorage Include="Service References\WebPolicy\" />
@@ -1148,6 +1242,18 @@
     <EmbeddedResource Include="Migrations\201309121101340_R2_201312_4.resx">
       <DependentUpon>201309121101340_R2_201312_4.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309201137458_R2_201309_5.resx">
+      <DependentUpon>201309201137458_R2_201309_5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309271336238_R3_201309_6.resx">
+      <DependentUpon>201309271336238_R3_201309_6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310081437107_R3_201310_7.resx">
+      <DependentUpon>201310081437107_R3_201310_7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310181100113_R3_201310_8.resx">
+      <DependentUpon>201310181100113_R3_201310_8.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1167,7 +1273,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53025</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Validus.Console</IISUrl>
+          <IISUrl>http://localhost:53025/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

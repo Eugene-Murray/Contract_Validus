@@ -70,13 +70,13 @@ $(function()
 
 		/*@cc_on
 			isIE10 = /^10/.test(@_jscript_version);
-			isIE8 = /^5.8/.test(@_jscript_version);
+			isIE8 = /^5.8/.test(@_jscript_version) || document.documentMode === 8;
 		@*/
-		//todo  document.documentMode
+		
 		// ReSharper disable ExpressionIsAlwaysConst
 		// ReSharper disable ConditionIsAlwaysConst
-		
-		if (!isIE10 && !isIE8) // Not actually constant due to the above IE only conditional code
+
+		if (isIE8 || !isIE10) // Not actually constant due to the above IE only conditional code
 		{
 			if ($("input.val-clear-input").siblings("button.val-clear-input").length === 0)
 				$("input.val-clear-input")
@@ -84,20 +84,19 @@ $(function()
 					{
 						$(this).next()[$(this).val() ? "show" : "hide"]();
 					})
-					.after(
-						$('<button type="button" class="btn val-clear-input">')
-							.append('<i class="icon-remove">')
-							.click(function(e)
-							{
-								$(this).hide().prev().val("").focus();
-							}).hide());
+					.after($('<button type="button" class="btn val-clear-input">')
+						.append('<i class="icon-remove" />')
+						.click(function(e)
+						{
+							$("input[type='text']", $(this).hide().parent()).val("")[0].focus();
+							// TODO: Remove hack! Here temporarily due to the advanced search in .val-search
+							$(".val-searchterm").trigger("keyup", { e: { target: $(".val-searchterm").get(0), key: "a" } });
+						}).hide());
 		}
 
 		// ReSharper restore ExpressionIsAlwaysConst
 		// ReSharper restore ConditionIsAlwaysConst
-	};
-
-	window.EnableClearInput();
+	}();
 });
 
 /*
@@ -176,7 +175,7 @@ $.fn.carousel.Constructor.prototype.cycle = function(e)
 */
 $(function()
 {
-	$.support.transition = null;
+	//$.support.transition = null;
 });
 
 
@@ -214,19 +213,19 @@ $(document).ajaxError(function(event, xhr, settings, exception)
 	if (xhr.status > 400) // Handle all client (except 'Bad Request') & server error response codes
 	{
 		var contentType = xhr.getResponseHeader("Content-Type"),
-			errorModal = $(".val-error-modal:first"),
-			errorParagraph = $('<p class="alert alert-error" style="font-size:10px;"><b>'
-				+ exception + ' to ' + settings.url + ':</b><br /></p>');
+		    errorModal = $(".val-error-modal:first"),
+		    errorParagraph = $('<p class="alert alert-error" style="font-size:10px;"><b>'
+			    + exception + ' to ' + settings.url + ':</b><br /></p>');
 
 		if (contentType.indexOf("json") !== -1)
 		{
 			var jsonData = JSON.parse(xhr.responseText);
 
-			if ((jsonData) && (jsonData.Error))
+			if (jsonData && jsonData.Error)
 			{
 				$.each(jsonData.Error, function(errorIndex, errorValue)
 				{
-					if ((errorValue) && (typeof errorValue === "object"))
+					if (errorValue && typeof errorValue === "object")
 					{
 						errorParagraph.append('<b>' + errorIndex + '</b><br />');
 
@@ -256,7 +255,7 @@ $(document).ajaxError(function(event, xhr, settings, exception)
 		}
 		else
 		{
-			toastr.error("An unexpected error has occured, please contact service desk.");
+			toastr.error("An unexpected error has occurred, please contact service desk.");
 		}
 
 		var mailTo = "mailto:itservicedesk@global.local?subject=Console%20Error&body=" + encodeURIComponent(xhr.responseText);
@@ -270,6 +269,12 @@ $(document).ajaxError(function(event, xhr, settings, exception)
 			$(".modal-body", errorModal).html("");
 		});
 	}
+	else
+	{
+		toastr.error("A bad request error has occurred.");
+	}
+	
+	console.log(arguments);
 });
 
 /*
@@ -302,10 +307,29 @@ $.extend(
 
 			return v.toString(16);
 		});
+	},
+	/*
+		Currency Formatter
+
+		Will take a valid string, int or float value and returns a string value that has inserted
+		commas to seperate thousandth digits and stripped out any decimal places.
+
+			References;
+				Thousandth seperator regular expression;
+				http://jsfiddle.net/cuamurre/strur/
+	*/
+	formatCurrency: function(value)
+	{
+		value = parseFloat(value);
+
+		return !isNaN(value)
+			? value.toFixed(2).toString()
+				.replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
+				.replace(/(\.\d*$)/g, "")
+			: "";
 	}
 	// TODO: See ConsoleApp.AjaxHelper
 });
-
 
 
 /* ------------------------------------------------------------------------------------------------ *\
@@ -489,18 +513,51 @@ function SetGraph(seriesList, categories)
 // TODO: Remove as it is not a useful function (a function for a hacked together solution)
 ConsoleApp.ParseId = function(value)
 {
-	if (value === "" || value === undefined || value === null) return "";
+	var values = value ? value.split(":") : [null];
 
-	var values = value.split(":");
-
-	return (values[0]) ? values[0].trim() : "";
+	return values[0] ? $.trim(values[0]) : "";
 };
 
 ko.observableArray.fn.find = function(prop, data)
 {
-	var valueToMatch = data[prop];
 	return ko.utils.arrayFirst(this(), function(item)
 	{
-		return item[prop] === valueToMatch;
+		return item[prop] === data[prop];
 	});
+};
+
+//To make the observable numeric
+//http://knockoutjs.com/documentation/extenders.html
+ko.extenders.numeric = function(target, precision)
+{
+    // Create a writeable computed observable to intercept writes to our observable
+	var result = ko.computed(
+	{
+		read: target, // Always return the original observables value
+		write: function(newValue)
+		{
+			var current = target(),
+			    roundingMultiplier = Math.pow(10, precision),
+			    newValueAsNum = isNaN(newValue)
+				    ? current : parseFloat(+newValue), // TODO: Parse first then isNaN (?)
+			    valueToWrite = newValue == '' || newValueAsNum == ''
+				    ? '' : Math.round(newValueAsNum * roundingMultiplier) / roundingMultiplier;
+
+			// Only write if it changed
+			if (valueToWrite !== current)
+			{
+				target(valueToWrite);
+			}
+			// If the rounded value is the same, but a different value was written, force a notification for the current field
+			else if (newValue !== current)
+			{
+				target.notifySubscribers(valueToWrite);
+			}
+		}
+	});
+
+    // Initialize with current value to make sure it is rounded appropriately
+    result(target());
+
+    return result;
 };

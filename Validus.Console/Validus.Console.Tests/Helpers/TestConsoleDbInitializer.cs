@@ -8,7 +8,7 @@ using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using Validus.Console.Data;
-using Validus.Models;
+
 
 namespace Validus.Console.Tests.Helpers
 {

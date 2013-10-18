@@ -8,7 +8,7 @@ ConsoleApp.InitialiseDatePickers = function(element)
 		$(item).datepicker(
 		{
 			// TODO: Restrict selectable dates ?, i.e. minDate: -20, maxDate: "+1M +10D"
-			dateFormat: "yy-mm-dd",
+			dateFormat: "d M yy",
 			numberOfMonths: 1,
 			showOtherMonths: true,
 			selectOtherMonths: true,

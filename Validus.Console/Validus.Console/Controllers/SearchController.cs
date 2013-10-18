@@ -20,13 +20,15 @@ namespace Validus.Console.Controllers
             return string.Empty;
         }
 
-        [OutputCache(CacheProfile = "NoCacheProfile")]
+		// TODO: Why are there two return types ? (a view of html and a string of html)
+		[OutputCache(CacheProfile = "NoCacheProfile")] // TODO: Can't we just vary cache by parameter, when does it crawl ?
         public string IndexPartial(String searchTerm, Int32 iDisplayLength = 10, Int32 iDisplayStart = 0)
         {
             return _businessModule.GetSearchResultsHtml(searchTerm, iDisplayStart, iDisplayLength);
         }
 
-        [OutputCache(CacheProfile = "NoCacheProfile")]
+		// TODO: Why are there two return types ? (a view of html and a string of html)
+		[OutputCache(CacheProfile = "NoCacheProfile")] // TODO: Can't we just vary cache by parameter, when does it crawl ?
         public ActionResult _SearchResults(String searchTerm, Int32 iDisplayLength = 10, Int32 iDisplayStart = 0)
         {
             var searchContent = _businessModule.GetSearchResults(searchTerm, iDisplayStart, iDisplayLength);

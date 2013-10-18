@@ -50,7 +50,8 @@ namespace Validus.Console.Data
         public DbSet<Address> Addresss { get; set; }
         public DbSet<Broker> Brokers { get; set; }  
         public DbSet<Underwriter> Underwriters { get; set; }
-        public DbSet<AuditTrail> AuditTrails { get; set; }   
+        public DbSet<AuditTrail> AuditTrails { get; set; }
+        public DbSet<TeamUnderwriterSetting> TeamUnderwriterSettings { get; set; }   
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -76,8 +77,7 @@ namespace Validus.Console.Data
                         .Map<SubmissionPV>(m => m.ToTable("SubmissionsPV"))
                         .Map<SubmissionEN>(m => m.ToTable("SubmissionsEN"));
 
-            modelBuilder.Entity<Quote>().Map(m => m.ToTable("Quotes"))
-                        .Map<QuoteEN>(m => m.ToTable("QuotesEN"));
+            modelBuilder.Entity<Quote>().Map(m => m.ToTable("Quotes"));
 
             //  Added these to allow two links from Quote to User
             //<??>

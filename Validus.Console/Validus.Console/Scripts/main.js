@@ -8,7 +8,7 @@
 	should be retrieved only when needed using val().
 */
 var renewalsTable, worklistTable, submissionsTable, detailedRenewalsTable, detailedWorklistTable,
-    searchTerm, searchTermDetailedRenewals, searchTermDetailedWorkFlow;
+    searchTerm, searchTermDetailedRenewals, searchTermDetailedWorkFlow, searchTermDetailedSubmissions;
 
 $(document).ready(function()
 {
@@ -55,11 +55,16 @@ $(document).ready(function()
 	
 	$(".val-add-workflowtasks-tab").click(function(e)
     {
-		if ($(this).data("val-hastab"))
+		var button = this;
+
+		if ($(this).data("val-has-workflow-tab"))
 		{
-            $("a[href*='#" + $(this).data("val-hastab") + "'][data-toggle='tab']").tab("show");
-            return false;
-        }
+			if ($(this).data("val-has-workflow-tab") !== "")
+			{
+				$("a[href*='#" + $(this).data("val-has-workflow-tab") + "'][data-toggle='tab']").tab("show");
+				return false;
+			}
+		}
 
 		var tabId = Val_AddTab("Workflow Tasks", "/WorkItem/_WorkflowTasksDetailed", true, function(newTab)
 		{
@@ -76,7 +81,7 @@ $(document).ready(function()
 			
             $(".val-searchterm-workflow").on("keydown", function(e)
             {
-            	if (e.which == 13)
+            	if (e.which === 13)
             	{
             		e.preventDefault();
 
@@ -87,22 +92,24 @@ $(document).ready(function()
             		detailedWorklistTable.fnDraw(true);
             	}
             });
-		});
+		}, function() { $(button).data("val-has-workflow-tab", ""); });
 
-		$(this).data("val-hastab", tabId);
+		$(this).data("val-has-workflow-tab", tabId);
     });
 
-    $(".val-add-renewal-tab").click(function(e)
-    {
-		if ($(this).data("val-hastab"))
+    $(".val-add-renewal-tab").click(function(e) {
+	    var button = this;
+
+    	if($(this).data("val-has-renewal-tab"))
 		{
-            $("a[href*='#" + $(this).data("val-hastab") + "'][data-toggle='tab']").tab("show");
-            return false;
-        }
+    		if ($(this).data("val-has-renewal-tab") !== "") {
+    			$("a[href*='#" + $(this).data("val-has-renewal-tab") + "'][data-toggle='tab']").tab("show");
+    			return false;
+    		}
+    	}
 
 	    var tabId = Val_AddTab("Renewals", "/Policy/_RenewalIndexDetailed", true, function(newTab)
 	    {
-
 		    detailedRenewalsTable = SetupRenewalsDetailedDatatable();
 
 		    $(".val-search-renewals").on("click", function(e)
@@ -127,41 +134,52 @@ $(document).ready(function()
 				    detailedRenewalsTable.fnDraw(true);
 			    }
 		    });
-	    });
+	    }, function() { $(button).data("val-has-renewal-tab", ""); });
 
-        $(this).data("val-hastab", tabId);
+	    $(this).data("val-has-renewal-tab", tabId);
     });
 
-	$(".val-searchterm").on("keydown", function(e)
-	{
-		if (e.which == 13)
-		{
-			e.preventDefault();
+    $(".val-add-submissions-detailed-tab").click(function (e) {
+    	var button = this;
 
-			$(".val-searching").toggleClass("hide");
+    	if ($(this).data("val-has-submission-tab"))
+    	{
+    		if ($(this).data("val-has-submission-tab") !== "")
+    		{
+    			$("a[href*='#" + $(this).data("val-has-submission-tab") + "'][data-toggle='tab']").tab("show");
+    			return false;
+    		}
+    	}
 
-			searchTerm = $(".val-searchterm").val();
+        var tabId = Val_AddTab("Submissions", "/Submission/_SubmissionIndexDetailed", true, function (newTab) {
 
-			worklistTable.fnDraw(true);
-			renewalsTable.fnDraw(true);
-			submissionsTable.fnDraw(true);
+            detailedSubmissionsTable = SetupSubmissionsDetailedDatatable();
 
-			Val_RefreshSearchPanel(searchTerm, 0, 10);
-		}
-	});
+            $(".val-search-submissions").on("click", function (e) {
+                $(".val-searching-submissions").toggleClass("hide");
 
-	$(".val-search").on("click", function(e)
-	{
-		$(".val-searching").toggleClass("hide");
+                searchTermDetailedSubmissions = $(".val-searchterm-submissions").val();
 
-		searchTerm = $(".val-searchterm").val();
+                detailedSubmissionsTable.fnDraw(true);
+            });
 
-		worklistTable.fnDraw(true);
-		renewalsTable.fnDraw(true);
-		submissionsTable.fnDraw(true);
+            $(".val-searchterm-submissions").on("keydown", function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
 
-		Val_RefreshSearchPanel(searchTerm, 0, 10);
-	});
+                    $(".val-searching-submissions").toggleClass("hide");
+
+                    searchTermDetailedSubmissions = $(".val-searchterm-submissions").val();
+
+                    detailedSubmissionsTable.fnDraw(true);
+                }
+            });
+        }, function() { $(button).data("val-has-submission-tab", ""); });
+
+        $(this).data("val-has-submission-tab", tabId);
+    });
+
+	Val_InitialiseSearch();
 	
 	$(".val-renewals-datatable").on("click", "tr", function(event)
 	{
@@ -199,7 +217,7 @@ $(document).ready(function()
 
 		        var ajaxSource = "/Policy/_RenewalPreview?PolId=" + aData.PolicyId;
 
-		        Val_RefreshPreviewPane(ajaxSource, 'InitPV_Renewal__Preview();');
+		        Val_RefreshPreviewPane(ajaxSource, 'InitPV_Renewal__Preview');
 		    });
 
 		    return nRow;
@@ -298,7 +316,7 @@ $(document).ready(function()
 		        //SelectRow(this);
 		        
 		        var ajaxSource = "/Submission/_Preview?Id=" + aData.Id;
-		        Val_RefreshPreviewPane(ajaxSource, 'InitPV_Submission__Preview();');
+		        Val_RefreshPreviewPane(ajaxSource, 'InitPV_Submission__Preview');
 		    });
 
 		    return nRow;
@@ -319,6 +337,24 @@ $(document).ready(function()
 		{
 			"mData": "BrokerPseudonym",
 			"sTitle": "Broker"
+		},
+		{
+			"mData": "InceptionDate",
+			"sTitle": "Inception Date",
+			"sClass": "val-renewal-expydt",
+			"mRender": function(data, type, full)
+			{
+				return SetRecentSubmissionInceptionDate(data);
+			}
+		}],
+		"aoColumnDefs": [
+		{
+			"aTargets": [3],
+			"sType": "uk_date",
+			"fnRender": function(object, value)
+			{
+				return moment(value).format("DD MMM YYYY");
+			}
 		}],
 		"fnServerParams": function(aoData)
 		{
@@ -363,7 +399,7 @@ $(document).ready(function()
 
 				var ajaxSource = "/WorkItem/_Preview?Id=" + aData.SerialNumber;
 
-				Val_RefreshPreviewPane(ajaxSource, 'InitPV_Worklist__Preview();');
+				Val_RefreshPreviewPane(ajaxSource, 'InitPV_Worklist__Preview');
 			});
 
 			return nRow;
@@ -489,7 +525,311 @@ $(document).ready(function()
 
 	GetCommonDropDownData();
 	LoadUserSettings();
+
+	//$("a#per").click(function ()
+	//{
+	//    $.ajax({
+	//        cache: false,
+	//        type: 'GET',
+	//        url: '/user/_mysettings',	        
+	//        success: function (data)
+	//        {
+	//            $('#myModal').modal("show");
+	//            $('#modalContent').show().html(data);
+
+	//            var vm = function ()
+	//            {
+	//                var self = this;
+
+	//                self.SelectedFilterCOBs = ko.observableArray(["CA"]);
+	//                self.AvailableFilterCOBs = ["CA", "BA"];
+
+	//                self.Save = function ()
+	//                {
+	//                    var frm = $("form#formMySettings");
+	//                    var data = frm.serialize();
+	//                    $.ajax({
+	//                        type: 'POST',
+	//                        url: '/user/_updatemysettings',	        
+	//                        data: data,
+	//                        success: function (data)
+	//                        {
+	//                            alert(data);
+	//                        }
+	//                    });
+	//                };
+	//            };
+	//            ko.applyBindings(new vm(), document.getElementById('#modalContent'));
+	//            $('#filterCOBs').select2();
+	//        }
+	//    });
+	//});
 });
+
+function Val_InitialiseSearch()
+{
+	$(".val-search .val-searchterm").keydown(function(e)
+	{
+		if (e.which === 13)
+		{
+			searchTerm = $(".val-searchterm").val();
+
+			renewalsTable.fnDraw(true);
+			submissionsTable.fnDraw(true);
+			worklistTable.fnDraw(true);
+
+			Val_Search();
+		}
+	})
+	//	.keyup(function(e)
+	//{
+	//		toastr.info(e.key.toString());
+	//	if (/\w/.test(e.key))
+	//	{
+	//		//LoadAdvancedSearch(e.target);
+	//		var parent = $(e.target).parent(".val-search");
+
+	//		if (/([A-Z]{2})[A-Z\d]*\*[A-Z\d]*(\d{2})/i.test(e.target.value))
+	//		{
+	//			var reference = RegExp.$1.toUpperCase(),
+	//			    year = moment(RegExp.$2, "YY").year();
+
+	//			parent.addClass("val-advanced-search");
+
+	//			$(".val-searchtoggle", parent).text("Advanced Search Off");
+
+	//			$(e.target).popover("show");
+
+	//			$("input[name='cob']", parent).val(reference);
+	//			$("input[name='year']", parent).val(year);
+	//		}
+	//		else // TODO: Add condition to only clear if needed
+	//		{
+	//			parent.removeClass("val-advanced-search");
+				
+	//			$(e.target).popover("hide");
+
+	//			$("input[name='cob'], input[name='year']", parent).val("");
+	//		}
+	//	}
+	//	})
+		.popover(
+	{
+		animation: false,
+		html: true,
+		trigger: "manual",
+		placement: "bottom",
+		title: "Advanced Quick-Search",
+		content:
+			'<form class="val-advanced-quicksearch form-horizontal">' +
+				//'<div class="control-group">' +
+				//	'<label class="control-label">COB and Accounting Year</label>' +
+				//	'<div class="controls controls-row">' +
+				//		'<input class="span6" type="text" name="cob" />' +
+				//		'<input class="span6" type="text" name="year" />' +
+				//	'</div>' +
+				//'</div>' +
+				
+				'<div class="control-group">' +
+					'<label class="control-label">COB, Accounting Year, Underwriter & Policy ID</label>' +
+					'<div class="controls controls-row">' +
+						'<input class="span3" type="text" name="cob" />' +
+						'<input class="span3" type="text" name="year" />' +
+						'<input class="span3" type="text" name="underwriter" />' +
+						'<input class="span3" type="text" name="policy" />' +
+					'</div>' +
+				'</div>' +
+
+				'<div class="control-group">' +
+					'<label class="control-label">Insured Name</label>' +
+					'<div class="controls controls-row">' +
+						'<input class="span12" type="text" name="insured">' +
+					'</div>' +
+				'</div>' +
+
+				'<div class="control-group">' +
+					'<button class="val-searchbutton btn" type="button" style="float: right;">' +
+						'<span>Advanced </span><i class="icon-search"></i>' +
+					'</button>' +
+				'</div>' +
+
+				// TODO: Dynamically add/remove filters
+				//'<div class="control-group">' +
+				//	'<div class="controls controls-row">' +
+				//		'<label class="control-label">Insured Name</label>' +
+				//	'</div>' +
+				//	'<div class="controls controls-row">' +
+				//		'<input type="text" class="span10" name="insured">' +
+				//		'<a class="btn span2" href="#AddFilter">' +
+				//			'<i class="icon-minus"></i>' +
+				//		'</a>' +
+				//	'</div>' +
+				//'</div>' +
+
+				//'<div class="control-group">' +
+				//	'<label class="control-label">New Field</label>' +
+				//	'<div class="controls controls-row">' +
+				//		'<select class="span10"><option></option></select>' +
+				//		'<a class="btn span2" href="#AddFilter">' +
+				//			'<i class="icon-plus"></i>' +
+				//		'</a>' +
+				//	'</div>' +
+				//'</div>' +
+			'</form>'
+	});
+
+	$(".val-search .val-searchbutton").click(function(e)
+	{
+		searchTerm = $(".val-searchterm").val();
+
+		renewalsTable.fnDraw(true);
+		submissionsTable.fnDraw(true);
+		worklistTable.fnDraw(true);
+
+		Val_Search();
+		
+		//var parent = $(e.target).parent(".val-search");
+
+		//if (parent.hasClass("val-advanced-search"))
+		//{
+		//	parent.removeClass("val-advanced-search");
+			
+		//	$(".val-searchterm", parent).popover("hide");
+		//	//$(".val-searchtoggle", parent).text("Advanced Search On");
+		//}
+	});
+
+	$(".val-search .val-searchtoggle").click(function(e)
+	{
+		var input = $(".val-search .val-searchterm"),
+			parent = input.parent(".val-search");
+
+		if (parent.hasClass("val-advanced-search"))
+		{
+			parent.removeClass("val-advanced-search");
+			input.popover("hide");
+
+			$(e.target).text("Advanced Search On");
+		}
+		else LoadAdvancedSearch(input);
+
+		//if (parent.hasClass("val-advanced-search"))
+		//{
+		//	parent.removeClass("val-advanced-search");
+		//	input.popover("hide");
+
+		//	$(e.target).text("Advanced Search On");
+		//}
+		//else
+		//{
+
+		//}
+	});
+
+	//$(".val-searchterm").val("aj*10").trigger("keyup", { e: { target: $(".val-searchterm").get(0), key: "a" } });
+}
+
+function LoadAdvancedSearch(target)
+{
+	var test = /([A-Z]{2})[A-Z\d]*\*[A-Z\d]*(\d{2})/i.test($(target).val()),
+	    reference = RegExp.$1 ? RegExp.$1.toUpperCase() : "",
+		year = RegExp.$2 ? moment(RegExp.$2, "YY").year() : "",
+	    parent = $(target).parent(".val-search"),
+		quicksearch = $(".val-search.val-advanced-search .val-advanced-quicksearch"),
+		initialised = quicksearch.length !== 0;
+
+	parent.addClass("val-advanced-search");
+
+	$(".val-searchtoggle", parent).text("Advanced Search Off");
+
+	$(target).popover("show");
+
+	if (!initialised)
+	{
+		$(".val-advanced-quicksearch .val-searchbutton").click(function(e)
+		{
+			$(".val-searching").toggleClass("hide");
+
+			searchTerm = $(".val-searchterm").val();
+
+			renewalsTable.fnDraw(true);
+			submissionsTable.fnDraw(true);
+			worklistTable.fnDraw(true);
+
+			Val_Search();
+
+			parent.removeClass("val-advanced-search");
+			$(target).popover("hide");
+
+			$(".val-searchtoggle", parent).text("Advanced Search On");
+		});
+	}
+
+	if (test)
+	{
+		$("input[name='cob']", parent).val(reference);
+		$("input[name='year']", parent).val(year);
+	}
+}
+
+//function LoadAdvancedSearch(target)
+//{
+//	var parent = $(target).parent(".val-search");
+
+//	if (/([A-Z]{2})[A-Z\d]*\*[A-Z\d]*(\d{2})/i.test($(target).val()))
+//	{
+//		var reference = RegExp.$1.toUpperCase(),
+//			year = moment(RegExp.$2, "YY").year(),
+//			quicksearch = $(".val-search.val-advanced-search .val-advanced-quicksearch"),
+//			initialised = quicksearch.length === 0;
+
+//		parent.addClass("val-advanced-search");
+
+//		$(".val-searchtoggle", parent).text("Advanced Search Off");
+
+//		$(target).popover("show");
+		
+//		if (!initialised)
+//		{
+//			$("input", quicksearch).click(function(e)
+//			{
+//				if (e.which === 13)
+//				{
+//					$(".val-searching").toggleClass("hide");
+
+//					searchTerm = $(target).val();
+
+//					Val_Search();
+
+//					renewalsTable.fnDraw(true);
+//					submissionsTable.fnDraw(true);
+//					worklistTable.fnDraw(true);
+//				}
+//			});
+			
+//			$("button", quicksearch).click(function(e)
+//			{
+//				$(".val-searching").toggleClass("hide");
+
+//				searchTerm = $(".val-searchterm").val();
+
+//				renewalsTable.fnDraw(true);
+//				submissionsTable.fnDraw(true);
+//				worklistTable.fnDraw(true);
+
+//				Val_Search();
+				
+//				parent.removeClass("val-advanced-search");
+//				$(target).popover("hide");
+
+//				$(".val-searchtoggle", parent).text("Advanced Search On");
+//			});
+//		}
+
+//		$("input[name='cob']", parent).val(reference);
+//		$("input[name='year']", parent).val(year);
+//	}
+//}
 
 function GetCommonDropDownData()
 {

@@ -10,6 +10,7 @@ namespace Validus.Console.DTO
         public string SubmissionId { get; set; }
         public string SubmissionTypeId { get; set; }
         public string Title { get; set; }
+        [DisplayName("Insured")]
         public string InsuredName { get; set; }
         [DisplayName("Broker"), StringLength(50)]
         public String BrokerPseudonym { get; set; }
@@ -20,5 +21,9 @@ namespace Validus.Console.DTO
         public QuoteSheetDto QuoteSheet { get; set; }
         [DataType(DataType.MultilineText)]
         public string Comments { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+        public string ButtonTitle { get; set; }
+        public bool IsReadOnly { get; set; }
     }
 }

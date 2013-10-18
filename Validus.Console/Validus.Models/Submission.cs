@@ -20,9 +20,6 @@ namespace Validus.Models
 		[Required, DisplayName("Title"), StringLength(100)]
 		public String Title { get; set; }
 
-		[DisplayName("Description"), DataType(DataType.MultilineText)]
-		public String Description { get; set; }
-
 		[Required, DisplayName("Insured Name"), StringLength(100)]
 		public String InsuredName { get; set; }
 

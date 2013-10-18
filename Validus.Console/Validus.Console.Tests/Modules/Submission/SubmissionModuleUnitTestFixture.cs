@@ -1,4 +1,5 @@
-﻿using System;
+﻿extern alias globalVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Validus.Console.BusinessLogic;
 using Validus.Console.Data;
-using Validus.Models;
+using globalVM::Validus.Models;
 using Validus.Core.HttpContext;
 using Validus.Console.Fakes;
 using System.Security.Principal;
@@ -46,11 +47,11 @@ namespace Validus.Console.Tests.Modules.Submission
             users.Add(u);
             _rep.Users = users.AsQueryable();
 
-            List<Validus.Models.Submission> subs = new List<Validus.Models.Submission>();
+            List<globalVM::Validus.Models.Submission> subs = new List<globalVM::Validus.Models.Submission>();
 
             for (int i = 0; i < 15; i++)
 			{
-                subs.Add(new Validus.Models.Submission()
+                subs.Add(new globalVM::Validus.Models.Submission()
                 {
                     Id = i,
                     CreatedBy = "InitialSetup",
@@ -64,7 +65,7 @@ namespace Validus.Console.Tests.Modules.Submission
                     InsuredId = 182396,                    
                     Brokerage = 1,
                     BrokerContact = "ALLAN MURRAY",
-                    Description = "Unit Test Submission",
+                    
                     UnderwriterCode = "AED",
                     UnderwriterContactCode = "JAC",
                     QuotingOfficeId = "LON",
@@ -97,9 +98,12 @@ namespace Validus.Console.Tests.Modules.Submission
 
             ov.Quotes = quotes;
             o.OptionVersions = optionVersions;
-            subs[3].Options = options;
 
-            
+            for (int i = 0; i < 15; i++)
+            {
+                subs[i].Options = options;
+            }
+
             _rep.Submissions = subs.AsQueryable();            
 
             var mockSubscribeService = new Mock<IPolicyService>();
@@ -216,7 +220,7 @@ namespace Validus.Console.Tests.Modules.Submission
             Int32 v1 = Int32.Parse(p.GetValue(results[0], null).ToString());
 
             // Assert
-            Assert.IsTrue(results.Count() == 1);
+            Assert.IsTrue(results.Count() == 2);
             Assert.IsTrue(v1 == 3);
         }
 
@@ -237,7 +241,7 @@ namespace Validus.Console.Tests.Modules.Submission
             Int32 v1 = Int32.Parse(p.GetValue(results[0], null).ToString());
 
             // Assert
-            Assert.IsTrue(v1 == 3);
+            Assert.IsTrue(results.Count() == 10);
         }
     }
 }

@@ -85,7 +85,8 @@ namespace Validus.Console.BusinessLogic
                 TechnicalPricingMethod = q.TechnicalPricingMethod,
                 TechnicalPricingPremiumPctgAmt = q.TechnicalPricingPremiumPctgAmt,
                 Timestamp = q.Timestamp,
-                VersionNumber = q.VersionNumber
+                VersionNumber = q.VersionNumber,
+                Description = q.Description
             };
         }
 
@@ -95,7 +96,7 @@ namespace Validus.Console.BusinessLogic
 	        {
 		        objPolicyContract = new PolicyContract
 		        {
-			        AccYr = q.AccountYear.ToString(),
+                    AccYr = q.AccountYear.ToString(),
 			        BenchPrm = q.BenchmarkPremium,
 			        BindSt = q.TechnicalPricingBindStatus,
 			        BkrNo = "???", // TODO - not referenced in CreateQuote sp
@@ -128,13 +129,14 @@ namespace Validus.Console.BusinessLogic
 			        Method = q.TechnicalPricingMethod,
 			        NonLonBkr = s.NonLondonBrokerCode,
 			        PctgAmt = q.TechnicalPricingPremiumPctgAmt,
-			        PolDsc = s.Description,
                     SettDueDt = q.QuoteExpiryDate.ToString("yyyyMMdd"),
 			        TechPmTy = "TechPm", // TODO - not referenced in CreateQuote sp
 
 			        //  These are the fields required for edit only
 			        TimeStamp = q.SubscribeTimestamp,
 			        PolId = q.SubscribeReference,
+                    //Ldr = 
+                    PolDsc = q.Description
 		        }
 	        });
 
@@ -199,9 +201,9 @@ namespace Validus.Console.BusinessLogic
 					Method = q.TechnicalPricingMethod,
 					NonLonBkr = s.NonLondonBrokerCode,
 					PctgAmt = q.TechnicalPricingPremiumPctgAmt,
-					PolDsc = s.Description,
                     SettDueDt = q.QuoteExpiryDate.ToString("yyyyMMdd"),
-					TechPmTy = "TechPm" // TODO - not referenced in CreateQuote sp
+					TechPmTy = "TechPm", // TODO - not referenced in CreateQuote sp
+                    PolDsc = q.Description
 				}
             });
 
@@ -279,7 +281,6 @@ namespace Validus.Console.BusinessLogic
 	               && polAsSubscribe.NonLonBkr == s.NonLondonBrokerCode
 	               && polAsSubscribe.OrigOff == q.OriginatingOfficeId
 	               && polAsSubscribe.PctgAmt == q.TechnicalPricingPremiumPctgAmt
-	               && polAsSubscribe.PolDsc == s.Description
 	               && polAsSubscribe.PolId == q.SubscribeReference
 	               && polAsSubscribe.PolTy == q.PolicyType
 	               && polAsSubscribe.PricingCcy == q.Currency
@@ -352,6 +353,7 @@ namespace Validus.Console.BusinessLogic
 		    q.TechnicalPremium = polAsSubscribe.TechPrm.HasValue ? polAsSubscribe.TechPrm.Value : 0;
 		    q.TechnicalPricingMethod = polAsSubscribe.Method;
 		    q.TechnicalPricingPremiumPctgAmt = polAsSubscribe.PctgAmt;
+	        q.Description = polAsSubscribe.PolDsc;
 	    }
 
 	    // TODO: have one method using reflection
@@ -361,7 +363,6 @@ namespace Validus.Console.BusinessLogic
             {
                 Id = submissionDto.Id,
                 Title = submissionDto.Title,
-                Description = submissionDto.Description,
                 InsuredName = submissionDto.InsuredName,
                 InsuredId = submissionDto.InsuredId,
                 BrokerCode = submissionDto.BrokerCode,
@@ -516,10 +517,8 @@ namespace Validus.Console.BusinessLogic
                             Timestamp = quoteDto.Timestamp,
                             SubscribeTimestamp = quoteDto.SubscribeTimestamp,
                             PDPctgAmt = quoteDto.PDPctgAmt,
-                            PDExcessCurrency = quoteDto.PDExcessCurrency,
                             PDExcessAmount = quoteDto.PDExcessAmount,
                             BIPctgAmtDays = quoteDto.BIPctgAmtDays,
-                            BIExcessCurrency = quoteDto.BIExcessCurrency,
                             BIExcessAmount = quoteDto.BIExcessAmount, 
                             LineSize = quoteDto.LineSize, 
                             LineToStand = quoteDto.LineToStand,
@@ -544,7 +543,6 @@ namespace Validus.Console.BusinessLogic
             {
                 Id = submissionDto.Id,
                 Title = submissionDto.Title,
-                Description = submissionDto.Description,
                 InsuredName = submissionDto.InsuredName,
                 InsuredId = submissionDto.InsuredId,
                 BrokerCode = submissionDto.BrokerCode,
@@ -722,7 +720,7 @@ namespace Validus.Console.BusinessLogic
             {
                 Id = submissionDto.Id,
                 Title = submissionDto.Title,
-                Description = submissionDto.Description,
+                
                 InsuredName = submissionDto.InsuredName,
                 InsuredId = submissionDto.InsuredId,
                 BrokerCode = submissionDto.BrokerCode,

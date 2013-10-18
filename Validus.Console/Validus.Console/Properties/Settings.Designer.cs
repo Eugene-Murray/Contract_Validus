@@ -158,5 +158,14 @@ namespace Validus.Console.Properties {
                 return ((string)(this["SP2013Properties"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("contentsource")]
+        public string SP2013ContentSourceName {
+            get {
+                return ((string)(this["SP2013ContentSourceName"]));
+            }
+        }
     }
 }

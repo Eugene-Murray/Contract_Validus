@@ -35,6 +35,7 @@
         <input type="hidden" class="hide" name="DefaultOffice" value="@ViewBag.DefaultOffice" />
         <input type="hidden" class="hide" name="DefaultUnderwriter" value="@ViewBag.DefaultUnderwriter" />
 		<input type="hidden" class="hide" name="DefaultPolicyType" value="@ViewBag.DefaultPolicyType" />
+        <input type="hidden" class="hide" name="NonLondonBroker" value="@ViewBag.NonLondonBroker" />
 
         <div class="row-fluid">
             <div class="span6">
@@ -189,21 +190,6 @@
                 </div>
 
                 <div class="row-fluid">
-                    <div class="span12">
-                        <label class="control-label">
-                            @Html.DisplayNameFor(model => model.Description)
-                        </label>
-                        @Html.TextBoxFor(model => model.Description, new Dictionary<string, object> 
-                            { 
-                                { "id", ""},
-                                { "class", "input-xlarge span12" },
-                                { "data-bind", "value: Model.Description" }
-                            })
-                        @Html.ValidationMessageFor(model => model.Description, null, new { @class = "help-block" })
-                    </div>
-                </div>
-
-                <div class="row-fluid">
                     <div class="span6">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.Industry)
@@ -308,53 +294,11 @@
                         </div>
                     </div>
              
+        @Html.Partial("_SaveQuoteSheetButtons")
+
         <div class="row-fluid">
             <div class="span12">
-                <div class="form-actions">
-                    <span>
-                        @* TODO: Implement reset functionality
-						<button type="button" class="btn btn-small" data-bind="click: Reset">Reset</button>
-					*@
-                        <button type="button" class="btn btn-small" data-bind="click: Cancel">Cancel</button>
-                        <button type="button" class="btn btn-small btn-primary" data-bind="click: Save_PVSubmission, enable: !IsSaving()">
-                            Save <i class="val-loading-icon hide" data-bind="visible: IsSaving"></i>
-                        </button>
-                        
-                        <!-- ko if: (TeamQuoteTemplatesList().length === 1) -->
-
-                        <button type="button" class="btn btn-small" data-bind="click: QuoteSheetCreationCheck, enable: CanCreateQuoteSheet"
-                                title="Will be disabled until all Quotes have a Subscribe reference">
-                            Quote Sheet <i class="val-loading-icon hide" data-bind="visible: CreatingQuoteSheet"></i>
-                        </button>
-                        
-                        <!-- /ko -->
-                        
-                         <!-- ko if: (TeamQuoteTemplatesList().length > 1) -->
-
-                        <div class="btn-group">
-                            <button class="btn btn-small" type="button" data-bind="enable: CanCreateQuoteSheet"
-                                title="Will be disabled until all Quotes have a Subscribe reference">
-                                Quote Sheet
-                                <i class="val-loading-icon hide" data-bind="visible: CreatingQuoteSheet"></i>
-                            </button>
-                            <button class="btn btn-small dropdown-toggle" type="button" data-toggle="dropdown">
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" data-bind="foreach: TeamQuoteTemplatesList">
-                                <li><a data-bind="text: Name, click: $parent.QuoteSheetCreationCheck, enable: $parent.CanCreateQuoteSheet">
-                                </a></li>
-                            </ul>
-                        </div>
-                        
-                        <!-- /ko -->
-
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span12">
-                @Html.Action("_QuoteComparisonTable", "Submission")
+                @Html.Partial("_QuoteComparisonTable", "Submission")
             </div>
         </div>
     </fieldset>
@@ -373,7 +317,7 @@
 </form>
 
 <!-- Create Broker popover -->
-                                    
+@* TODO: Remove ID and inline style *@
  <div id="popover_content_wrapper" style="visibility:hidden">
     @Html.Action("_CreateBrokerContact", "Submission")
 </div>

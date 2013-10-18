@@ -44,14 +44,9 @@
                         .Category(data.Category));
 
                 self.selectedAllLink(new ConsoleApp.Link());
-                toastr["info"]("Link successfully created");
+                toastr.info("Link successfully created");
 
                 $('#CreateEditLink_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -65,13 +60,8 @@
 
             response.success(function (data) {
 
-                toastr["info"]("Link successfully updated");
+                toastr.info("Link successfully updated");
                 $('#CreateEditLink_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -87,12 +77,7 @@
 
                 self.allLinksList.remove(function (item) { return item.Id == self.selectedAllLink().Id });
 
-                toastr["info"]("Link successfully deleted");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Link successfully deleted");
             });
         };
 
@@ -117,20 +102,13 @@
                     });
                 }
                 else {
-                    toastr["info"]("No Links Found");
+                    toastr.info("No Links Found");
                 }
                     
 
                 self.showImageProcessing_LoadingLinks('none');
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr);
-                console.log(textStatus);
-            });
-
         };
 
         self.GetTeamsBasicData = function () {
@@ -147,10 +125,6 @@
                     self.teamList.push({ key: value.Id, name: value.Title });
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
 
         self.GetLinksForTeam = function () {
@@ -164,7 +138,7 @@
 
             response.success(function (data) {
 
-                console.log(data);
+                //console.log(data);
 
                 if (data.length > 0) {
 
@@ -215,11 +189,6 @@
                 }
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-            });
         };
 
         self.SaveLinksForTeam = function () {
@@ -238,12 +207,7 @@
             var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
-                toastr["info"]("Team Links successfully updated");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Team Links successfully updated");
             });
         };
 
@@ -298,7 +262,7 @@
         self.onClickAllLinksItem = function (e) {
 
             self.selectedAllLink(this);
-            console.log(self.selectedAllLink());
+            //console.log(self.selectedAllLink());
         };
 
         self.click_DeleteLink = function () {

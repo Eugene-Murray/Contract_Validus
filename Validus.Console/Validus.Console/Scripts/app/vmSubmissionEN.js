@@ -2,9 +2,9 @@
 {
 	var ConsoleApp = window.ConsoleApp = window.ConsoleApp || { };
 
-	ConsoleApp.vmSubmissionEN = function(id, domId)
+	ConsoleApp.vmSubmissionEN = function(id, domId, initialiseSelf, isReadOnly)
 	{
-		var self = new vmSubmissionBase(id, domId, false);
+		var self = new vmSubmissionBase(id, domId, false, isReadOnly);
 
 		self.Model.submissionType = ko.observable("EN Submission");
 		self.Model.submissionTypeId = ko.observable("EN");

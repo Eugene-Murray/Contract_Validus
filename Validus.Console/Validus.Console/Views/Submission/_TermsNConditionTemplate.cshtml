@@ -2,7 +2,7 @@
     <div class="row-fluid">
     <div class="span5">
  <table class="val-wordings-datatable table table-condensed table-bordered table-hover"
-            data-bind="dataTable3: {
+            data-bind="dataTable: {
 rowClick: onClickTermsNConditionWordingItem, captionTemplate: 'tableAvailableTermsNConditionWordingsCaption', rowTemplate: 'tableAvailableTermsNConditionWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'AvailableTermsNConditionWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
     columns:
 	[
@@ -34,7 +34,7 @@ rowClick: onClickTermsNConditionWordingItem, captionTemplate: 'tableAvailableTer
     </div>
     <div class="span5">
         <table class="table table-condensed table-bordered table-hover"
-               data-bind="dataTable3: {
+               data-bind="dataTable: {
 dataSource: Model.SubmissionTermsNConditionWordingsList, rowClick: onClickSubmissionTermsNConditionWordingItem,itemClick: onClickCheckTermsNConditionWordingItem, rowTemplate: 'tableSubmissionTermsNConditionWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'SubmissionTermsNConditionWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
     columns:
 	[
@@ -94,7 +94,7 @@ dataSource: Model.SubmissionTermsNConditionWordingsList, rowClick: onClickSubmis
         </div>
         <div class="span5">
               <table class="table table-condensed table-bordered table-hover"
-                   data-bind="dataTable3: {
+                   data-bind="dataTable: {
 dataSource: Model.CustomSubmissionTermsNConditionWordingsList, rowClick: onClick_CustomSubmissionTermsNConditionWordingItem, itemClick: onClickCheckCustomTermsNConditionWordingItem, rowTemplate: 'tableCustomSubmissionTermsNConditionWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'CustomSubmissionTermsNConditionWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
     columns:
 	[

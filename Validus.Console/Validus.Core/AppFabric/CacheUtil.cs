@@ -1,33 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.ApplicationServer.Caching;
+﻿using Microsoft.ApplicationServer.Caching;
 
 namespace Validus.Core.AppFabric
 {
     public static class CacheUtil
-    {
-        private static DataCacheFactory _factory = null;
-        private static DataCache _cache = null;
-        public static DataCache GetCache()
-        {
-            if (_cache != null)
-                return _cache;
+	{
+		private const string DefaultCache = "default";
+		private const string DefaultItem = "Default";
+        private static readonly DataCacheFactory factory = new DataCacheFactory();
 
-            _factory = new DataCacheFactory();
-            //Get reference to named cache called "default"      
-            _cache = _factory.GetCache("Console");
-            return _cache;
-        }
+		public static DataCache GetCache(string cacheName = CacheUtil.DefaultCache)
+		{
+			return factory.GetCache(cacheName);			
+		}
 
-        public static void Flush(this DataCache cache)
+	    public static DataCacheItem GetCacheItem(string cacheName = CacheUtil.DefaultCache,
+	                                             string itemName = CacheUtil.DefaultItem)
+	    {
+		    var cache = CacheUtil.GetCache(cacheName);
+
+		    return cache != null
+			           ? cache.GetCacheItem(itemName)
+			           : null;
+	    }
+
+	    public static void Flush(this DataCache cache)
         {
-            foreach (var regionName in cache.GetSystemRegions())
+            foreach (var region in cache.GetSystemRegions())
             {
-                cache.ClearRegion(regionName);
+                cache.ClearRegion(region);
             }
         }
-    } 
+    }
 }

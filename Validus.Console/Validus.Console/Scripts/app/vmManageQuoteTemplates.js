@@ -43,14 +43,9 @@
                         .RdlPath(data.RdlPath));
 
                 self.selectedAllQuoteTemplate(new ConsoleApp.QuoteTemplate());
-                toastr["info"]("QuoteTemplate successfully created");
+                toastr.info("QuoteTemplate successfully created");
 
                 $('#CreateEditQuoteTemplate_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -64,13 +59,8 @@
 
             response.success(function (data) {
 
-                toastr["info"]("QuoteTemplate successfully updated");
+                toastr.info("QuoteTemplate successfully updated");
                 $('#CreateEditQuoteTemplate_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -86,12 +76,7 @@
 
                 self.allQuoteTemplatesList.remove(function (item) { return item.Id == self.selectedAllQuoteTemplate().Id });
 
-                toastr["info"]("QuoteTemplate successfully deleted");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("QuoteTemplate successfully deleted");
             });
         };
 
@@ -115,20 +100,13 @@
                     });
                 }
                 else {
-                    toastr["info"]("No QuoteTemplates Found");
+                    toastr.info("No QuoteTemplates Found");
                 }
                     
 
                 self.showImageProcessing_LoadingQuoteTemplates('none');
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr);
-                console.log(textStatus);
-            });
-
         };
 
         self.GetTeamsBasicData = function () {
@@ -145,10 +123,6 @@
                     self.teamList.push({ key: value.Id, name: value.Title });
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
 
         self.GetQuoteTemplatesForTeam = function () {
@@ -162,7 +136,7 @@
 
             response.success(function (data) {
 
-                console.log(data);
+                //console.log(data);
 
                 if (data.length > 0) {
 
@@ -208,12 +182,6 @@
                                 .RdlPath(value.RdlPath()));
                     });
                 }
-
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -233,12 +201,7 @@
             var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
-                toastr["info"]("Team QuoteTemplates successfully updated");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Team QuoteTemplates successfully updated");
             });
         };
 
@@ -292,7 +255,7 @@
         self.onClickAllQuoteTemplatesItem = function (e) {
 
             self.selectedAllQuoteTemplate(this);
-            console.log(self.selectedAllQuoteTemplate());
+            //console.log(self.selectedAllQuoteTemplate());
         };
 
         self.click_DeleteQuoteTemplate = function () {

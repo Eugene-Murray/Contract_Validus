@@ -1,4 +1,5 @@
-﻿using System;
+﻿extern alias globalVM;
+using System;
 using System.Collections.ObjectModel;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,7 +10,7 @@ using Validus.Console.Data;
 using Validus.Console.Tests.Helpers;
 using Validus.Core.HttpContext;
 using Validus.Core.LogHandling;
-using Validus.Models;
+using globalVM::Validus.Models;
 using System.Collections.Generic;
 using Validus.Console.BusinessLogic;
 using Validus.Console.DTO;

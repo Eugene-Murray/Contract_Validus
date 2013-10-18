@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
+using System.Threading;
 using Microsoft.ApplicationServer.Caching;
-using Validus.Console.App_Start;
 using Validus.Console.DTO;
 using Validus.Core.AppFabric;
 using Validus.Core.HttpContext;
-using Validus.Core.LogHandling;
 using Validus.Models;
 
 namespace Validus.Console.Data
 {
     public class PolicyData : IPolicyData
     {
-        public const String RenewalCacheKey = "RenewalData";
-
-        private readonly ILogHandler _logHandler;
-        private ICurrentHttpContext _currentHttpContext;
+        private readonly ICurrentHttpContext _currentHttpContext;
         private readonly IConsoleRepository _repository;
 
-        public PolicyData(IConsoleRepository repository, ILogHandler logHandler, ICurrentHttpContext currentHttpContext)
+        public PolicyData(IConsoleRepository repository, ICurrentHttpContext currentHttpContext)
         {
-			this._logHandler = logHandler;
 			this._currentHttpContext = currentHttpContext;
 			this._repository = repository;
         }
@@ -38,9 +30,10 @@ namespace Validus.Console.Data
 
         public List<RenewalPolicyDetailed> GetRenewalPolicies(bool bypassCache)
         {
-            var policies = CacheUtil.GetCache().Get(RenewalCacheKey) as List<RenewalPolicyDetailed>;
+	        var policies = CacheUtil.GetCache(Constants.ConsoleCacheKey)
+	                                .Get(Constants.RenewalCacheKey) as List<RenewalPolicyDetailed>;
 
-            if (bypassCache || (policies == null)) 
+            if (bypassCache || policies == null)
             {
                 policies = new List<RenewalPolicyDetailed>();
 
@@ -61,7 +54,7 @@ namespace Validus.Console.Data
 		                cmd.Parameters.Add("@ExclRenQuote", SqlDbType.Bit).Value = 1;
 		                cmd.Parameters.Add("@Bkr", SqlDbType.VarChar, 4).Value = "";
                         cmd.Parameters.Add("@UserID", SqlDbType.VarChar, 255).Value = _currentHttpContext.CurrentUser.Identity.Name;
-		                cmd.Parameters.Add("@FrDt", SqlDbType.DateTime).Value = DateTime.Today.AddDays(-100);
+		                cmd.Parameters.Add("@FrDt", SqlDbType.DateTime).Value = DateTime.Today.AddDays(-10);
 		                cmd.Parameters.Add("@ToDt", SqlDbType.DateTime).Value = DateTime.Today.AddDays(100);
 
 		                conn.Open();
@@ -108,70 +101,92 @@ namespace Validus.Console.Data
 	                }
                 }
 
-                CacheUtil.GetCache().Put(RenewalCacheKey, policies, DateTime.Today.AddDays(1).Date - DateTime.Now);
+	            CacheUtil.GetCache(Constants.ConsoleCacheKey)
+	                     .Put(Constants.RenewalCacheKey, policies, DateTime.Today.AddDays(1).Date - DateTime.Now);
             }
 
             return policies;
         }
 
-        public void RemovePolicyFromCache(string renewalPolicyId)
-        {
-            var updateCache = new Action(() =>
-                {
-                    if(string.IsNullOrEmpty(renewalPolicyId)) return;
-                    var cacheClient = CacheUtil.GetCache();
-                    var cacheItem = cacheClient.GetCacheItem(RenewalCacheKey);
-                    var policies = cacheItem.Value as List<RenewalPolicyDetailed>;
-                    if (policies == null) return;
-                    // ReSharper disable SimplifyLinqExpression
-                    if (!policies.Any(p => p.PolicyId == renewalPolicyId)) return;
-                    // ReSharper restore SimplifyLinqExpression
-                    policies.Remove(policies.First(p => p.PolicyId == renewalPolicyId));
-                    cacheClient.Put(RenewalCacheKey, policies, cacheItem.Version, DateTime.Today.AddDays(1).Date - DateTime.Now);
-                });
+		public void RemovePolicyFromCache(string renewalPolicyId)
+		{
+			var updateCache = new Action(() => // TODO: This all looks a bit messy (lots of conditional returns, etc)
+			{
+				if (string.IsNullOrEmpty(renewalPolicyId))
+					return;
+				var cacheClient = CacheUtil.GetCache(Constants.ConsoleCacheKey);
+				var cacheItem = cacheClient.GetCacheItem(Constants.RenewalCacheKey);
+				var policies = cacheItem.Value as List<RenewalPolicyDetailed>;
+				if (policies == null)
+					return;
+				// TODO: Doesn't the simplified ReSharper Linq expression work ?
+				// ReSharper disable SimplifyLinqExpression
+				if (!policies.Any(p => p.PolicyId == renewalPolicyId))
+					return;
+				// ReSharper restore SimplifyLinqExpression
+				policies.Remove(policies.First(p => p.PolicyId == renewalPolicyId));
+				cacheClient.Put(Constants.RenewalCacheKey, policies, cacheItem.Version,
+								DateTime.Today.AddDays(1).Date - DateTime.Now);
+			});
 
-            var retry = true;
-            do
-            {
-                try
-                {
-                    updateCache();
-                    retry = false;
-                }
-                catch (DataCacheException dataCacheException)
-                {
-                   if (dataCacheException.ErrorCode == DataCacheErrorCode.CacheItemVersionMismatch)
-                   {
-                       retry = true;
-                       System.Threading.Thread.Sleep(100);
-                   }
-                }
-            } while (retry);
-         
-        }
-        
-        //public RenewalPolicyDetailed GetRenewalPolicyDetailsByPolId(string polId)
-        //{
-        //    List<RenewalPolicyDetailed> policies = HttpContext.Current.Cache[RenewalCacheKey] as List<RenewalPolicyDetailed>;
+			var retry = true;
+			do
+			{
+				try
+				{
+					updateCache();
+					retry = false;
+				}
+				catch (DataCacheException dataCacheException)
+				{
+					if (dataCacheException.ErrorCode == DataCacheErrorCode.CacheItemVersionMismatch)
+					{
+						retry = true;
+						Thread.Sleep(100);
+					}
+				}
+			} while (retry);
+		}
 
-        //    if (policies == null)
-        //    {
-        //        GetRenewalPolicies(false);
-        //        policies = HttpContext.Current.Cache[RenewalCacheKey] as List<RenewalPolicyDetailed>;
-        //    }
-        //    if (policies != null)
-        //    {
-        //        try
-        //        {
-        //            return policies.Single(p => p.PolicyId == polId);
-        //        }
-        //        catch
-        //        {
-        //            throw new Exception("Unable to retrieve the Renewal Policy Details.");
-        //        }
-        //    }
-        //    else
-        //        throw new Exception("Unable to retrieve the Renewal Policy Details.");
-        //}
+		//public void RemovePolicyFromCache(string renewalPolicyId)
+		//{
+		//	if (!string.IsNullOrEmpty(renewalPolicyId))
+		//	{
+		//		var UpdateCache = new Action(() =>
+		//		{
+		//			var cache = CacheUtil.GetCache(Constants.ConsoleCacheKey);
+		//			var cacheItem = cache.GetCacheItem(Constants.ConsoleCacheKey);
+
+		//			var policies = cacheItem.Value as List<RenewalPolicyDetailed>;
+
+		//			if (policies != null && policies.Any(p => p.PolicyId == renewalPolicyId))
+		//			{
+		//				policies.Remove(policies.First(p => p.PolicyId == renewalPolicyId));
+
+		//				cache.Put(Constants.RenewalCacheKey, policies, cacheItem.Version,
+		//						  DateTime.Today.AddDays(1).Date - DateTime.Now);
+		//			}
+		//		});
+
+		//		var updatingCache = true;
+
+		//		while (updatingCache)
+		//		{
+		//			try
+		//			{
+		//				UpdateCache();
+
+		//				updatingCache = false;
+		//			}
+		//			catch (DataCacheException dataCacheException)
+		//			{
+		//				if (dataCacheException.ErrorCode == DataCacheErrorCode.CacheItemVersionMismatch)
+		//				{
+		//					Thread.Sleep(100);
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
     }
 }

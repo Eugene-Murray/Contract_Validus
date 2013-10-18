@@ -27,16 +27,7 @@ namespace Validus.Console.DTO
 
         public static object GetItemObject(IDictionary<string, object> item, string name)
         {
-            object retObject;
-            try
-            {
-                retObject = item[name];
-            }
-            catch (KeyNotFoundException ex)
-            {
-                retObject = null;
-            }
-            return retObject;
+            return (item.ContainsKey(name) ? item[name] : null);
         }
     }
 }

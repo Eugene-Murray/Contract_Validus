@@ -7,6 +7,7 @@ ConsoleApp.User = function () {
     this.DefaultOrigOfficeList  = ko.observableArray();
     this.DefaultUWList = ko.observableArray();
     this.PrimaryOffice = ko.observable(new ConsoleApp.Office());
+    this.NonLondonBroker = ko.observable(new ConsoleApp.Office());
     this.DefaultOrigOffice = ko.observable(new ConsoleApp.Office());
     this.DefaultUW = ko.observable(new ConsoleApp.DefaultUnderwriter());
 
@@ -29,6 +30,15 @@ ConsoleApp.User = function () {
     this.AllAdditionalCOBs = ko.observableArray();
     this.AllAdditionalOffices = ko.observableArray();
     this.AllAdditionalUsers = ko.observableArray();
-	
+
     this.IsCurrentMembership = ko.observable(false);
+	
+    this.PrimaryOffice.subscribe(function(selectedOffice) {
+    	if (selectedOffice === undefined) return;
+	    
+    	console.log('Publish');
+    	$.pubsub.publish("primaryOfficeChanged", {
+    		"officeId": selectedOffice.Id(), "officeTitle": selectedOffice.Title()
+    	});
+    });
 };

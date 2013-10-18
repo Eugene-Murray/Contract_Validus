@@ -14,5 +14,7 @@ namespace Validus.Console.Data
         List<RenewalPolicyDetailed> GetRenewalPolicies(Boolean bypassCache);
         Broker GetBroker(int brokerSequenceId);
         void RemovePolicyFromCache(string renewalPolicyId);
+
+
     }
 }

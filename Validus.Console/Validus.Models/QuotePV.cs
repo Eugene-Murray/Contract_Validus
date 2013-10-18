@@ -14,20 +14,12 @@ namespace Validus.Models
     {
         [Display(Name = "PD % / Amt"), StringLength(10)]
         public String PDPctgAmt { get; set; }
-
-        [Display(Name = "PD Excess Currency"), StringLength(10),
-            RegularExpression(@"^[A-Z]{2,3}$", ErrorMessage = "Not a valid Currency")]
-        public String PDExcessCurrency { get; set; }
-
+        
         [Display(Name = "PD Excess Amount"), DataType(DataType.Currency)]
         public Decimal? PDExcessAmount { get; set; }
 
         [Display(Name = "BI % / Amt / Days"), StringLength(10)]
         public String BIPctgAmtDays { get; set; }
-
-        [Display(Name = "BI Excess Currency"), StringLength(10),
-            RegularExpression(@"^[A-Z]{2,3}$", ErrorMessage = "Not a valid Currency")]
-        public String BIExcessCurrency { get; set; }
 
         [Display(Name = "BI Excess Amount"), DataType(DataType.Currency)]
         public Decimal? BIExcessAmount { get; set; }

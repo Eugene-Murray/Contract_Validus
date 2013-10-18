@@ -153,6 +153,9 @@
       <xs:element minOccurs="0" name="BkrPsu" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="BkrNo" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="TechPmTy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Ldr" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LdrNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FacyDsc" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Policy" nillable="true" type="tns:Policy" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using SourceCode.Workflow.Client;
 using Validus.Console.BusinessLogic;
@@ -15,20 +16,6 @@ namespace Validus.Console.Controllers
         public WorkItemController(IWorkItemBusinessModule bm)
         {
             this._bm = bm;
-        }
-
-        public ActionResult Release(Int32 id)
-        {
-            ConnectionSetup k2Setup = new ConnectionSetup();
-            k2Setup.ConnectionString = Properties.Settings.Default.WorkflowServerManagementConnectionString;
-
-            SourceCode.Workflow.Management.WorkflowManagementServer manager = new SourceCode.Workflow.Management.WorkflowManagementServer();
-
-            manager.Open(k2Setup.ConnectionString);
-
-            manager.ReleaseWorklistItem(id);
-
-            return new EmptyResult();
         }
 
         //
@@ -73,7 +60,7 @@ namespace Validus.Console.Controllers
         }
 
         [OutputCache(CacheProfile = "NoCacheProfile")]
-        public ActionResult GetUserWorkflowItems(String sSearch, Int32 sEcho, Int32 iSortCol_0, String sSortDir_0,
+        public async Task<ActionResult> GetUserWorkflowItems(String sSearch, Int32 sEcho, Int32 iSortCol_0, String sSortDir_0,
             Int32 iDisplayLength = 10,
             Int32 iDisplayStart = 0)
         {
@@ -106,7 +93,7 @@ namespace Validus.Console.Controllers
             sorts.Add(sortColumn, sortOrder);
 
 			// TODO: Exception handling
-			Object[] aaData = this._bm.GetUserWorkflowItems(sSearch, iDisplayStart, iDisplayLength, sorts, out iTotalDisplayRecords, out iTotalRecords);
+			Object[] aaData =  this._bm.GetUserWorkflowItems(sSearch, iDisplayStart, iDisplayLength, sorts, out iTotalDisplayRecords, out iTotalRecords);
 
             return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
         }

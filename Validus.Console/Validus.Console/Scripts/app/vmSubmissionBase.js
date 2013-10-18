@@ -1,4 +1,5 @@
-﻿/*
+﻿
+/*
 	Base Submission View Model
 
 	Description;
@@ -16,11 +17,31 @@
 
 	TODO: Refactor vmSubmission to a simpler structure (group together functions, subscriptions, computed's, DTO's, etc)
 */
-function vmSubmissionBase(id, domId, initilizeSelf)
+
+/*
+	TODO: Summary
+	- Nest Submission view-model within a Home view-model (use Knockout binding handlers for tabs, etc)
+	- Implement a User settings view-model and take advantage of it's observables
+	- Extract bulky AJAX calls and use a generic helper instead
+	- Submission base to represent the model, not the DTO
+	- Create OptionBase
+	- Create OptionVersionBase
+	- Create QuoteBase
+	- Implement Select2 for ALL choice lists
+	- Dynamically retrieve choice list data
+	- Remove "display" observables
+	- Use Knockout binding context ($parents, $parent), not custom GetParent functions
+	- Simplify Sync (generic and recursive algorithm) and remove KOTrim
+	- Reduce the number of observables, functions, members, etc and group them together
+	- Attach jQuery validation
+	- Remove commented-out-code (this file is big enough already!)
+	- Comply with HTML5 standards
+*/
+function vmSubmissionBase(id, domId, initialiseSelf, isReadOnly)
 {
 	var self = this;
 
-	self.Id = (id > 0) ? id : 0;
+	self.Id = id > 0 ? id : 0;
 	self.Form = $(".form", $("#" + domId));
 	self.DirtyFlag = null;
 
@@ -29,17 +50,21 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	self.CreatingQuoteSheet = ko.observable(false);
 	self.IsInitialised = ko.observable(false);
 	self.IsSaving = ko.observable(false);
+	self.IsReadOnly = ko.observable(isReadOnly || false);
+	self.IsSavingOrReadonly = ko.computed(function() // TODO: Data-bind attributes can handle multiple observables/functions/members, do we need extra computeds ?
+	{
+		return (self.IsReadOnly() || self.IsSaving());
+	}, self);
     self.IsLoading = ko.observable(false);
 	self.ValidationErrors = ko.observable("");
 
-	self.Defaults = {
+	self.Defaults = { // TODO: Use a user settings view-model
 		Domicile: null,
 		QuoteExpiry: null,
 		Office: null,
 		Underwriter: null,
 		PolicyType: null
 	};
-
 	self.TeamQuoteTemplatesList = ko.observableArray([]);
 	self.Team = ko.observable(new ConsoleApp.Team());
 
@@ -50,7 +75,6 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	self.DocumentCount = ko.observable("");
 	self.WorldCheckCount = ko.observable("");
 	self.CrossSellingCount = ko.observable("");
-	
 	self.NewBrokerContact = ko.observable("");
     
 	self.Model = {
@@ -66,7 +90,6 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	    BrokerSequenceId: ko.observable(""),
 	    BrokerPseudonym: ko.observable(""),
 	    BrokerContact: ko.observable(""),
-	    Description: ko.observable(""),
 	    _NonLondonBroker: ko.observable(""),
 	    NonLondonBrokerCode: ko.observable(""),
 	    NonLondonBrokerName: ko.observable(""),
@@ -78,7 +101,7 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	    Leader: ko.observable(""),
 	    _Domicile: ko.observable(""),
 	    Domicile: ko.observable(""),
-	    Brokerage: ko.observable(""),
+	    Brokerage: ko.observable("").extend({ numeric: 9 }),
 	    _QuotingOffice: ko.observable(""),
 	    QuotingOfficeId: ko.observable(""),
 	    QuotingOffice: ko.observable(""),
@@ -89,19 +112,23 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	    CustomSubmissionTermsNConditionWordingsList: ko.observableArray([]),
 	    SubmissionSubjectToClauseWordingsList: ko.observableArray([]),
 	    CustomSubmissionSubjectToClauseWordingsList: ko.observableArray([]),
-        AuditTrails:[]
+		AuditTrails: []
 	};
 
 	//#region MarketWording
-	self.Model.QuotingOfficeId.subscribe(function (officeId) {
+	self.Model.QuotingOfficeId.subscribe(function(officeId)
+	{
         if (self.IsLoading()) return;
 	    var ajaxConfig = { Url: "/Admin/GetMarketWordingsForTeamOffice?teamId=" + self.Team().Id() + "&officeId=" + officeId, VerbType: "GET", ContentType: "application/json;charset=utf-8" };
 	    var response = ConsoleApp.AjaxHelper(ajaxConfig);
 	    self.Model.SubmissionMarketWordingsList.removeAll();
-	    response.success(function (data) {
-	        if (data != null && data.length > 0) {
+		response.success(function(data)
+		{
+			if (data != null && data.length > 0)
+			{
 	            var tmpSubmissionMarketWordingsList = [];
-	            $.each(data, function (key, value) {
+				$.each(data, function(key, value)
+				{
 	                tmpSubmissionMarketWordingsList.push(new ConsoleApp.MarketWordingSettingDto()
 	                    .Id(value.MarketWording.Id)
 	                    .DisplayOrder(value.DisplayOrder)
@@ -112,20 +139,23 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	            });
 	            ko.utils.arrayPushAll(self.Model.SubmissionMarketWordingsList(), tmpSubmissionMarketWordingsList);
 	            self.Model.SubmissionMarketWordingsList.valueHasMutated();
-	        } else {
+			} else
+			{
                 console.log("Team-Office(change)- No MarketWordings Found");
 	        }
 	    });
-
 	});
 
 	
 	self.selectedMarketWording = ko.observable(new ConsoleApp.MarketWording());
 	self.showImageProcessing_LoadingMarketWordings = ko.observable('block');
-	self.onClickMarketWordingItem = function (item) {
-	    if (ko.isObservable(item)) {
+	self.onClickMarketWordingItem = function(item)
+	{
+		if (ko.isObservable(item))
+		{
 	        self.selectedMarketWording(item);
-	    } else {
+		} else
+		{
 	        self.selectedMarketWording(new ConsoleApp.MarketWording()
 	            .Id(item.Id)
 	            .WordingRefNumber(item.WordingRefNumber)
@@ -133,17 +163,22 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	    }
 	};
 
-	self.enableAddMarketWordingToSubmission = ko.computed(function () {
-	    if (self.selectedMarketWording() !== undefined && self.selectedMarketWording().Id() != 0) {
-	        return $.grep(self.Model.SubmissionMarketWordingsList(), function (i) { return i.Id() == self.selectedMarketWording().Id(); }).length == 0;
+	self.enableAddMarketWordingToSubmission = ko.computed(function()
+	{
+		if (self.selectedMarketWording() !== undefined && self.selectedMarketWording().Id() != 0)
+		{
+			return $.grep(self.Model.SubmissionMarketWordingsList(), function(i) { return i.Id() == self.selectedMarketWording().Id(); }).length == 0;
 	    }
 	    return false;
 	}, self);
-	self.click_AddMarketWordingToSubmission = function (e) {
+	self.click_AddMarketWordingToSubmission = function(e)
+	{
 
-	    if (self.selectedMarketWording() !== undefined && self.selectedMarketWording().Id() != 0) {
-	        var result = $.grep(self.Model.SubmissionMarketWordingsList(), function (i) { return i.Id() == self.selectedMarketWording().Id(); });
-	        if (result.length==0) {
+		if (self.selectedMarketWording() !== undefined && self.selectedMarketWording().Id() != 0)
+		{
+			var result = $.grep(self.Model.SubmissionMarketWordingsList(), function(i) { return i.Id() == self.selectedMarketWording().Id(); });
+			if (result.length == 0)
+			{
 	            self.Model.SubmissionMarketWordingsList.push(new ConsoleApp.MarketWordingSettingDto()
 	                    .Id(self.selectedMarketWording().Id())
 	                    .DisplayOrder(0)
@@ -153,87 +188,95 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 	            self.selectedMarketWording(new ConsoleApp.MarketWording());
 	        }
-	        else {
 	        }
-	    }
-	    else {
-	    }
-
 	};
 	
-	self.click_RemoveMarketWordingFromSubmission = function (e) {
+	self.click_RemoveMarketWordingFromSubmission = function(e)
+	{
 
-	    if (self.selectedSubmissionMarketWording() !== undefined && self.selectedSubmissionMarketWording().Id() != 0) {
+		if (self.selectedSubmissionMarketWording() !== undefined && self.selectedSubmissionMarketWording().Id() != 0)
+		{
 
-	        var removeItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function (item) {
+			var removeItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function(item)
+			{
 	            return item.Id() == self.selectedSubmissionMarketWording().Id();
-	        });
+	        }); // TODO: Remove unused "removeItem" variable
 
-	        self.Model.SubmissionMarketWordingsList.remove(function (item) { return item.Id() == self.selectedSubmissionMarketWording().Id(); });
+			self.Model.SubmissionMarketWordingsList.remove(function(item) { return item.Id() == self.selectedSubmissionMarketWording().Id(); });
 	        self.selectedSubmissionMarketWording(new ConsoleApp.MarketWordingSettingDto());
-
 	    }
-	    else {
-	       
-	    }
-
 	};
 
 	self.selectedSubmissionMarketWording = ko.observable(new ConsoleApp.MarketWordingSettingDto());
 
-	self.enableRemoveMarketWordingFromSubmission = ko.computed(function () {
-	    if (self.selectedSubmissionMarketWording() !== undefined && self.selectedSubmissionMarketWording().Id() != 0) {
+	self.enableRemoveMarketWordingFromSubmission = ko.computed(function()
+	{
+		if (self.selectedSubmissionMarketWording() !== undefined && self.selectedSubmissionMarketWording().Id() != 0)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
-	self.showImageProcessing_LoadingSubmissionMarketWordings = ko.observable('block');
-	self.onClickSubmissionMarketWordingItem = function (item) {
+	self.showImageProcessing_LoadingSubmissionMarketWordings = ko.observable('block'); // TODO: use true/false for states, not stylesheet values
+	self.onClickSubmissionMarketWordingItem = function(item)
+	{
 	    self.selectedSubmissionMarketWording(item);
 	};
-	self.enableSelectedSubmissionMarketWordingMoveUp = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function (item) {
+	self.enableSelectedSubmissionMarketWordingMoveUp = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionMarketWording().Id());
 	    });
 	    var i = self.Model.SubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedSubmissionMarketWordingMoveUp = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function (item) {
+	self.onClick_selectedSubmissionMarketWordingMoveUp = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionMarketWording().Id());
 	    });
 
 
 	    var i = self.Model.SubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        var array = self.Model.SubmissionMarketWordingsList();
 	        self.Model.SubmissionMarketWordingsList.splice(i - 1, 2, array[i], array[i - 1]);
 	    }
 	};
-	self.enableSelectedSubmissionMarketWordingMoveDown = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function (item) {
+	self.enableSelectedSubmissionMarketWordingMoveDown = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionMarketWording().Id());
 	    });
 
 
 	    var i = self.Model.SubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.SubmissionMarketWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.SubmissionMarketWordingsList().length != i + 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
     
-	self.onClick_selectedSubmissionMarketWordingMoveDown = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function (item) {
+	self.onClick_selectedSubmissionMarketWordingMoveDown = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionMarketWording().Id());
 	    });
 
 
 	    var i = self.Model.SubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.SubmissionMarketWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.SubmissionMarketWordingsList().length != i + 1)
+		{
 	        var array = self.Model.SubmissionMarketWordingsList();
 	        self.Model.SubmissionMarketWordingsList.splice(i, 2, array[i + 1], array[i]);
 	    }
@@ -241,10 +284,15 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 	self.customMarketWordingRef = ko.observable("");
 	self.customMarketWording = ko.observable("");
-	self.onClick_AddCustomMarketWordingToSubmission = function () {
-	    if (self.customMarketWordingRef() !== undefined && self.customMarketWordingRef() != "") {
-	        var result = $.grep(self.Model.CustomSubmissionMarketWordingsList(), function (i) { return i.WordingRefNumber() == self.customMarketWordingRef(); });
-	        if (result.length==0) {
+	
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_AddCustomMarketWordingToSubmission = function()
+	{
+		if (self.customMarketWordingRef() !== undefined && self.customMarketWordingRef() != "")
+		{
+			var result = $.grep(self.Model.CustomSubmissionMarketWordingsList(), function(i) { return i.WordingRefNumber() == self.customMarketWordingRef(); });
+			if (result.length == 0)
+			{
 	            self.Model.CustomSubmissionMarketWordingsList.push(new ConsoleApp.MarketWordingSettingDto()
 	                    .Id(0)
 	                    .DisplayOrder(0)
@@ -254,87 +302,104 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	            self.customMarketWordingRef("");
 	            self.customMarketWording("");
 	        }
-	        else {
 	        }
-	    }
-	    else {
-	    }
 	};
-	self.onClick_RemoveCustomMarketWordingToSubmission = function () {
-	    if (self.selectedCustomSubmissionMarketWording() !== undefined && self.selectedCustomSubmissionMarketWording().WordingRefNumber() != "") {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_RemoveCustomMarketWordingToSubmission = function()
+	{
+		if (self.selectedCustomSubmissionMarketWording() !== undefined && self.selectedCustomSubmissionMarketWording().WordingRefNumber() != "")
+		{
 	        self.customMarketWordingRef(self.selectedCustomSubmissionMarketWording().WordingRefNumber());
 	        self.customMarketWording(self.selectedCustomSubmissionMarketWording().Title());
-	        self.Model.CustomSubmissionMarketWordingsList.remove(function (item) { return item.WordingRefNumber() == self.selectedCustomSubmissionMarketWording().WordingRefNumber(); });
+			self.Model.CustomSubmissionMarketWordingsList.remove(function(item) { return item.WordingRefNumber() == self.selectedCustomSubmissionMarketWording().WordingRefNumber(); });
 
 	        self.selectedCustomSubmissionMarketWording(new ConsoleApp.MarketWordingSettingDto());
 
 	    }
-	    else {
-	    }
 	};
-	self.enableAddCustomMarketWordingToSubmission = ko.computed(function () {
-	    if (self.customMarketWordingRef() !== undefined && self.customMarketWordingRef() != "") {
-	        return $.grep(self.Model.CustomSubmissionMarketWordingsList(), function (i) { return i.WordingRefNumber() == self.customMarketWordingRef(); }).length==0;
+	self.enableAddCustomMarketWordingToSubmission = ko.computed(function()
+	{
+		if (self.customMarketWordingRef() !== undefined && self.customMarketWordingRef() != "")
+		{
+			return $.grep(self.Model.CustomSubmissionMarketWordingsList(), function(i) { return i.WordingRefNumber() == self.customMarketWordingRef(); }).length == 0;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
 
 	
 	self.selectedCustomSubmissionMarketWording = ko.observable(new ConsoleApp.MarketWordingSettingDto());
-	self.enableRemoveCustomMarketWordingFromSubmission = ko.computed(function () {
-	    if (self.selectedCustomSubmissionMarketWording() !== undefined && self.selectedCustomSubmissionMarketWording().WordingRefNumber() != "") {
+	self.enableRemoveCustomMarketWordingFromSubmission = ko.computed(function()
+	{
+		if (self.selectedCustomSubmissionMarketWording() !== undefined && self.selectedCustomSubmissionMarketWording().WordingRefNumber() != "")
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
 
-	self.onClick_CustomSubmissionMarketWordingItem = function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_CustomSubmissionMarketWordingItem = function(item)
+	{
 	    self.selectedCustomSubmissionMarketWording(item);
 	};
-	self.enableSelectedCustomSubmissionMarketWordingMoveUp = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function (item) {
+	self.enableSelectedCustomSubmissionMarketWordingMoveUp = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionMarketWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedCustomSubmissionMarketWordingMoveUp = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedCustomSubmissionMarketWordingMoveUp = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionMarketWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        var array = self.Model.CustomSubmissionMarketWordingsList();
 	        self.Model.CustomSubmissionMarketWordingsList.splice(i - 1, 2, array[i], array[i - 1]);
 	    }
 	};
-	self.enableSelectedCustomSubmissionMarketWordingMoveDown = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function (item) {
+	self.enableSelectedCustomSubmissionMarketWordingMoveDown = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionMarketWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.CustomSubmissionMarketWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.CustomSubmissionMarketWordingsList().length != i + 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedCustomSubmissionMarketWordingMoveDown = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedCustomSubmissionMarketWordingMoveDown = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionMarketWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionMarketWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionMarketWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.CustomSubmissionMarketWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.CustomSubmissionMarketWordingsList().length != i + 1)
+		{
 	        var array = self.Model.CustomSubmissionMarketWordingsList();
 	        self.Model.CustomSubmissionMarketWordingsList.splice(i, 2, array[i + 1], array[i]);
 	    }
@@ -343,15 +408,19 @@ function vmSubmissionBase(id, domId, initilizeSelf)
     
     //#region TermsNConditionWording
     
-	self.Model.QuotingOfficeId.subscribe(function (officeId) {
+	self.Model.QuotingOfficeId.subscribe(function(officeId)
+	{
         if (self.IsLoading()) return;
 	    var ajaxConfig = { Url: "/Admin/GetTermsNConditionWordingsForTeamOffice?teamId=" + self.Team().Id() + "&officeId=" + officeId, VerbType: "GET", ContentType: "application/json;charset=utf-8" };
 	    var response = ConsoleApp.AjaxHelper(ajaxConfig);
 	    self.Model.SubmissionTermsNConditionWordingsList.removeAll();
-        response.success(function (data) {
-            if (data != null && data.length > 0) {
+		response.success(function(data)
+		{
+			if (data != null && data.length > 0)
+			{
                 var tempSubmissionTermsNConditionWordingsList = [];
-                $.each(data, function (key, value) {
+				$.each(data, function(key, value)
+				{
                     tempSubmissionTermsNConditionWordingsList.push(new ConsoleApp.TermsNConditionWordingSettingDto()
 	                    .Id(value.TermsNConditionWording.Id)
 	                    .DisplayOrder(value.DisplayOrder)
@@ -363,7 +432,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
                 ko.utils.arrayPushAll(self.Model.SubmissionTermsNConditionWordingsList(), tempSubmissionTermsNConditionWordingsList);
                 self.Model.SubmissionTermsNConditionWordingsList.valueHasMutated();
 	          
-	        } else {
+			} else
+			{
                 console.log("Team-Office(change)- No TermsNConditionWordings Found");
 	        }
 	    });
@@ -371,45 +441,64 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	});
 
 	self.selectedTermsNConditionWording = ko.observable(new ConsoleApp.TermsNConditionWording());
-	self.showImageProcessing_LoadingTermsNConditionWordings = ko.observable('block');
-    self.onClickCheckTermsNConditionWordingItem = function(item) {
-        var result = $.grep(self.Model.SubmissionTermsNConditionWordingsList(), function(i) { return i.Id() == item.Id(); });
-        if (result.length == 1) {
+	self.showImageProcessing_LoadingTermsNConditionWordings = ko.observable('block'); // TODO: Use true/false for states, not stylesheet values
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClickCheckTermsNConditionWordingItem = function(item)
+	{
+		var result = $.grep(self.Model.SubmissionTermsNConditionWordingsList(), function(i)
+		{
+			return i.Id() == item.Id();
+		});
+		if (result.length == 1)
+		{
 
-            if (result[0].IsStrikeThrough() == true) {
+			if (result[0].IsStrikeThrough() == true)
+			{
                 result[0].IsStrikeThrough(false);
-                item.IsStrikeThrough = false
-            } else {
+				item.IsStrikeThrough = false;
+			}
+			else
                 {
+				{
                     result[0].IsStrikeThrough(true);
-                    item.IsStrikeThrough = true
+					item.IsStrikeThrough = true;
                 }
             }
             self.Model.SubmissionTermsNConditionWordingsList.valueHasMutated();
         }
     };
-	self.onClickTermsNConditionWordingItem = function (item) {
-	    if (ko.isObservable(item)) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClickTermsNConditionWordingItem = function(item)
+	{
+		if (ko.isObservable(item))
+		{
 	        self.selectedTermsNConditionWording(item);
-	    } else {
+		} else
+		{
 	        self.selectedTermsNConditionWording(new ConsoleApp.TermsNConditionWording()
 	            .Id(item.Id)
 	            .WordingRefNumber(item.WordingRefNumber)
 	            .Title(item.Title));
 	    }
 	};
-	self.enableAddTermsNConditionWordingToSubmission = ko.computed(function () {
-	    if (self.selectedTermsNConditionWording() !== undefined && self.selectedTermsNConditionWording().Id() != 0) {
-	        return $.grep(self.Model.SubmissionTermsNConditionWordingsList(), function (i) { return i.Id() == self.selectedTermsNConditionWording().Id(); }).length == 0;
+	self.enableAddTermsNConditionWordingToSubmission = ko.computed(function()
+	{
+		if (self.selectedTermsNConditionWording() !== undefined && self.selectedTermsNConditionWording().Id() != 0)
+		{
+			return $.grep(self.Model.SubmissionTermsNConditionWordingsList(), function(i) { return i.Id() == self.selectedTermsNConditionWording().Id(); }).length == 0;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
-	self.click_AddTermsNConditionWordingToSubmission = function (e) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.click_AddTermsNConditionWordingToSubmission = function(e)
+	{
 
-	    if (self.selectedTermsNConditionWording() !== undefined && self.selectedTermsNConditionWording().Id() != 0) {
+		if (self.selectedTermsNConditionWording() !== undefined && self.selectedTermsNConditionWording().Id() != 0)
+		{
 
-	            var result = $.grep(self.Model.SubmissionTermsNConditionWordingsList(), function (i) { return i.Id() == self.selectedTermsNConditionWording().Id(); });
-	            if (result.length==0) {
+			var result = $.grep(self.Model.SubmissionTermsNConditionWordingsList(), function(i) { return i.Id() == self.selectedTermsNConditionWording().Id(); });
+			if (result.length == 0)
+			{
 	            self.Model.SubmissionTermsNConditionWordingsList.push(new ConsoleApp.TermsNConditionWordingSettingDto()
 	                    .Id(self.selectedTermsNConditionWording().Id())
 	                    .DisplayOrder(0)
@@ -420,85 +509,105 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 	            self.selectedTermsNConditionWording(new ConsoleApp.TermsNConditionWording());
 	        }
-	        else {
 	        }
-	    }
-	    else {
-	    }
-
 	};
-	self.click_RemoveTermsNConditionWordingFromSubmission = function (e) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.click_RemoveTermsNConditionWordingFromSubmission = function(e)
+	{
 
-	    if (self.selectedSubmissionTermsNConditionWording() !== undefined && self.selectedSubmissionTermsNConditionWording().Id() != 0) {
+		if (self.selectedSubmissionTermsNConditionWording() !== undefined && self.selectedSubmissionTermsNConditionWording().Id() != 0)
+		{
 
-	        var removeItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function (item) {
+			var removeItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function(item)
+			{
 	            return item.Id() == self.selectedSubmissionTermsNConditionWording().Id();
 	        });
 
-	        self.Model.SubmissionTermsNConditionWordingsList.remove(function (item) { return item.Id() == self.selectedSubmissionTermsNConditionWording().Id(); });
+			self.Model.SubmissionTermsNConditionWordingsList.remove(function(item) { return item.Id() == self.selectedSubmissionTermsNConditionWording().Id(); });
 
 	        self.selectedSubmissionTermsNConditionWording(new ConsoleApp.TermsNConditionWordingSettingDto());
 
 	    }
-	    else {
+		else
+		{ // TODO: Redundant else statement
 	    }
 
 	};
 
 	self.selectedSubmissionTermsNConditionWording = ko.observable(new ConsoleApp.TermsNConditionWordingSettingDto());
-	self.enableRemoveTermsNConditionWordingFromSubmission = ko.computed(function () {
-	    if (self.selectedSubmissionTermsNConditionWording() !== undefined && self.selectedSubmissionTermsNConditionWording().Id() != 0) {
+	self.enableRemoveTermsNConditionWordingFromSubmission = ko.computed(function()
+	{
+		if (self.selectedSubmissionTermsNConditionWording() !== undefined && self.selectedSubmissionTermsNConditionWording().Id() != 0)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
-	self.showImageProcessing_LoadingSubmissionTermsNConditionWordings = ko.observable('block');
-	self.onClickSubmissionTermsNConditionWordingItem = function (item) {
+	
+	self.showImageProcessing_LoadingSubmissionTermsNConditionWordings = ko.observable('block'); // TODO: Use true/false for states, not stylesheet values
+
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClickSubmissionTermsNConditionWordingItem = function(item)
+	{
 	    self.selectedSubmissionTermsNConditionWording(item);
 	};
     
-	self.enableSelectedSubmissionTermsNConditionWordingMoveUp = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function (item) {
+	self.enableSelectedSubmissionTermsNConditionWordingMoveUp = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionTermsNConditionWording().Id());
 	    });
 	    var i = self.Model.SubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	       return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedSubmissionTermsNConditionWordingMoveUp = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedSubmissionTermsNConditionWordingMoveUp = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionTermsNConditionWording().Id());
 	    });
 
 
 	    var i = self.Model.SubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        var array = self.Model.SubmissionTermsNConditionWordingsList();
 	        self.Model.SubmissionTermsNConditionWordingsList.splice(i - 1, 2, array[i], array[i - 1]);
 	    }
 	};
-	self.enableSelectedSubmissionTermsNConditionWordingMoveDown = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function (item) {
+	self.enableSelectedSubmissionTermsNConditionWordingMoveDown = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionTermsNConditionWording().Id());
 	    });
 
 
 	    var i = self.Model.SubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.SubmissionTermsNConditionWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.SubmissionTermsNConditionWordingsList().length != i + 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedSubmissionTermsNConditionWordingMoveDown = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedSubmissionTermsNConditionWordingMoveDown = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.SubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Id() == self.selectedSubmissionTermsNConditionWording().Id());
 	    });
 
 
 	    var i = self.Model.SubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.SubmissionTermsNConditionWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.SubmissionTermsNConditionWordingsList().length != i + 1)
+		{
 	        var array = self.Model.SubmissionTermsNConditionWordingsList();
 	        self.Model.SubmissionTermsNConditionWordingsList.splice(i, 2, array[i + 1], array[i]);
 	    }
@@ -506,15 +615,20 @@ function vmSubmissionBase(id, domId, initilizeSelf)
     
 	self.customTermsNConditionWordingRef = ko.observable("");
 	self.customTermsNConditionWording = ko.observable("");
-    self.onClickCheckCustomTermsNConditionWordingItem = function(item) {
-        var result = $.grep(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (i) { return i.WordingRefNumber() == item.WordingRefNumber; });
-        if (result.length == 1) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClickCheckCustomTermsNConditionWordingItem = function(item)
+	{
+		var result = $.grep(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(i) { return i.WordingRefNumber() == item.WordingRefNumber; });
+		if (result.length == 1)
+		{
 
-            if (result[0].IsStrikeThrough() == true) {
+			if (result[0].IsStrikeThrough() == true)
+			{
                 result[0].IsStrikeThrough(false);
                 item.IsStrikeThrough = false;
-            } else {
+			} else
                 {
+				{
                     result[0].IsStrikeThrough(true);
                     item.IsStrikeThrough = true;
                 }
@@ -522,11 +636,15 @@ function vmSubmissionBase(id, domId, initilizeSelf)
             self.Model.CustomSubmissionTermsNConditionWordingsList.valueHasMutated();
         }
     };
-	self.onClick_AddCustomTermsNConditionWordingToSubmission = function () {
-	    if (self.customTermsNConditionWording() !== undefined && self.customTermsNConditionWording() != "") {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_AddCustomTermsNConditionWordingToSubmission = function()
+	{
+		if (self.customTermsNConditionWording() !== undefined && self.customTermsNConditionWording() != "")
+		{
 
-	        var result = $.grep(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (i) { return i.WordingRefNumber() == self.customTermsNConditionWordingRef(); });
-	        if (result.length==0) {
+			var result = $.grep(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(i) { return i.WordingRefNumber() == self.customTermsNConditionWordingRef(); });
+			if (result.length == 0)
+			{
 	            self.Model.CustomSubmissionTermsNConditionWordingsList.push(new ConsoleApp.TermsNConditionWordingSettingDto()
 	                    .Id(0)
 	                    .DisplayOrder(0)
@@ -537,84 +655,101 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	            self.customTermsNConditionWordingRef("");
 	            self.customTermsNConditionWording("");
 	        }
-	        else {
 	        }
-	    }
-	    else {
-	    }
 	};
-	self.onClick_RemoveCustomTermsNConditionWordingToSubmission = function () {
-	    if (self.selectedCustomSubmissionTermsNConditionWording() !== undefined && self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber() != "") {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_RemoveCustomTermsNConditionWordingToSubmission = function()
+	{
+		if (self.selectedCustomSubmissionTermsNConditionWording() !== undefined && self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber() != "")
+		{
 	        self.customTermsNConditionWordingRef(self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber());
 	        self.customTermsNConditionWording(self.selectedCustomSubmissionTermsNConditionWording().Title());
-	        self.Model.CustomSubmissionTermsNConditionWordingsList.remove(function (item) { return item.WordingRefNumber() == self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber(); });
+			self.Model.CustomSubmissionTermsNConditionWordingsList.remove(function(item) { return item.WordingRefNumber() == self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber(); });
 
 	        self.selectedCustomSubmissionTermsNConditionWording(new ConsoleApp.TermsNConditionWordingSettingDto());
 
 	    }
-	    else {
-	    }
 	};
-	self.enableAddCustomTermsNConditionWordingToSubmission = ko.computed(function () {
-	    if (self.customTermsNConditionWordingRef() !== undefined && self.customTermsNConditionWordingRef() != "") {
-	        return $.grep(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (i) { return i.WordingRefNumber() == self.customTermsNConditionWordingRef(); }).length == 0;
+	self.enableAddCustomTermsNConditionWordingToSubmission = ko.computed(function()
+	{
+		if (self.customTermsNConditionWordingRef() !== undefined && self.customTermsNConditionWordingRef() != "")
+		{
+			return $.grep(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(i) { return i.WordingRefNumber() == self.customTermsNConditionWordingRef(); }).length == 0;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
 	
 	self.selectedCustomSubmissionTermsNConditionWording = ko.observable(new ConsoleApp.TermsNConditionWordingSettingDto());
-	self.enableRemoveCustomTermsNConditionWordingFromSubmission = ko.computed(function () {
-	    if (self.selectedCustomSubmissionTermsNConditionWording() !== undefined && self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber() != "") {
+	self.enableRemoveCustomTermsNConditionWordingFromSubmission = ko.computed(function()
+	{
+		if (self.selectedCustomSubmissionTermsNConditionWording() !== undefined && self.selectedCustomSubmissionTermsNConditionWording().WordingRefNumber() != "")
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
-	self.onClick_CustomSubmissionTermsNConditionWordingItem = function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_CustomSubmissionTermsNConditionWordingItem = function(item)
+	{
 	    self.selectedCustomSubmissionTermsNConditionWording(item);
 	};
 
-	self.enableSelectedCustomSubmissionTermsNConditionWordingMoveUp = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (item) {
+	self.enableSelectedCustomSubmissionTermsNConditionWordingMoveUp = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionTermsNConditionWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedCustomSubmissionTermsNConditionWordingMoveUp = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedCustomSubmissionTermsNConditionWordingMoveUp = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionTermsNConditionWording().Title());
 	    });
 
-
 	    var i = self.Model.CustomSubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        var array = self.Model.CustomSubmissionTermsNConditionWordingsList();
 	        self.Model.CustomSubmissionTermsNConditionWordingsList.splice(i - 1, 2, array[i], array[i - 1]);
 	    }
 	};
-	self.enableSelectedCustomSubmissionTermsNConditionWordingMoveDown = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (item) {
+	// TODO: Lots of "enable...this" and "enable...that", surely there is a better way... ?
+	self.enableSelectedCustomSubmissionTermsNConditionWordingMoveDown = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionTermsNConditionWording().Title());
 	    });
 	    var i = self.Model.CustomSubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.CustomSubmissionTermsNConditionWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.CustomSubmissionTermsNConditionWordingsList().length != i + 1)
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	});
-	self.onClick_selectedCustomSubmissionTermsNConditionWordingMoveDown = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedCustomSubmissionTermsNConditionWordingMoveDown = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionTermsNConditionWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionTermsNConditionWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionTermsNConditionWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.CustomSubmissionTermsNConditionWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.CustomSubmissionTermsNConditionWordingsList().length != i + 1)
+		{
 	        var array = self.Model.CustomSubmissionTermsNConditionWordingsList();
 	        self.Model.CustomSubmissionTermsNConditionWordingsList.splice(i, 2, array[i + 1], array[i]);
 	    }
@@ -623,15 +758,19 @@ function vmSubmissionBase(id, domId, initilizeSelf)
     //#endregion 
 
     //#region SubjectToClauseWording
-	self.Model.QuotingOfficeId.subscribe(function (officeId) {
+	self.Model.QuotingOfficeId.subscribe(function(officeId)
+	{
         if (self.IsLoading()) return;
 	    var ajaxConfig = { Url: "/Admin/GetSubjectToClauseWordingsForTeamOffice?teamId=" + self.Team().Id() + "&officeId=" + officeId, VerbType: "GET", ContentType: "application/json;charset=utf-8" };
 	    var response = ConsoleApp.AjaxHelper(ajaxConfig);
 	    self.Model.CustomSubmissionSubjectToClauseWordingsList.removeAll();
-	    response.success(function (data) {
-	        if (data != null && data.length > 0) {
+		response.success(function(data)
+		{
+			if (data != null && data.length > 0)
+			{
 	            var tmpCustomSubmissionSubjectToClauseWordingsList = [];
-	            $.each(data, function (key, value) {
+				$.each(data, function(key, value)
+				{
 	                tmpCustomSubmissionSubjectToClauseWordingsList.push(new ConsoleApp.SubjectToClauseWordingSettingDto()
 	                    .Id(0)
 	                    .DisplayOrder(value.DisplayOrder)
@@ -641,22 +780,25 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	            });
 	            ko.utils.arrayPushAll(self.Model.CustomSubmissionSubjectToClauseWordingsList(), tmpCustomSubmissionSubjectToClauseWordingsList);
 	            self.Model.CustomSubmissionSubjectToClauseWordingsList.valueHasMutated();
-	        } else {
+			} else
+			{
                 console.log("Team-Office(change)- No SubjectToClauseWordings Found");
 	        }
 	    });
 	});
-
-
 	
 	self.selectedSubjectToClauseWording = ko.observable(new ConsoleApp.SubjectToClauseWording());
 	self.showImageProcessing_LoadingSubjectToClauseWordings = ko.observable('block');
 	self.customSubjectToClauseWording = ko.observable("");
-	self.onClick_AddCustomSubjectToClauseWordingToSubmission = function () {
-	    if (self.customSubjectToClauseWording() !== undefined && self.customSubjectToClauseWording() != "") {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_AddCustomSubjectToClauseWordingToSubmission = function()
+	{
+		if (self.customSubjectToClauseWording() !== undefined && self.customSubjectToClauseWording() != "")
+		{
 
-	            var result = $.grep(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (i) { return i.Title() == self.customSubjectToClauseWording(); });
-	            if (result.length==0) {
+			var result = $.grep(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(i) { return i.Title() == self.customSubjectToClauseWording(); });
+			if (result.length == 0)
+			{
 	            self.Model.CustomSubmissionSubjectToClauseWordingsList.push(new ConsoleApp.SubjectToClauseWordingSettingDto()
 	                    .Id(0)
 	                    .DisplayOrder(0)
@@ -666,46 +808,51 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 	            self.customSubjectToClauseWording("");
 	        }
-	        else {
 	        }
-	    }
-	    else {
-	    }
 	};
-	self.onClick_RemoveCustomSubjectToClauseWordingToSubmission = function () {
-	    if (self.selectedCustomSubmissionSubjectToClauseWording() !== undefined && self.selectedCustomSubmissionSubjectToClauseWording().Title() != "") {
+	self.onClick_RemoveCustomSubjectToClauseWordingToSubmission = function()
+	{
+		if (self.selectedCustomSubmissionSubjectToClauseWording() !== undefined && self.selectedCustomSubmissionSubjectToClauseWording().Title() != "")
+		{
 
-	        self.Model.CustomSubmissionSubjectToClauseWordingsList.remove(function (item) { return item.Title() == self.selectedCustomSubmissionSubjectToClauseWording().Title(); });
+			self.Model.CustomSubmissionSubjectToClauseWordingsList.remove(function(item) { return item.Title() == self.selectedCustomSubmissionSubjectToClauseWording().Title(); });
 
 	        self.customSubjectToClauseWording(self.selectedCustomSubmissionSubjectToClauseWording().Title());
 	        self.selectedCustomSubmissionSubjectToClauseWording(new ConsoleApp.SubjectToClauseWordingSettingDto());
 	    }
-	    else {
-	    }
 	};
-	self.enableAddCustomSubjectToClauseWordingToSubmission = ko.computed(function () {
-	    if (self.customSubjectToClauseWording() !== undefined && self.customSubjectToClauseWording() != "") {
-	        return $.grep(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (i) { return i.Title() == self.customSubjectToClauseWording(); }).length == 0;
+	self.enableAddCustomSubjectToClauseWordingToSubmission = ko.computed(function()
+	{
+		if (self.customSubjectToClauseWording() !== undefined && self.customSubjectToClauseWording() != "")
+		{
+			return $.grep(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(i) { return i.Title() == self.customSubjectToClauseWording(); }).length == 0;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
 	self.selectedCustomSubmissionSubjectToClauseWording = ko.observable(new ConsoleApp.SubjectToClauseWordingSettingDto());
-	self.enableRemoveCustomSubjectToClauseWordingFromSubmission = ko.computed(function () {
-	    if (self.selectedCustomSubmissionSubjectToClauseWording() !== undefined && self.selectedCustomSubmissionSubjectToClauseWording().Title() != "") {
+	self.enableRemoveCustomSubjectToClauseWordingFromSubmission = ko.computed(function()
+	{
+		if (self.selectedCustomSubmissionSubjectToClauseWording() !== undefined && self.selectedCustomSubmissionSubjectToClauseWording().Title() != "")
+		{
 	        return true;
 	    }
-	    return false;
+	    return false; // TODO: Use conditional ternary operator
 	}, self);
 
-	self.onClickCheckCustomSubjectToClauseWordingItem = function (item) {
-	    var result = $.grep(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (i) { return i.Title() == item.Title; });
-	    if (result.length == 1) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClickCheckCustomSubjectToClauseWordingItem = function(item)
+	{
+		var result = $.grep(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(i) { return i.Title() == item.Title; });
+		if (result.length == 1)
+		{
 
-	        if (result[0].IsStrikeThrough() == true) {
+			if (result[0].IsStrikeThrough() == true)
+			{
 	            result[0].IsStrikeThrough(false);
 	            item.IsStrikeThrough = false;
-	        } else {
+			} else
 	            {
+				{
 	                result[0].IsStrikeThrough(true);
 	                item.IsStrikeThrough = true;
 	            }
@@ -714,49 +861,64 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	    }
 	};
 
-	self.onClick_CustomSubmissionSubjectToClauseWordingItem = function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_CustomSubmissionSubjectToClauseWordingItem = function(item)
+	{
 	    self.selectedCustomSubmissionSubjectToClauseWording(item);
 	};
-	self.enableSCustomSubmissionSubjectToClauseWordingMoveUp = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (item) {
+	self.enableSCustomSubmissionSubjectToClauseWordingMoveUp = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionSubjectToClauseWording().Title());
 	    });
 	    var i = self.Model.CustomSubmissionSubjectToClauseWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        return true;
 	    }
 	    return false;
 	});
-	self.onClick_selectedCustomSubmissionSubjectToClauseWordingMoveUp = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (item) {
+	self.onClick_selectedCustomSubmissionSubjectToClauseWordingMoveUp = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionSubjectToClauseWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionSubjectToClauseWordingsList.indexOf(moveItem);
-	    if (i >= 1) {
+		if (i >= 1)
+		{
 	        var array = self.Model.CustomSubmissionSubjectToClauseWordingsList();
 	        self.Model.CustomSubmissionSubjectToClauseWordingsList.splice(i - 1, 2, array[i], array[i - 1]);
 	    }
 	};
-	self.enableSelectedCustomSubmissionSubjectToClauseWordingMoveDown = ko.computed(function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (item) {
+	self.enableSelectedCustomSubmissionSubjectToClauseWordingMoveDown = ko.computed(function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionSubjectToClauseWording().Title());
 	    });
 	    var i = self.Model.CustomSubmissionSubjectToClauseWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.CustomSubmissionSubjectToClauseWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.CustomSubmissionSubjectToClauseWordingsList().length != i + 1)
+		{
 	        return true;
 	    }
 	    return false;
 	});
-	self.onClick_selectedCustomSubmissionSubjectToClauseWordingMoveDown = function () {
-	    var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function (item) {
+	// TODO: Remove all onClick functions where we do not care about the event (replace with generic functions)
+	self.onClick_selectedCustomSubmissionSubjectToClauseWordingMoveDown = function()
+	{
+		var moveItem = ko.utils.arrayFirst(self.Model.CustomSubmissionSubjectToClauseWordingsList(), function(item)
+		{
 	        return (item.Title() == self.selectedCustomSubmissionSubjectToClauseWording().Title());
 	    });
 
 
 	    var i = self.Model.CustomSubmissionSubjectToClauseWordingsList.indexOf(moveItem);
-	    if (i >= 0 && self.Model.CustomSubmissionSubjectToClauseWordingsList().length != i + 1) {
+		if (i >= 0 && self.Model.CustomSubmissionSubjectToClauseWordingsList().length != i + 1)
+		{
 	        var array = self.Model.CustomSubmissionSubjectToClauseWordingsList();
 	        self.Model.CustomSubmissionSubjectToClauseWordingsList.splice(i, 2, array[i + 1], array[i]);
 	    }
@@ -764,44 +926,53 @@ function vmSubmissionBase(id, domId, initilizeSelf)
     //#endregion
 
 
-
 	// Events
 	
-    self.Initialise = function (viewModel, syncCallback) {
-		console.log('Initialise - VM');
-		console.log(viewModel);
+	self.Initialise = function(viewModel, syncCallback)
+	{
+		//console.log('Initialise - VM');
+		//console.log(viewModel);
 
-		if (!domId) {
+		if (!domId)
+		{
 		    toastr.error("No DOM Id specified, cannot initialise Submission view model");
 
 		    self.Cancel();
-		} else {
-		    self.SearchWorldCheck("");
-		    self.SetInsuredLossRatios("");
-		    self.SetBrokerLossRatios("");
+		}
+		else
+		{
+			$(".val-worldcheck-matches", self.Form).html("Please provide an Insured Name");
+			$(".val-related-loss-ratios", self.Form).html("Please provide an Insured Name");
+			$(".val-cross-selling", self.Form).html("Please provide an Insured Name");
+
 		    self.SetCreateBrokerContact();
 		    self.PopAuditTrails();
 		    
-			$.when(self.GetTeamBySubmissionTypeId(self.Model.submissionTypeId())).done(function () {
-		                self.GetQuoteTemplates(self.Team().Id());
-			});
-		                        		self.SetDefaultValues();
-		    if (!viewModel) {
-		                                self.Model.Options().push(new Option(0, domId, self));
-		                            }
+			if (!viewModel) self.Model.Options().push(new Option(0, domId, self));
+			
 		                            self.DirtyFlag = new ko.dirtyFlag(self);
 		                            self.BindKO(viewModel);
-		                            if (self.Id > 0) {
-		                                setTimeout(function () { self.LoadSubmission("/submission/GetSubmission", syncCallback); },100);
 
-		                            } else {
-		                                setTimeout(function () { self.InitialiseForm(); },100);
-		        };
-		      
+			if (self.Id > 0)
+			{
+				setTimeout(function()
+			{
+					self.LoadSubmission("/api/submissionapi/getsubmission", syncCallback);
+				}, 100);
+		}
+			else
+			{
+				setTimeout(function()
+				{
+					self.InitialiseForm();
+				}, 100);
+			}
 		}
     };
 
-    self.LoadSubmission = function (url, syncCallback) {
+	self.LoadSubmission = function(url, syncCallback) {
+		//console.log('LoadSubmission()');
+
 		$.ajax(
 		{
 			url: url,
@@ -809,7 +980,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 			data: { id: self.Id },
 			dataType: "json",
 			contentType: "application/json",
-		    success: function (data, status, xhr) {
+			success: function(data, status, xhr)
+			{
 		        self.IsLoading(true);
 				self.CanCreateQuoteSheet(true);
 				self.IsSaving(false);
@@ -817,23 +989,26 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 				toastr.success("Submission retrieved");
 
-		        if (data.Submission) {
+				if (data.Submission)
+				{
 				    self.syncJSON(data.Submission);
-					if (syncCallback)
-						syncCallback(data.Submission);
+
+					if (syncCallback) syncCallback(data.Submission);
+
 		                self.ShowAuditTrails(self.Model.Id());
 					    self.InitialiseForm();
 		                self.IsLoading(false);
+					
 					toastr.success("Submission synchronised");
-		        } else {
-		            self.IsLoading(false);
 			    }
+				else self.IsLoading(false);
 		    }
-			//error: function... TODO: Implement data.ErrorMessages ...Not found ?
 		});
 	};
 
-    self.InitialiseForm = function () {
+	self.InitialiseForm = function()
+	{
+		//console.log('InitialiseForm()');
 		self.AttachValidation();
 		self.InitialisePane();
 		self.SetDocumentDetails();
@@ -842,71 +1017,69 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		self.IsInitialised(true);
 	};
 
-    self.SetDefaultValues = function () {
-    	$.when(self.GetTeamBySubmissionTypeId(self.Model.submissionTypeId()))
+	self.SetDefaultValuesAndQuoteTemplates = function()
+	{
+		//console.log('SetDefaultValuesAndQuoteTemplates()');
+
+		$.when(self.GetTeamBySubmissionTypeId(self.Model.submissionTypeId()))
     		.done(function()
     		{
-    			
-    		var defaultDomicile = $("input[type='hidden'][name='DefaultDomicile']", self.Form).val(),
-             defaultQuoteExpiry = $("input[type='hidden'][name='DefaultQuoteExpiry']", self.Form).val(),
-             defaultOffice = $("input[type='hidden'][name='DefaultOffice']", self.Form).val(),
-             defaultUnderwriter = $("input[type='hidden'][name='DefaultUnderwriter']", self.Form).val(),
-             defaultPolicyType = $("input[type='hidden'][name='DefaultPolicyType']", self.Form).val();
+    			self.GetQuoteTemplates(self.Team().Id());
 
+    			var defaultDomicile = $("input[type='hidden'][name='DefaultDomicile']", self.Form).val(),
+				 defaultQuoteExpiry = $("input[type='hidden'][name='DefaultQuoteExpiry']", self.Form).val(),
+				 defaultOffice = $("input[type='hidden'][name='DefaultOffice']", self.Form).val(),
+				 defaultUnderwriter = $("input[type='hidden'][name='DefaultUnderwriter']", self.Form).val(),
+				 defaultPolicyType = $("input[type='hidden'][name='DefaultPolicyType']", self.Form).val(),
+    		     nonLondonBroker = $("input[type='hidden'][name='NonLondonBroker']", self.Form).val();
 
-            if (defaultDomicile) {
-                self.Defaults.Domicile = defaultDomicile;
+    			if (nonLondonBroker) {
+    				self.Model._NonLondonBroker(nonLondonBroker);
+    			}
 
-                self.Model._Domicile(defaultDomicile);
-            }
+    			if (defaultDomicile)
+    			{
+    				self.Defaults.Domicile = defaultDomicile;
 
-            if (defaultUnderwriter) {
-                self.Defaults.Underwriter = defaultUnderwriter;
+    				self.Model._Domicile(defaultDomicile);
+    			}
 
-                self.Model._Underwriter(defaultUnderwriter);
-                self.Model._UnderwriterContact(defaultUnderwriter);
-            }
+    			if (defaultUnderwriter)
+    			{
+    				self.Defaults.Underwriter = defaultUnderwriter;
 
-            if (defaultOffice)
-            {
-                self.Defaults.Office = defaultOffice;
+    				self.Model._Underwriter(defaultUnderwriter);
+    				self.Model._UnderwriterContact(defaultUnderwriter);
+    			}
 
-                self.Model._QuotingOffice(defaultOffice);
-            }
+    			if (defaultOffice)
+    			{
+    				self.Defaults.Office = defaultOffice;
 
-            if (defaultPolicyType)
-            {
-                self.Defaults.PolicyType = defaultPolicyType;
-            }
+    				self.Model._QuotingOffice(defaultOffice);
+    			}
 
-            defaultQuoteExpiry = parseInt(defaultQuoteExpiry);
+    			if (defaultPolicyType)
+    			{
+    				self.Defaults.PolicyType = defaultPolicyType;
+    			}
 
-            if (!isNaN(defaultQuoteExpiry))
-            {
-                var quoteExpiryDate = moment().add("d", defaultQuoteExpiry);
+    			defaultQuoteExpiry = parseInt(defaultQuoteExpiry);
 
-                if (quoteExpiryDate && quoteExpiryDate.isValid())
-                    self.Defaults.QuoteExpiry = quoteExpiryDate.format("YYYY-MM-DD");
-            }
+    			if (!isNaN(defaultQuoteExpiry))
+    			{
+    				var quoteExpiryDate = moment().add("d", defaultQuoteExpiry);
 
-        });
-        
-//$(function () {
-//    function checkPendingRequest() {
-//        if ($.active > 0) {
-//            window.setTimeout(checkPendingRequest, 1000);
-//        } else {
+    				if (quoteExpiryDate && quoteExpiryDate.isValid())
+    					self.Defaults.QuoteExpiry = quoteExpiryDate.format("DD MMM YYYY");
+    			}
 
-		
-                    
-//            }
-//    };
-//    window.setTimeout(checkPendingRequest, 1000);
-//});
-	
+    		});
 	};
 
-    self.SetDocumentDetails = function () {
+	self.SetDocumentDetails = function()
+	{
+		//console.log('SetDocumentDetails()');
 		/* 
 		TODO: Changing this computed to a subsription as well as SetInsuredDetails & SetBrokerDetails
     	$(".val-submission-documents", self.Form).html("");
@@ -914,14 +1087,19 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 		var policyIds = "";
 
-        $.each(self.Model.Options(), function (optionIndex, optionData) {
-            $.each(optionData.OptionVersions(), function (versionIndex, versionData) {
-                $.each(versionData.Quotes(), function (quoteIndex, quoteData) {
-                    if (quoteData.RenPolId() !== "") {
+		$.each(self.Model.Options(), function(optionIndex, optionData)
+		{
+			$.each(optionData.OptionVersions(), function(versionIndex, versionData)
+			{
+				$.each(versionData.Quotes(), function(quoteIndex, quoteData)
+				{
+					if (quoteData.RenPolId() !== "")
+					{
 						policyIds += quoteData.RenPolId() + ";";
 					}
 
-                    if (quoteData.SubscribeReference() !== "") {
+					if (quoteData.SubscribeReference() !== "")
+					{
 						policyIds += quoteData.SubscribeReference() + ";";
 					}
 				});
@@ -934,7 +1112,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 			type: "GET",
 			data: { term: encodeURIComponent(policyIds) },
 			dataType: "html",
-		    success: function (data) {
+			success: function(data)
+			{
 				self.DocumentCount(self.CountIndication(data));
 
 				var tableConfig = new BaseDataTable();
@@ -943,12 +1122,14 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 				tableConfig.aaSorting = [[2, "desc"]];
 
 				$(".val-submission-documents", self.Form).html(data);
-		        $(".val-submission-documents .val-subscribe-policyid", self.Form).click(function (e) {
+				$(".val-submission-documents .val-subscribe-policyid", self.Form).click(function(e)
+				{
 					OpenWebPolicy($(e.target).attr("href"));
 
 					e.preventDefault();
 				});
-		        $(".val-submission-documents .val-filenet-document", self.Form).click(function (e) {
+				$(".val-submission-documents .val-filenet-document", self.Form).click(function(e)
+				{
 					window.open($(e.target).attr("href"));
 
 					e.preventDefault();
@@ -958,34 +1139,36 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		});
 	};
 	
-    self.GetTeamBySubmissionTypeId = function (submissionTypeId) {
+	self.GetTeamBySubmissionTypeId = function(submissionTypeId)
+	{
+		//console.log('GetTeamBySubmissionTypeId()');
 
 		var ajaxConfig = { Url: "/Admin/GetTeamBySubmissionTypeId?submissionTypeId=" + submissionTypeId, VerbType: "GET" };
 
 		var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
-        response.success(function (data) {
+		response.success(function(data)
+		{
 			self.Team(new ConsoleApp.Team(data.Id, data.Title));
-			console.log(self.Team());
+			//console.log(self.Team());
 		});
-
-        response.fail(function (jqXhr, textStatus) {
-			toastr["error"]("An Error Has Occurred!");
-			console.log(jqXhr + " " + textStatus);
-		});
-
+		
 		return response;
     };
     
-    self.PopAuditTrails = function () {
+	self.PopAuditTrails = function()
+	{
+		//console.log('PopAuditTrails()');
+
         $('.showAuditTrail').popover({
             html: true,
-            content: function() {
+			content: function()
+			{
 
                 return '<div class="AuditTrailPoped">' + $('.val-submission-insuredName-audits', self.Form).html() + '</div>';
 
             },
-            afterShowed:function()
+			afterShowed: function()
             {
                 var tableConfig = new BaseDataTable();
                 tableConfig.bSort = false;
@@ -999,7 +1182,10 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
     };
 
-	self.SetCreateBrokerContact = function() {
+	self.SetCreateBrokerContact = function()
+	{
+		//console.log('SetCreateBrokerContact()');
+
 		$('.addNewBrokerContact', self.Form).popover({
 			html: true,
 			content: function()
@@ -1018,7 +1204,9 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
     self.CreateBrokerContact = function(brokerContact)
     {
-    	console.log(brokerContact);
+    	//console.log('CreateBrokerContact()');
+
+    	//console.log(brokerContact);
 
     	var ajaxConfig = { Url: "/Broker/CreateBrokerContact", VerbType: "POST", Data: ko.toJSON({ NewBrokerContact: brokerContact }) };
 
@@ -1026,59 +1214,56 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 		response.success(function(data)
 		{
-			console.log(data);
-			toastr["info"]("Broker Contact created");
+			//console.log(data);
+			toastr.info("Broker Contact created");
 			self.Model.BrokerContact(brokerContact);
 			$('.addNewBrokerContact').popover('hide');
 		});
-
-		response.fail(function(jqXhr, textStatus)
-		{
-			toastr["error"]("An Error Has Occurred!");
-			console.log(jqXhr + " " + textStatus);
-		});
 	};
 
-    self.GetQuoteTemplates = function (teamId) {
+	self.GetQuoteTemplates = function(teamId)
+	{
+		//console.log('GetQuoteTemplates()');
+
 		self.TeamQuoteTemplatesList.removeAll();
 
 		var ajaxConfig = { Url: "/Admin/GetQuoteTemplatesForTeam?teamId=" + teamId, VerbType: "GET" };
 
 		var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
-        response.success(function (data) {
+		response.success(function(data)
+		{
 
-            if (data.length > 0) {
-                $.each(data, function (key, value) {
+			if (data.length > 0)
+			{
+				$.each(data, function(key, value)
+				{
 					self.TeamQuoteTemplatesList.push(new ConsoleApp.QuoteTemplate()
 						.Id(value.Id)
 						.Name(value.Name)
 						.RdlPath(value.RdlPath));
 				});
 			}
-            else {
-				toastr["info"]("No Quote Templates for Team");
+			else
+			{
+				toastr.info("No Quote Templates for Team");
 			}
 
-		});
-
-        response.fail(function (jqXhr, textStatus) {
-			toastr["error"]("An Error Has Occurred!");
-			console.log(jqXhr + " " + textStatus);
 		});
 
 		return response;
 	};
 	
-    self.CreateFirstOption = function(vm)
-    {
-    	self.SetDefaultValues();
+    self.CreateFirstOption = function(vm) {
+    	//console.log('CreateFirstOption()');
+    	self.SetDefaultValuesAndQuoteTemplates();
 		self.Model.Options().push(new Option(0, domId, self));
 		var vmOption1 = self.Model.Options()[0];
 		return vmOption1;
 	};
 	
-    self.SetInsuredTabLabel = function (insuredName) {
+	self.SetInsuredTabLabel = function(insuredName)
+	{
 		$("a[href$='" + domId + "']:first")
 			.attr("title", insuredName).attr("alt", insuredName)
 			.children("span")
@@ -1090,7 +1275,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 		$("a[href$='" + domId + "']:first button")
 			.unbind("click")
-			.bind("click", function () {
+			.bind("click", function()
+			{
 				self.Cancel();
 			});
 	};
@@ -1101,7 +1287,13 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		We should really be using an InitPV_ function.
 	*/
     self.SetInsuredLossRatios = function (insuredName) {
-		$(".val-worldcheck-matches", self.Form).html("");
+
+    	//console.log("SetInsuredLossRatios()");
+
+    	$(".val-related-loss-ratios", self.Form).html('<p class="image_loading_LossRatios">'
+				+ '<img style="width: 20px; height: 20px;" src="/content/images/animated_progress.gif">'
+				+ 'Loading...'
+				+ '</p>');
 
 		$.ajax(
 		{
@@ -1109,12 +1301,40 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 			type: "GET",
 			data: { insuredName: encodeURIComponent(insuredName) },
 			dataType: "html",
-		    success: function (data) {
+			success: function(data)
+			{
 				self.RelatedCount(self.CountIndication(data));
 
 				var tableConfig = new BaseDataTable();
 
 				tableConfig.aaSorting = [[1, "desc"]];
+				tableConfig.fnDrawCallback = function(oSettings)
+				{
+					$(oSettings.nTable).find('th').each(function()
+					{
+						if ($(this).children('span').is("[data-toggle]"))
+						{
+				            $(this).children('span').tooltip();
+				        }
+					});
+
+					$(oSettings.nTable).find("td.val-insddet-lr").filter(function () {
+					    return parseFloat($(this).text()) >= 100;
+					}).addClass("text-warning");
+				};
+
+				tableConfig.aoColumnDefs = [
+		        {
+		            "aTargets": [2],
+		            "sType": "numeric",
+		            "mRender": function (iIn, t)
+		            {                        
+		                if (t === 'display') {		   
+		                    return $.formatCurrency(iIn);
+		                }
+			            return iIn;
+		            }
+		        }];
 
 				$(".val-related-loss-ratios", self.Form).html(data);
 				$(".val-insured-minimal-datatable", self.Form).dataTable(tableConfig);
@@ -1122,7 +1342,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		});
 	};
     
-    self.CountIndication = function (data) {
+	self.CountIndication = function(data)
+	{
 		var count = (data) ? data.match(/<tr>/gi).length - 1 : 0;
 
 		return (count > 0) ? "(" + count + ")" : "";
@@ -1134,14 +1355,15 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		This was added quickly for a demonstration and has not been improved upon since.
 		We should really be using an InitPV_ function.
 	*/
-    self.SetBrokerSummary = function (brokerGroupCode) {
+	self.SetBrokerSummary = function(brokerGroupCode)
+	{
 		self.BrokerRating('');
 		self.BrokerScore('');
 		self.BrokerCreditLimit('');
 
 		if (brokerGroupCode === "") return;
 
-		console.log(brokerGroupCode);
+		//console.log(brokerGroupCode);
 		$.ajax(
 			{
 				url: "/broker/getBrokerSummaryById",
@@ -1149,28 +1371,28 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 				data: { brokerCd: brokerGroupCode },
 				dataType: "json",
 				contentType: "application/json",
-			    success: function (data) {
-					console.log(data.BrokerRating);
-					console.log(data.BrokerScore);
-					console.log(data.BrokerCreditLimit);
+				success: function(data)
+				{
 					self.BrokerRating(data.BrokerRating ? data.BrokerRating : '');
 					self.BrokerScore(data.BrokerScore ? data.BrokerScore : '');
-					self.BrokerCreditLimit(data.BrokerCreditLimit ? data.BrokerCreditLimit : '');
-				},
-			    error: function (xhr, status, error) {
-					toastr.error("Error: " + error);
+					self.BrokerCreditLimit(data.BrokerCreditLimit ? $.formatCurrency(parseInt(data.BrokerCreditLimit)) : '');
 				}
 			});
 	};
 
-    self.click_SetBrokerLossRatios = function () {
+	self.click_SetBrokerLossRatios = function()
+	{
         self.SetBrokerLossRatios(self.Model.BrokerPseudonym());
     };
-    self.SetBrokerLossRatios = function (brokerGroupCode) {
+	
+	self.SetBrokerLossRatios = function(brokerGroupCode) {
+		
 		$(".val-broker-lossratio-sparkline", self.Form).html("");
 		$(".val-broker-lossratio-graph", self.Form).html("");
 
-        if (brokerGroupCode !== "") {
+		if (brokerGroupCode !== "")
+		{
+			$(".val-broker-lossratio-loadMessage", self.Form).hide();
 			$(".val-broker-lossratio-loading", self.Form).show();
 
 			$.ajax(
@@ -1180,7 +1402,9 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 				data: { brokerCd: brokerGroupCode },
 				dataType: "json",
 				contentType: "application/json",
-			    success: function (data) {
+				success: function(data)
+				{
+					
 					$(".val-broker-lossratio-loading", self.Form).hide();
 					$(".val-broker-lossratio-sparkline", self.Form).html("");
 					$(".val-broker-lossratio-graph", self.Form).html("");
@@ -1193,11 +1417,11 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 				    var brokerSparklines = $(".val-broker-lossratio-sparkline", self.Form),
 						brokerSeries = [];
+					$.each(data.LossRatioForMonthList, function(key, item)
+					{
+					    $('<br /><b><span class="item">' + item.Year + '</span></b>').appendTo(brokerSparklines);
 
-			        $.each(data.LossRatioForMonthList, function (key, item) {
-						$('<br /><b><span>' + item.Year + '</span></b>').appendTo(brokerSparklines);
-
-						$('<span></span>').appendTo(brokerSparklines).kendoSparkline({ type: "area", theme: "blueOpal", data: item.LossRatios });
+					    $('<span></span>').appendTo(brokerSparklines).kendoSparkline({ theme: "blueOpal", data: item.LossRatios });
 
 						brokerSeries.push({ name: item.Year, data: item.LossRatios });
 					});
@@ -1231,55 +1455,71 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 					$(".val-broker-lossratio-loading", self.Form).hide();
 				},
-			    error: function (xhr, status, error) {
+				error: function(xhr, status, error)
+				{
+					$(".val-broker-lossratio-loadMessage", self.Form).hide();
 					toastr.error("Error: " + error);
-
 					$(".val-broker-lossratio-loading", self.Form).hide();
 				}
 			});
 		}
-        else {
+		else
+		{
 			$(".val-broker-lossratio-loading", self.Form).hide();
 		}
 	};
 
-    self.CrossSellingCheck = function(insuredName) {
-    	var loadingImage = "<p class='image_loading_WorldCheck'><img style='width: 20px; height: 20px;' src='/Content/images/animated_progress.gif'> Loading... </p>";
-    	$(".val-cross-selling", self.Form).html(loadingImage);
+	self.CrossSellingCheck = function(insuredName)
+	{
+		// TODO: Add to HTML and use state driven visibility
+		$(".val-cross-selling", self.Form)
+			.html('<p class="image_loading_WorldCheck">'
+				+ '<img style="width: 20px; height: 20px;" src="/content/images/animated_progress.gif">'
+				+ 'Loading...'
+				+ '</p>');
 
     	$.ajax(
 		{
-			url: "/submission/_CrossSellingCheck",
+			url: "/submission/_crosssellingcheck",
 			type: "GET",
-			data: { insuredName: encodeURIComponent(insuredName), thisSubmissionId: self.Id },
+			data: { insuredName: encodeURIComponent(insuredName), submissionId: self.Id },
 			dataType: "html",
-			success: function(data) {
+			success: function(data)
+			{
+				var count = (data.match(/<tr>/g) || []).length - 1;
 				
-				var count = ((data.match(/<tr>/g) || []).length - 1);
-
-				self.CrossSellingCount((count === 0) ? '' : '(' + count + ')');
+				self.CrossSellingCount(count === 0 ? '' : '(' + count + ')');
 
 				var tableConfig = new BaseDataTable();
+				
 				tableConfig.aaSorting = [[0, "desc"]];
 
 				$(".val-cross-selling", self.Form).html(data);
 				$(".val-cross-selling-datatable", self.Form).dataTable(tableConfig);
 
-				if (count !== 0) {
-					$('.crossSellingLink', self.Form).effect('pulsate', null, 200, null);
-					$('.crossSellingLink', self.Form).effect('highlight', { color: '#a1eda7' }, 5000, null);
+				if (count !== 0)
+				{
+					// TODO: Use lower case classes
+					$(".crossSellingLink", self.Form)
+						.effect("highlight", { color: "#A1EDA7" }, 5000, null);
 				}
 
-				SetupEditSubmissionBtn(".val-edit-submission-cross-selling");
+				$(".val-edit-submission-cross-selling", self.Form).click(SubmissionEditButton_Click);
 			}
 		});
     };
 
-    self.SearchWorldCheck = function (insuredName) {
-    	$(".val-related-loss-ratios", self.Form).html("");
-
-    	var loadingImage = "<p class='image_loading_WorldCheck'><img style='width: 20px; height: 20px;' src='/Content/images/animated_progress.gif'> Loading... </p>";
-    	$(".val-worldcheck-matches", self.Form).html(loadingImage);
+	self.SearchWorldCheck = function(insuredName)
+	{
+		// TODO: Why is this here ?
+		$(".val-related-loss-ratios", self.Form).html("");
+		
+		// TODO: Add to HTML and use state driven visibility
+    	$(".val-worldcheck-matches", self.Form)
+			.html('<p class="image_loading_WorldCheck">'
+				+ '<img style="width: 20px; height: 20px;" src="/content/images/animated_progress.gif">'
+				+ 'Loading...'
+				+ '</p>');
 
 		$.ajax(
 		{
@@ -1287,13 +1527,16 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 			type: "GET",
 			data: { insuredName: encodeURIComponent(insuredName) },
 			dataType: "html",
-		    success: function (data) {
-		    	
-		    	var count = ((data.match(/<tr>/g) || []).length - 1);
+			success: function(data)
+			{
+		    	var count = (data.match(/<tr>/g) || []).length - 1;
 
-		    	self.WorldCheckCount((count === 0) ? '' : '(' + count + ')');
+		    	self.WorldCheckCount(count === 0 ? '' : '(' + count + ')');
 
-		    	var tableConfig = new BaseDataTable(null, "<p>For full functionality, click here: <a href=" + WorldCheckURL + "  target='_blank'>World Check</a></p> <p>Please contact Compliance for any queries.</p>");
+		    	var tableConfig = new BaseDataTable(null,
+		    		"<p>For full functionality, click here: <a href='"
+		    		+ window.WorldCheckUrl
+		    		+ "' target='_blank'>World Check</a></p> <p>Please contact Compliance for any queries.</p>");
 
 				tableConfig.aaSorting = [[0, "desc"]];
 				tableConfig.aoColumnDefs = [{ "bSortable": false, "aTargets": [1] }];
@@ -1301,24 +1544,32 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 				$(".val-worldcheck-matches", self.Form).html(data);
 				$(".val-worldcheck-matches-datatable", self.Form).dataTable(tableConfig);
 
-			    if (count !== 0) {
-				    $('.worldCheckLink', self.Form).effect('pulsate', null, 200, null);
-				    $('.worldCheckLink', self.Form).effect('highlight', { color: '#eda1b3' }, 5000, null);
+				if (count !== 0)
+				{
+					// TODO: Use lower case classes
+					$(".worldCheckLink", self.Form)
+						.effect("highlight", { color: "#EDA1B3" }, 5000, null);
 			    }
 		    }
 		});
 	    
-        if (insuredName != null) {
-            self.Model.AuditTrails.push(new ConsoleApp.AuditTrail(0, "Submission", "", "World Check", "World Check requested for insured name: " + insuredName));
+		if (insuredName)
+		{
+			self.Model.AuditTrails.push(new ConsoleApp.AuditTrail(0, "Submission", "", "World Check",
+				"World Check requested for insured name: " + insuredName));
         }
     };
 
-    self.ShowLossRatioGraph = function () {
-        if ($(".val-broker-lossratio-graph", self.Form).html().length > 0) {
+	self.ShowLossRatioGraph = function()
+	{
+		if ($(".val-broker-lossratio-graph", self.Form).html().length > 0)
+		{
 			$(".val-broker-lossratio-modal", self.Form).modal("show");
 		}
 	};
-    self.ShowAuditTrails = function (submissionId) {
+	
+	self.ShowAuditTrails = function(submissionId)
+	{
         $(".val-submission-insuredName-audits", self.Form).html("");
 
         $.ajax(
@@ -1327,7 +1578,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		    type: "GET",
 		    data: { id: submissionId },
 		    dataType: "html",
-		    success: function (data) {
+			success: function(data)
+			{
 		       // var tableConfig = new BaseDataTable();
 		       // tableConfig.aaSorting = [[0, "desc"]];
 		       // tableConfig.aoColumnDefs = [{ "bSortable": false, "aTargets": [1] }];
@@ -1338,15 +1590,18 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		});
       
     };
-    self.BindKO = function (viewModel) {
+	
+	self.BindKO = function(viewModel)
+	{
 
-		if (viewModel === undefined)
+		if (viewModel === undefined) // TODO: What about null values ?
 			ko.applyBindings(self, document.getElementById(domId));
 		else 
 			ko.applyBindings(viewModel, document.getElementById(domId));
 	};
 
-    self.BindUnload = function () {
+	self.BindUnload = function()
+	{
 		/* TODO: Get this working for all browsers, including IE 9
 		if ($.support.leadingWhitespace) // False for IE < 9
 		{
@@ -1355,15 +1610,19 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		}*/
 	};
 
-    self.UnbindUnload = function () {
+	self.UnbindUnload = function()
+	{
 		$(window).unbind("beforeunload." + domId);
 	};
 
-    self.UnloadConfirmation = function (e) {
+	self.UnloadConfirmation = function(e)
+	{
 		var isDirty = (self.DirtyFlag) ? self.DirtyFlag.IsDirty() : false;
 
-        if (e) {
-            if (isDirty) {
+		if (e)
+		{
+			if (isDirty)
+			{
 				toastr.warning("Unsaved Submission changes detected");
 
 				return "You have unsaved changes!";
@@ -1371,7 +1630,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 			return null;
 		}
-        else if (isDirty) {
+		else if (isDirty)
+		{
 			toastr.warning("Unsaved Submission changes detected");
 
 			return window.confirm("You have unsaved changes!\n\rAre you sure you wish to leave ?");
@@ -1380,18 +1640,20 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		return true;
 	};
 
-    self.AttachValidation = function () {
+	self.AttachValidation = function()
+	{
 		/* TODO: Enable once we are ready
         $.validator.unobtrusive.parse("#" + domId + " .form");
 		*/
 	};
 
 	// Note: done at the inheriting submission level to add new properties at quote level etc...
-    self.AddOption = function () {
+	self.AddOption = function()
+	{
 		var length = self.Model.Options().length,
 		    newOption = new Option(length, domId, self),
 			submissionId = self.Model.Id();
-
+	   
 		newOption.SubmissionId(submissionId);
 
 		length = self.Model.Options.push(newOption);
@@ -1401,7 +1663,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		return length;
 	};
 
-    self.CopyOption = function () {
+	self.CopyOption = function()
+	{
 		var length = self.Model.Options().length,
 		    optionIndex = self.OptionIndexToCopy(),
 		    originalOption = self.Model.Options()[optionIndex],
@@ -1419,7 +1682,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		newVersionData.Title = "Version 1";
 		newVersionData.IsLocked = false;
 
-        $.each(newVersionData.Quotes, function (quoteIndex, quoteItem) {
+		$.each(newVersionData.Quotes, function(quoteIndex, quoteItem)
+		{
 			quoteItem.Id = 0;
 			quoteItem.OptionId = 0;
 			quoteItem.VersionNumber = 0;
@@ -1448,7 +1712,7 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	{
 		if (self.DirtyFlag.IsDirty())
 		{
-		    self.Save(element, e, function () { self.CreateQuoteSheet(element); });
+			self.Save(element, e, function() { self.CreateQuoteSheet(element); });
 		}
 		else
 		{
@@ -1456,22 +1720,28 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		}
 	};
 
-    self.CreateQuoteSheet = function (element, e) {
+	self.CreateQuoteSheet = function(element, e)
+	{
 		var quoteSheetTemplateId;
-        if (self.TeamQuoteTemplatesList().length === 0) {
+		if (self.TeamQuoteTemplatesList().length === 0)
+		{
 			toastr.warning("No Templates for quote sheet");
 			return;
 		}
-        else if (self.TeamQuoteTemplatesList().length === 1) {
+		else if (self.TeamQuoteTemplatesList().length === 1)
+		{
 			quoteSheetTemplateId = self.TeamQuoteTemplatesList()[0].Id();
 		}
-        else {
+		else
+		{
 			quoteSheetTemplateId = element.Id();
 		}
 
 		var optionList = [];
-        $.each(self.Model.Options(), function (optionIndex, optionItem) {
-            if (optionItem.AddToQuoteSheet()) {
+		$.each(self.Model.Options(), function(optionIndex, optionItem)
+		{
+			if (optionItem.AddToQuoteSheet())
+			{
 				optionList.push(
 				{
 					OptionId: optionItem.Id(),
@@ -1480,7 +1750,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 			}
 		});
 
-        if (optionList.length === 0) {
+		if (optionList.length === 0)
+		{
 			toastr.warning("No options selected for quote sheet");
 			return;
 		}
@@ -1499,12 +1770,14 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 				SubmissionId: self.Model.Id(),
 				OptionList: optionList
 			}),
-		    success: function (data, status, xhr) {
+			success: function(data, status, xhr)
+			{
 				toastr.info("Quote sheet created");
 
 				self.SetDocumentDetails();
 
-		        if (data.Submission) {
+				if (data.Submission)
+				{
 					toastr.success("Submission updated");
 
 					self.syncJSON(data.Submission);
@@ -1515,19 +1788,23 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 				var responseLocation = xhr.getResponseHeader("Location");
 
-		        if (responseLocation) {
+				if (responseLocation)
+				{
 					window.open(responseLocation, "_blank");
 				}
 			},
-		    complete: function (xhr, status) {
+			complete: function(xhr, status)
+			{
 				self.CanCreateQuoteSheet(true);
 				self.CreatingQuoteSheet(false);
 			}
 		});
 	};
 
-    self.ToggleComparison = function () {
-        $(".val-optioncomparison-datatable", $("#" + domId)).each(function () {
+	self.ToggleComparison = function()
+	{
+		$(".val-optioncomparison-datatable", $("#" + domId)).each(function()
+		{
 			if ($(this).is(":visible")) $(this).hide();
 			else $(this).show();
 		});
@@ -1550,8 +1827,10 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	};
 	*/
 
-    self.Cancel = function () {
-        if (self.UnloadConfirmation(null)) {
+	self.Cancel = function()
+	{
+		if (self.UnloadConfirmation(null))
+		{
 			self.UnbindUnload();
 
 			// TODO: Kill view model ?
@@ -1565,7 +1844,7 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		self.IsSaving(true);
 		self.CanCreateQuoteSheet(false);
 
-		if (self.Form.valid())
+		//if (self.Form.valid()) TODO: Replace with Knockout Validation IsValid() check
 		{
 			var modelJSON = self.toJSON(),
 			    isNew = (self.Id === 0);
@@ -1574,8 +1853,8 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 			$.ajax(
 			{
-					url: url ? url : (!isNew) ? "/api/submissionapi/EditSubmission" : "/api/submissionapi/CreateSubmission",
-					headers: { 'X-SubmissionType': self.Model.submissionTypeId() },
+					url: url ? url : (!isNew) ? "/api/submissionapi/editsubmission" : "/api/submissionapi/createsubmission",
+					headers: { 'X-SubmissionType': self.Model.submissionTypeId() }, // TODO: I am guessing that this is not valid HTML5
 					type: (!isNew) ? "PUT" : "POST",
 					data: modelJSON,
 					dataType: "json",
@@ -1602,11 +1881,14 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 						
 						self.IsLoading(true);
 						
-						if (data)
+						if (data.Submission)
 						{
-							self.syncJSON(data);
-							if (syncCallback) syncCallback(data);
+							self.syncJSON(data.Submission);
+
+							if (syncCallback) syncCallback(data.Submission);
+
 							self.ShowAuditTrails(self.Model.Id());
+							
 							toastr.success("Submission synchronised");
 						}
 						
@@ -1702,18 +1984,21 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 					}
 				});
 		}
-		else
-		{
-			// TODO: This is probably not sufficient...
-			toastr.warn("Submission validation failed");
-		}
+		//else
+		//{
+		//	// TODO: This is probably not sufficient...
+		//	toastr.warning("Submission validation failed");
+		//}
 	};
 
-    self.CanCreateQuoteSheetCheck = ko.computed(function () {
+	self.CanCreateQuoteSheetCheck = ko.computed(function()
+	{
 		var canCreate = false;
 
-        $.each(self.Model.Options(), function (optionIndex, optionItem) {
-            $.each(optionItem.CurrentVersion().Quotes(), function (quoteIndex, quoteItem) {
+		$.each(self.Model.Options(), function(optionIndex, optionItem)
+		{
+			$.each(optionItem.CurrentVersion().Quotes(), function(quoteIndex, quoteItem)
+			{
 				canCreate = /\S/g.test(quoteItem.SubscribeReference());
 
 				return canCreate;
@@ -1726,10 +2011,11 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 	}, self);
 
 	// Subscriptions / Computed
-    self.Model.InsuredName.subscribe(function (value) {
+	self.Model.InsuredName.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [],
-            insuredName = (values[0]) ? values[0].trim() : "",
-            insuredId = (values[1]) ? values[1].trim() : "0";
+            insuredName = (values[0]) ? $.trim(values[0]) : "",
+            insuredId = (values[1]) ? $.trim(values[1]) : "0";
 
 		self.Model.InsuredId(insuredId);
 
@@ -1739,53 +2025,62 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 		self.SetInsuredTabLabel(insuredName);
 	});
 
-    self.Model.Broker.subscribe(function (value) {
+	self.Model.Broker.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.BrokerCode((values[0]) ? values[0].trim() : "");
-		self.Model.BrokerPseudonym((values[1]) ? values[1].trim() : "");
-		self.Model.BrokerSequenceId((values[3]) ? values[3].trim() : "");
+		self.Model.BrokerContact('');
 
-		var brokerCd = (values[4]) ? values[4].trim() : "";
+		self.Model.BrokerCode((values[0]) ? $.trim(values[0]) : "");
+		self.Model.BrokerPseudonym((values[1]) ? $.trim(values[1]) : "");
+		self.Model.BrokerSequenceId((values[3]) ? $.trim(values[3]) : "");
+
+		var brokerCd = (values[4]) ? $.trim(values[4]) : "";
 		self.SetBrokerLossRatios(brokerCd);
 		self.SetBrokerSummary(brokerCd);
 	});
 
-    self.Model._NonLondonBroker.subscribe(function (value) {
+	self.Model._NonLondonBroker.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.NonLondonBrokerCode((values[0]) ? values[0].trim() : "");
-		self.Model.NonLondonBrokerName((values[1]) ? values[1].trim() : "");
+		self.Model.NonLondonBrokerCode((values[0]) ? $.trim(values[0]) : "");
+		self.Model.NonLondonBrokerName((values[1]) ? $.trim(values[1]) : "");
 	});
 
-    self.Model._Underwriter.subscribe(function (value) {
+	self.Model._Underwriter.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.UnderwriterCode((values[0]) ? values[0].trim() : "");
+		self.Model.UnderwriterCode((values[0]) ? $.trim(values[0]) : "");
 	});
 
-    self.Model._UnderwriterContact.subscribe(function (value) {
+	self.Model._UnderwriterContact.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.UnderwriterContactCode((values[0]) ? values[0].trim() : "");
+		self.Model.UnderwriterContactCode((values[0]) ? $.trim(values[0]) : "");
 	});
 
-    self.Model._Leader.subscribe(function (value) {
+	self.Model._Leader.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.Leader((values[0]) ? values[0].trim() : "");
+		self.Model.Leader((values[0]) ? $.trim(values[0]) : "");
 	});
 
-    self.Model._Domicile.subscribe(function (value) {
+	self.Model._Domicile.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.Domicile((values[0]) ? values[0].trim() : "");
+		self.Model.Domicile((values[0]) ? $.trim(values[0]) : "");
 	});
 
-    self.Model._QuotingOffice.subscribe(function (value) {
+	self.Model._QuotingOffice.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.Model.QuotingOfficeId((values[0]) ? values[0].trim() : "");
+		self.Model.QuotingOfficeId((values[0]) ? $.trim(values[0]) : "");
     });
 
     self.CurrentOption = function()
@@ -1800,40 +2095,46 @@ function vmSubmissionBase(id, domId, initilizeSelf)
 
 	// Initialize Methods
 
-	self.InitialiseTabs = function(element)
-	{
+	self.InitialiseTabs = function(element) {
+		//console.log('InitialiseTabs()');
 		ConsoleApp.InitialiseTabs(element, domId, self);
 	};
 
 	self.InitialisePane = function(element)
 	{
+		//console.log('InitialisePane()');
 		ConsoleApp.InitialisePane(element, self);
 	};
 
 	// Setup
-	if (initilizeSelf === true) {
-		console.log(initilizeSelf);
+	if (initialiseSelf === true)
+	{
+		//console.log('initilizeSelf?');
+		//console.log(initilizeSelf);
 		self.Initialise();
 	}
 
 }
 
 function Option(optionIndex, domId, parent) {
-	var self = this,
-		optionNumber = optionIndex + 1;
+    var self = this;
+    self.optionNumber = optionIndex + 1;
 
-    self.GetParent = function () {
+	self.GetParent = function()
+	{// TODO: Use knockout $parents
 		return parent;
 	};
-
-    self.GetIndex = function () {
+	if (!!self.GetParent().Model.Options()[self.GetParent().Model.Options().length-1])
+	    self.optionNumber = self.GetParent().Model.Options()[self.GetParent().Model.Options().length - 1].optionNumber + 1;
+	self.GetIndex = function()
+	{
 		return optionIndex;
 	};
 
 	self.Id = ko.observable(0);
 	self.SubmissionId = ko.observable(0);
 	self.Timestamp = ko.observable("");
-	self.Title = ko.observable("Option " + optionNumber);
+	self.Title = ko.observable("Option " + self.optionNumber);
 	self.Comments = ko.observable("");
 	self.VersionIndex = ko.observable(0);
 	self.OptionVersions = ko.observableArray([new OptionVersion(0, domId, self)]);
@@ -1842,12 +2143,13 @@ function Option(optionIndex, domId, parent) {
 	self.AddToQuoteSheet = ko.observable(true);
 	self.EnableAddToQuoteSheet = ko.observable(true);
 	self.IsCurrentQuoteQuoted = ko.observable(false);
-
+    
     //  Initialise additional observables defined in inheriting
 	if (parent.OAddAdditional)
 	    parent.OAddAdditional(self);
 
-    self.SetVersionIndex = function (element) {
+	self.SetVersionIndex = function(element)
+	{
 		var versionNumber = ko.utils.peekObservable(element.VersionNumber()),
 			versionCount = self.OptionVersions().length,
 			versionIndex = (versionCount - versionNumber) - 1;
@@ -1855,7 +2157,8 @@ function Option(optionIndex, domId, parent) {
 		self.VersionIndex(versionIndex);
 	};
 
-    self.AddOptionVersion = function () {
+	self.AddOptionVersion = function()
+	{
 		var versionData = self.CurrentVersion().koTrim();
 
 		parent.AttachValidation();
@@ -1863,7 +2166,8 @@ function Option(optionIndex, domId, parent) {
 		return self.CopyOptionVersion(versionData);
 	};
 
-    self.CopyOptionVersion = function (versionData) {
+	self.CopyOptionVersion = function(versionData)
+	{
 		var length = self.OptionVersions().length,
 			newVersion = new OptionVersion(length, domId, self);
 
@@ -1872,22 +2176,25 @@ function Option(optionIndex, domId, parent) {
 		versionData.VersionNumber = newVersion.VersionNumber();
 		versionData.IsLocked = false;
 
-        $.each(versionData.Quotes, function (quoteIndex, quoteItem) {
+		$.each(versionData.Quotes, function(quoteIndex, quoteItem)
+		{
 			quoteItem.Id = 0;
 			quoteItem.OptionId = 0;
 			quoteItem.VersionNumber = versionData.VersionNumber;
 			quoteItem.Timestamp = "";
 			quoteItem.SubmissionStatus = "SUBMITTED";
 
-            if (quoteItem.IsSubscribeMaster === true) {
-                if (self.CurrentVersion().Quotes()[quoteIndex].CorrelationToken() === quoteItem.CorrelationToken) {
+			if (quoteItem.IsSubscribeMaster === true)
+			{
+				if (self.CurrentVersion().Quotes()[quoteIndex].CorrelationToken() === quoteItem.CorrelationToken)
+				{
 					self.CurrentVersion().Quotes()[quoteIndex].IsSubscribeMaster(false);
 				}
 			}
 		});
 
 		newVersion.syncJSON(versionData);
-
+	    
 		length = self.OptionVersions.unshift(newVersion);
 
 		self.VersionIndex(0);
@@ -1895,11 +2202,13 @@ function Option(optionIndex, domId, parent) {
 		return length;
 	};
 
-    self.NavigateToOption = function (element, e) {
+	self.NavigateToOption = function(element, e)
+	{
 		$("a[data-toggle='tab'][data-target='#" + domId + "-option" + optionIndex + "']").tab("show");
 	};
 
-    self.NavigateToQuote = function (element, e) {
+	self.NavigateToQuote = function(element, e)
+	{
 		var optionDomId = domId + "-option" + optionIndex,
 			quoteIndex = parseInt($(e.target).text());
 
@@ -1909,7 +2218,8 @@ function Option(optionIndex, domId, parent) {
 		$("#" + optionDomId + " .carousel").carousel(parseInt(quoteIndex));
 	};
 
-    self.SetMaster = function (element, e) {
+	self.SetMaster = function(element, e)
+	{
 		var optionDomId = domId + "-option" + optionIndex,
 			quoteIndex = parseInt($(e.target).text());
 
@@ -1920,7 +2230,8 @@ function Option(optionIndex, domId, parent) {
 		$("#" + optionDomId + " .carousel").carousel(parseInt(quoteIndex));
 	};
 
-    self.VersionTitle = ko.computed(function () {
+	self.VersionTitle = ko.computed(function()
+	{
 		var optionTitle = self.Title(),
 			versionIndex = self.VersionIndex(),
 	        versionTitle = (self.OptionVersions()[versionIndex])
@@ -1934,19 +2245,22 @@ function Option(optionIndex, domId, parent) {
 		//	: optionTitle;
 	}, self);
 
-    self.VersionCount = ko.computed(function () {
+	self.VersionCount = ko.computed(function()
+	{
 		return self.OptionVersions().length;
 	}, self);
 
-    self.CurrentVersion = ko.computed(function () {
+	self.CurrentVersion = ko.computed(function()
+	{
 		return self.OptionVersions()[self.VersionIndex()];
 	}, self);
 
-    self.CurrentQuote = ko.computed(function () {
+	self.CurrentQuote = ko.computed(function()
+	{
 		var optionDomId = domId + "-option" + optionIndex,
 		    quoteDomId = optionDomId + " .carousel .carousel-indicators li.active",
 		    quoteIndex = $("#" + quoteDomId).index(),
-		    currentQuote = (quoteIndex >= 0)
+		    currentQuote = (quoteIndex >= 0 && self.CurrentVersion().Quotes().length > quoteIndex)
 			    ? self.CurrentVersion().Quotes()[quoteIndex]
 			    : self.CurrentVersion().Quotes()[0];
 
@@ -1973,16 +2287,40 @@ function Option(optionIndex, domId, parent) {
 
     	return isValid;
     }, self);
+
+
+    self.CanDelete = ko.computed(function () {
+        var candelete = true;
+        ko.utils.arrayForEach(this.OptionVersions(), function (optionVersion) {
+            candelete = candelete && optionVersion.CanDeleteCheck();
+        });
+        candelete = candelete && (self.GetParent().Model.Options().length > 1);
+        return candelete;
+    }, self);
+    
+    self.DeleteOption = function (data,event) {
+        toastr.info("Delete Option - " + self.Title());
+        event.preventDefault();
+        toastr.info("Delete Option - " + self.Title());
+        toastr.info("Quotes in collection - " + self.GetParent().Model.Options().length);
+        self.GetParent().Model.Options.remove(data);
+        toastr.info("Deleted Option - " + self.Title());
+        toastr.info("Quotes in collection - " + self.GetParent().Model.Options().length);
+    };
+
 }
 
-function OptionVersion(versionNumber, domId, parent) {
+function OptionVersion(versionNumber, domId, parent)
+{
 	var self = this;
 
-    self.GetParent = function () {
+	self.GetParent = function()
+	{// TODO: Use knockout $parents
 		return parent;
 	};
 
-    self.GetVersionNumber = function () {
+	self.GetVersionNumber = function()
+	{
 		return versionNumber;
 	};
 
@@ -2002,16 +2340,19 @@ function OptionVersion(versionNumber, domId, parent) {
 
 	self.CanAddQuotes = ko.observable(versionNumber === 0);
 
-    self.Initialise = function () {
+	self.Initialise = function()
+	{
 		self.AddQuote();
 	};
 
-    self.AddQuote = function (quote, e, useNewQuoteWithExtraProperties)
+	self.AddQuote = function(quote, e, useNewQuoteWithExtraProperties)
     {
-		var length;
-        if (useNewQuoteWithExtraProperties === true) {
+		var length; // TODO: Use conditional ternary operator
+		if (useNewQuoteWithExtraProperties === true)
+        {
 			length = self.Quotes.push(quote);
-		} else {
+		} else
+		{
 			length = self.Quotes.push(new Quote(domId, self));
 		}
 		
@@ -2021,53 +2362,52 @@ function OptionVersion(versionNumber, domId, parent) {
 		return length;
 	};
 
-    self.VersionNumber.subscribe(function (value) {
-        $.each(self.Quotes(), function (quoteIndex, quoteItem) {
+	self.VersionNumber.subscribe(function(value)
+	{
+		$.each(self.Quotes(), function(quoteIndex, quoteItem)
+		{
 			quoteItem.VersionNumber(value);
 		});
 	});
+
+	self.CanDeleteCheck = function () {
+	    var candelete = true;
+	    ko.utils.arrayForEach(this.Quotes(), function (quote) {
+	        candelete = candelete && quote.CanDeleteCheck();
+	    });
+	    return candelete;
+    };
+
+    self.CanDelete = ko.computed(function () {
+	    var candelete = true;
+	    candelete = candelete && self.CanDeleteCheck();
+	    candelete = candelete && !!self.GetParent().OptionVersions && (self.GetParent().OptionVersions().length > 1);
+	    return candelete;
+	}, self);
+    
+	self.DeleteOptionVersion = function (data,event) {
+	    toastr.info("Delete OptionVersion - " + self.Title());
+	    toastr.info("Quotes in collection - " + self.GetParent().Quotes().length);
+	    self.GetParent().OptionVersions.remove(data);
+	    toastr.info("Delete OptionVersion - " + self.Title());
+	    toastr.info("Quotes in collection - " + self.GetParent().Quotes().length);
+	};
 
 	self.Initialise();
 }
 
 function Quote(domId, parent) {
 	var self = this,
-	    token = $.generateGuid(),
-        submissionStatuses = ["SUBMITTED", "QUOTED", "FIRM ORDER", "DECLINED"], // TODO: Dynamically retrieve list from Validus.Services
-        entryStatuses = ["NTU", "PARTIAL"], // TODO: Dynamically retrieve list from Validus.Services
-        //policyTypes = ["AVIATION", "FAC R/I", "INPROP TTY", "INWARD X/L", "MARINE", "NONMARINE", "PACKAGE", "PROP TTY", "X/L R/I"],
-        policyTypes = [{ id: 1, value: 'MARINE' }, { id: 2, value: 'NONMARINE' }],
+		token = $.generateGuid(),
+		submissionStatuses = ["SUBMITTED", "QUOTED", "FIRM ORDER", "DECLINED"], // TODO: Dynamically retrieve list from Validus.Services
+		entryStatuses = ["NTU", "PARTIAL"], // TODO: Dynamically retrieve list from Validus.Services
+		//policyTypes = ["AVIATION", "FAC R/I", "INPROP TTY", "INWARD X/L", "MARINE", "NONMARINE", "PACKAGE", "PROP TTY", "X/L R/I"],
+		policyTypes = ["MARINE", "NONMARINE"];
 		//technicalPricingBindStatusList = [""], // TODO: ???
 		//technicalPricingPremiumPctgAmtList = [""], // TODO: ???
-	    declinatureReasons = ["", // TODO: Dynamically retrieve list from Validus.Services
-		    "Attachment point too low",
-		    "Broker did not win the account",
-		    "Cat Exposed",
-		    "Cedent did not win the account",
-		    "Ceding Company declined to write",
-		    "Ceding Company security",
-		    "Class of Business",
-		    "Clearance - max line already out",
-		    "Excluded class",
-		    "Incumbent Loyalty",
-		    "Lack of information",
-		    "Loss experience",
-		    "Never materialised",
-		    "Occupancy",
-		    "Other",
-		    "Price",
-		    "Pricing inadequate",
-		    "Production source",
-		    "Quota Share",
-		    "Risk quality",
-		    "Source",
-		    "TBA",
-		    "Terrorism",
-		    "Unable to offer sufficient capacity",
-		    "Unacceptable terms and conditions"];
-
+	    
 	self.GetParent = function()
-	{
+	{// TODO: Use knockout $parents
 		return parent;
 	};
 
@@ -2087,8 +2427,7 @@ function Quote(domId, parent) {
 	self.FacilityRef = ko.observable("");
 
 	self.PolicyTypeList = ko.observableArray(policyTypes);
-	self.SelectedPolicyType = ko.observable("");
-	self.PolicyType = ko.observable('NONMARINE');
+	self.PolicyType = ko.observable("NONMARINE");
 
 	self.EntryStatus = ko.observable("PARTIAL");
 	self.EntryStatusList = ko.observableArray(entryStatuses);
@@ -2132,9 +2471,10 @@ function Quote(domId, parent) {
 	self._ExcessCCY = ko.observable("");
 
 	self.Comment = ko.observable("");
+	self.Description = ko.observable("");
 	self.DeclinatureReason = ko.observable("");
 	self.DeclinatureComments = ko.observable("");
-	self.DeclinatureReasonList = ko.observableArray(declinatureReasons);
+	self.DeclinatureReasonList = ko.observableArray();
 
 	self.ValidationErrors = ko.observable("");
 
@@ -2151,38 +2491,51 @@ function Quote(domId, parent) {
 	if (parent.GetParent().GetParent().QAddAdditional)
 	    parent.GetParent().GetParent().QAddAdditional(self);
 
-	self.Initialise = function() {
-		console.log('Quote Initialise');
+    self.Initialise = function()
+{
+	//console.log("Quote Initialise");
 
-        var defaultQuoteExpiry = $("input[type='hidden'][name='DefaultQuoteExpiry']", self.Form).val(),
-             defaultOffice = $("input[type='hidden'][name='DefaultOffice']", self.Form).val(),
-             defaultPolicyType = $("input[type='hidden'][name='DefaultPolicyType']", self.Form).val();
+	self.LoadDeclinatureReasons();
 
-        defaultQuoteExpiry = parseInt(defaultQuoteExpiry);
+	// TODO: Change to use a user settings view model
+	var defaultQuoteExpiry = $("input[type='hidden'][name='DefaultQuoteExpiry']", self.Form).val(),
+		defaultOffice = $("input[type='hidden'][name='DefaultOffice']", self.Form).val(),
+		defaultPolicyType = $("input[type='hidden'][name='DefaultPolicyType']", self.Form).val();
 
-        if (!isNaN(defaultQuoteExpiry))
-        {
-        	var quoteExpiryDate = moment().add("d", defaultQuoteExpiry);
+    defaultQuoteExpiry = parseInt(defaultQuoteExpiry);
 
-        	if (quoteExpiryDate && quoteExpiryDate.isValid())
-        		quoteExpiryDate = quoteExpiryDate.format("YYYY-MM-DD");
-        }
+    if (!isNaN(defaultQuoteExpiry))
+    {
+        var quoteExpiryDate = moment().add("d", defaultQuoteExpiry);
 
-        if (defaultQuoteExpiry) self.QuoteExpiryDate(quoteExpiryDate);
-		
-	    if (defaultPolicyType) {
-	    	self.PolicyType(self.PolicyTypeList.find('value', { value: defaultPolicyType }));
-		}
+	    if (quoteExpiryDate && quoteExpiryDate.isValid())
+	    {
+	    	self.QuoteExpiryDate(quoteExpiryDate.format("DD MMM YYYY"));
+	    }
+    }
 
-		if (defaultOffice) self._OriginatingOffice(defaultOffice);
+	if (defaultPolicyType) self.PolicyType(defaultPolicyType);
+	if (defaultOffice) self._OriginatingOffice(defaultOffice);
+};
+	
+	self.LoadDeclinatureReasons = function()
+	{
+		var ajaxConfig = { Url: window.ValidusServicesUrl + "DeclinatureReason/", VerbType: "GET" },
+		    response = ConsoleApp.AjaxHelper(ajaxConfig);
+
+		response.success(function(data) {
+			var declineList = [""];
+			$.each(data, function(index, item) {
+				declineList.push(item.Value);
+			});
+			self.DeclinatureReasonList(declineList);
+		});
 	};
 
-	self.SelectedPolicyType.subscribe(function(newVal) {
-		self.PolicyType(newVal.value);
-	});
-
-    self.SubmissionStatus.subscribe(function (value) {
-        if (value !== "DECLINED") {
+	self.SubmissionStatus.subscribe(function(value)
+	{
+		if (value !== "DECLINED")
+		{
 			self.DeclinatureReason("");
 			self.DeclinatureComments("");
 		}
@@ -2193,12 +2546,14 @@ function Quote(domId, parent) {
 		self.SyncSlaveObservables("SubmissionStatus", value);
 	});
 
-    self.DeclinatureReason.subscribe(function (value) {
+	self.DeclinatureReason.subscribe(function(value)
+	{
 
 		self.SyncSlaveObservables("DeclinatureReason", value);
 	});
 
-    self.DeclinatureComments.subscribe(function (value) {
+	self.DeclinatureComments.subscribe(function(value)
+	{
 		self.SyncSlaveObservables("DeclinatureComments", value);
 	});
 
@@ -2206,7 +2561,7 @@ function Quote(domId, parent) {
     {
 	    var facilityValues = value ? value.split(":") : [];
 
-	    self.FacilityRef(facilityValues[0] ? facilityValues[0].trim() : "");
+	    self.FacilityRef(facilityValues[0] ? $.trim(facilityValues[0]) : "");
     });
 	
 	self.FacilityRef.subscribe(function(value)
@@ -2214,78 +2569,94 @@ function Quote(domId, parent) {
 		self.SyncSlaveObservables("FacilityRef", value);
 	});
 
-    self._OriginatingOffice.subscribe(function (value) {
+	self._OriginatingOffice.subscribe(function(value)
+	{
     	var values = (value) ? value.split(":") : [];
 
-		self.OriginatingOfficeId((values[0]) ? values[0].trim() : "");
+    	self.OriginatingOfficeId((values[0]) ? $.trim(values[0]) : "");
 
 		self.SyncSlaveObservables("_OriginatingOffice", value);
 	});
 
-    self._COB.subscribe(function (value) {
+	self._COB.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.COBId((values[0]) ? values[0].trim() : "");
+		self.COBId((values[0]) ? $.trim(values[0]) : "");
 
 		self.SyncSlaveObservables("_COB", value);
 	});
 
-    self._MOA.subscribe(function (value) {
+	self._MOA.subscribe(function(value)
+	{
 		var values = (value) ? value.split(":") : [];
 
-		self.MOA((values[0]) ? values[0].trim() : "");
+		self.MOA((values[0]) ? $.trim(values[0]) : "");
 
 		self.SyncSlaveObservables("_MOA", value);
 	});
 
-    self.PolicyType.subscribe(function (value) {
+	self.PolicyType.subscribe(function(value)
+	{
 		self.SyncSlaveObservables("PolicyType", value);
 	});
 
-    self.EntryStatus.subscribe(function (value) {
+	self.EntryStatus.subscribe(function(value)
+	{
 		self.SyncSlaveObservables("EntryStatus", value);
 	});
 
-    self.InceptionDate.subscribe(function (value) {
-        if ((value !== undefined) && (value !== null)) {
+	self.InceptionDate.subscribe(function(value)
+	{
+		if ((value !== undefined) && (value !== null))
+		{
 			var inceptionDate = moment(value);
 
-            if (inceptionDate && inceptionDate.isValid()) {
+			if (inceptionDate && inceptionDate.isValid())
+			{
 				self.AccountYear(inceptionDate.format("YYYY"));
-				self.ExpiryDate(inceptionDate.add("y", 1).subtract("d", 1).format("YYYY-MM-DD"));
+				self.ExpiryDate(inceptionDate.add("y", 1).subtract("d", 1).format("DD MMM YYYY"));
 			}
 		}
 
 		self.SyncSlaveObservables("InceptionDate", value);
 	});
 
-    self.ExpiryDate.subscribe(function (value) {
-        if ((value !== undefined) && (value !== null)) {
+	self.ExpiryDate.subscribe(function(value)
+	{
+		if ((value !== undefined) && (value !== null))
+		{
 			var expiryDate = moment(value);
 
-            if (expiryDate && expiryDate.isValid()) {
-				self.SyncSlaveObservables("ExpiryDate", expiryDate.format("YYYY-MM-DD"));
+			if (expiryDate && expiryDate.isValid())
+			{
+				self.SyncSlaveObservables("ExpiryDate", expiryDate.format("DD MMM YYYY"));
 			}
 		}
 	});
 
-    self.AccountYear.subscribe(function (value) {
+	self.AccountYear.subscribe(function(value)
+	{
 		self.SyncSlaveObservables("AccountYear", value);
 	});
 
-    self.IsSubscribeMaster.subscribe(function (value) {
+	self.IsSubscribeMaster.subscribe(function(value)
+	{
 		self.SyncSlaveObservables("IsSubscribeMaster", false);
 	});
 
-    self.TechnicalPricingMethodList.subscribe(function (value) {
-        if ((value !== undefined) && (value !== null)) {
+	self.TechnicalPricingMethodList.subscribe(function(value)
+	{
+		if ((value !== undefined) && (value !== null))
+		{
 			self.TechnicalPricingMethod(value);
 		}
 	});
 
-    self._Currency.subscribe(function (value) {
+	self._Currency.subscribe(function(value)
+	{
 		var currencyValues = (value) ? value.split(":") : [],
-			currencyPsu = (currencyValues[0]) ? currencyValues[0].trim() : "";
+			currencyPsu = (currencyValues[0]) ? $.trim(currencyValues[0]) : "";
 
 		self.Currency(currencyPsu);
         		
@@ -2298,36 +2669,42 @@ function Quote(domId, parent) {
 		}
 	});
 
-    self._LimitCCY.subscribe(function (value) {
+	self._LimitCCY.subscribe(function(value)
+	{
 		var currencyValues = (value) ? value.split(":") : [],
-			currencyPsu = (currencyValues[0]) ? currencyValues[0].trim() : "";
+			currencyPsu = (currencyValues[0]) ? $.trim(currencyValues[0]) : "";
 
 		self.LimitCCY(currencyPsu);
 	});
 
-    self._ExcessCCY.subscribe(function (value) {
+	self._ExcessCCY.subscribe(function(value)
+	{
 		var currencyValues = (value) ? value.split(":") : [],
-			currencyPsu = (currencyValues[0]) ? currencyValues[0].trim() : "";
+			currencyPsu = (currencyValues[0]) ? $.trim(currencyValues[0]) : "";
 
 		self.ExcessCCY(currencyPsu);
 	});
 
-    self.EnableSubscribeMaster = ko.computed(function () {
+	self.EnableSubscribeMaster = ko.computed(function()
+	{
 		return !self.IsSubscribeMaster();
 	}, self);
 
-    self.IsLiveOrCancelled = ko.computed(function () {
+	self.IsLiveOrCancelled = ko.computed(function()
+	{
 		var entryStatus = self.EntryStatus();
 
 		return ((entryStatus === "LIVE") || (entryStatus === "CANCELLED"));
 	}, self);
 
-    self.IsLocked = ko.computed(function () {
+	self.IsLocked = ko.computed(function()
+	{
 		return self.SubmissionStatus() === "QUOTED"
     		|| self.IsLiveOrCancelled();
 	}, self);
 
-    self.ShowDeclinatureDialog = function () {
+	self.ShowDeclinatureDialog = function()
+	{
 		var vmOption = parent.GetParent(),
 		    optionDomId = domId + "-option" + vmOption.GetIndex(),
 		    quoteDomId = optionDomId + " .carousel .carousel-inner div.active",
@@ -2336,16 +2713,23 @@ function Quote(domId, parent) {
 		$("#" + modalDomId).modal("show");
 	};
 
-    self.SyncSlaveObservables = function (observableName, value) {
-        if (self.IsSubscribeMaster()) {
+	self.SyncSlaveObservables = function(observableName, value)
+	{
+		if (self.IsSubscribeMaster())
+		{
 			var vmSubmission = parent.GetParent().GetParent();
 
-            $.each(vmSubmission.Model.Options(), function (optionIndex, optionData) {
-                $.each(optionData.OptionVersions(), function (versionIndex, versionData) {
-                    if (!versionData.IsLocked() || observableName === "IsSubscribeMaster") {
-                        $.each(versionData.Quotes(), function (quoteIndex, quoteData) {
+			$.each(vmSubmission.Model.Options(), function(optionIndex, optionData)
+			{
+				$.each(optionData.OptionVersions(), function(versionIndex, versionData)
+				{
+					if (!versionData.IsLocked() || observableName === "IsSubscribeMaster")
+					{
+						$.each(versionData.Quotes(), function(quoteIndex, quoteData)
+						{
 							if (quoteData.CorrelationToken() === self.CorrelationToken()
-								&& quoteData !== self) {
+								&& quoteData !== self)
+							{
 								quoteData[observableName](value);
 							}
 						});
@@ -2353,6 +2737,27 @@ function Quote(domId, parent) {
 				});
 			});
 		}
+	};
+
+	self.CanDeleteCheck = function () {
+	    var candelete = true;
+	    candelete = candelete && !(self.IsSubscribeMaster() && self.SubscribeReference().length>0);
+	    return candelete;
+    };
+	self.CanDelete = ko.computed(function () {
+	    var candelete = true;
+	    candelete = candelete && self.CanDeleteCheck();
+	    candelete = candelete && (self.GetParent().Quotes().length > 1);
+	    return candelete;
+	}, self);
+
+	self.DeleteQuote = function (data, event) {
+	    event.preventDefault();
+        toastr.info("Delete Quote - " + self.COBId());
+        toastr.info("Quotes in collection - " + self.GetParent().Quotes().length);
+        self.GetParent().Quotes.remove(data);
+        toastr.info("Deleted Quote - " + self.COBId());
+        toastr.info("Quotes in collection - " + self.GetParent().Quotes().length);
     };
 	
 	self.Initialise();
@@ -2369,7 +2774,8 @@ function Quote(domId, parent) {
 		thisSubmission.syncJSON(jsonData);
 */
 
-vmSubmissionBase.prototype.syncJSON = function (submissionData) {
+vmSubmissionBase.prototype.syncJSON = function(submissionData)
+{
 	var self = this,
 	    vmSubmission = this.Model;
 
@@ -2387,9 +2793,12 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 	*/
 	if ((submissionData.Broker != undefined) && (submissionData.Broker != null))
 		vmSubmission.Broker(submissionData.Broker);
-    else {
-	    $.getJSON(window.ValidusServicesUrl + "Broker", { id: submissionData.BrokerSequenceId }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "Broker", { id: submissionData.BrokerSequenceId }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmSubmission.Broker(item.Code
 							+ " : " + item.Psu
 							+ " : " + item.Name
@@ -2403,9 +2812,12 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	if ((submissionData._Underwriter != undefined) && (submissionData._Underwriter != null))
 		vmSubmission._Underwriter(submissionData._Underwriter);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "Underwriter", { code: submissionData.UnderwriterCode }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "Underwriter", { code: submissionData.UnderwriterCode }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmSubmission._Underwriter(item.Code + " : " + item.Name);
 
 				return false;
@@ -2415,9 +2827,12 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	if ((submissionData._UnderwriterContact != undefined) && (submissionData._UnderwriterContact != null))
 		vmSubmission._UnderwriterContact(submissionData._UnderwriterContact);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "Underwriter", { code: submissionData.UnderwriterContactCode }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "Underwriter", { code: submissionData.UnderwriterContactCode }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmSubmission._UnderwriterContact(item.Code + " : " + item.Name);
 
 				return false;
@@ -2429,9 +2844,12 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	if ((submissionData._Domicile != undefined) && (submissionData._Domicile != null))
 		vmSubmission._Domicile(submissionData._Domicile);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "Domicile", { code: submissionData.Domicile }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "Domicile", { code: submissionData.Domicile }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmSubmission._Domicile(item.Code + " : " + item.Name);
 
 				return false;
@@ -2441,9 +2859,12 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	if ((submissionData._QuotingOffice != undefined) && (submissionData._QuotingOffice != null))
 		vmSubmission._QuotingOffice(submissionData._QuotingOffice);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "Office", { code: submissionData.QuotingOfficeId }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "Office", { code: submissionData.QuotingOfficeId }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmSubmission._QuotingOffice(item.Code + " : " + item.Name);
 
 				return false;
@@ -2453,9 +2874,15 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	if ((submissionData._NonLondonBroker != undefined) && (submissionData._NonLondonBroker != null))
 	    vmSubmission._NonLondonBroker(submissionData._NonLondonBroker);
-    else if (submissionData.NonLondonBrokerCode) {
-	    $.getJSON(window.ValidusServicesUrl + "NonLondonBroker", { code: submissionData.NonLondonBrokerCode }, function (jsonData) {
-	        $(jsonData).each(function (index, item) {
+	else if (submissionData.NonLondonBrokerCode)
+	{
+		$.getJSON(window.ValidusServicesUrl + "NonLondonBroker", {
+			code: submissionData.NonLondonBrokerCode,
+			office: submissionData.QuotingOfficeId
+		}, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 	            vmSubmission._NonLondonBroker(item.Code + " : " + item.Name);
 
 	            return false;
@@ -2471,13 +2898,13 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	vmSubmission.QuotingOfficeId(submissionData.QuotingOfficeId);
 	vmSubmission.QuotingOffice(submissionData.QuotingOffice); // TODO: Is this ever used ?
-    if (submissionData.NonLondonBrokerCode) {
+	if (submissionData.NonLondonBrokerCode)
+	{
 	    vmSubmission.NonLondonBrokerCode(submissionData.NonLondonBrokerCode);
 	}
 
 	vmSubmission.Title(submissionData.Title);
 	vmSubmission.UnderwriterNotes(submissionData.UnderwriterNotes);
-	vmSubmission.Description(submissionData.Description);
 
 	vmSubmission.InsuredName(submissionData.InsuredName + " : " + submissionData.InsuredId);
 	vmSubmission.InsuredId(submissionData.InsuredId);
@@ -2492,16 +2919,20 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 	vmSubmission.Domicile(submissionData.Domicile);
 	vmSubmission.Brokerage(submissionData.Brokerage);
 
-    if (vmSubmission.Options().length !== submissionData.Options.length) {
-        while (vmSubmission.Options().length !== 0) {
+	if (vmSubmission.Options().length !== submissionData.Options.length)
+	{
+    	while (vmSubmission.Options().length !== 0)
+    	{// TODO: Don't use while loops
 			vmSubmission.Options.pop();
 		}
 	}
 
-    $.each(submissionData.Options, function (optionIndex, optionData) {
+	$.each(submissionData.Options, function(optionIndex, optionData)
+	{
 		var vmOption = vmSubmission.Options()[optionIndex];
 
-        if (!vmOption) {
+		if (!vmOption)
+		{
 			var optionsLength = self.AddOption();
 
 			vmOption = vmSubmission.Options()[optionsLength - 1];
@@ -2512,7 +2943,8 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
     vmSubmission.SubmissionMarketWordingsList.removeAll();
     var tempSubmissionMarketWordingsList = [];
-	$.each(submissionData.MarketWordingSettings, function (index, value) {
+	$.each(submissionData.MarketWordingSettings, function(index, value)
+	{
 	    tempSubmissionMarketWordingsList.push(new ConsoleApp.MarketWordingSettingDto()
 	                    .SettingId(value.Id)
 	                    .Id(value.MarketWording.Id)
@@ -2526,7 +2958,8 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
     vmSubmission.SubmissionTermsNConditionWordingsList.removeAll();
     var tempSubmissionTermsNConditionWordingsList = [];
-	$.each(submissionData.TermsNConditionWordingSettings, function (index, value) {
+	$.each(submissionData.TermsNConditionWordingSettings, function(index, value)
+	{
 	    tempSubmissionTermsNConditionWordingsList.push(new ConsoleApp.TermsNConditionWordingSettingDto()
 	                    .SettingId(value.Id)
                         .Id(value.TermsNConditionWording.Id)
@@ -2541,7 +2974,8 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
 	vmSubmission.CustomSubmissionMarketWordingsList.removeAll();
     var tempCustomSubmissionMarketWordingsList = [];
-	$.each(submissionData.CustomMarketWordingSettings, function (index, value) {
+	$.each(submissionData.CustomMarketWordingSettings, function(index, value)
+	{
 	    tempCustomSubmissionMarketWordingsList.push(new ConsoleApp.MarketWordingSettingDto()
 	                 .SettingId(value.Id)
                      .Id(value.MarketWording.Id)
@@ -2555,7 +2989,8 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
     vmSubmission.CustomSubmissionTermsNConditionWordingsList.removeAll();
     var tempCustomSubmissionTermsNConditionWordingsList = [];
-	$.each(submissionData.CustomTermsNConditionWordingSettings, function (index, value) {
+	$.each(submissionData.CustomTermsNConditionWordingSettings, function(index, value)
+	{
 	    tempCustomSubmissionTermsNConditionWordingsList.push(new ConsoleApp.TermsNConditionWordingSettingDto()
 	                  .SettingId(value.Id)
                       .Id(value.TermsNConditionWording.Id)
@@ -2570,7 +3005,8 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 
     vmSubmission.CustomSubmissionSubjectToClauseWordingsList.removeAll();
     var tempCustomSubmissionSubjectToClauseWordingsList = [];
-	$.each(submissionData.CustomSubjectToClauseWordingSettings, function (index, value) {
+	$.each(submissionData.CustomSubjectToClauseWordingSettings, function(index, value)
+	{
 	    tempCustomSubmissionSubjectToClauseWordingsList.push(new ConsoleApp.SubjectToClauseWordingSettingDto()
 	                 .SettingId(value.Id)
                      .Id(value.SubjectToClauseWording.Id)
@@ -2584,7 +3020,8 @@ vmSubmissionBase.prototype.syncJSON = function (submissionData) {
 	return vmSubmission;
 };
 
-Option.prototype.syncJSON = function (optionData) {
+Option.prototype.syncJSON = function(optionData)
+{
 	var vmOption = this;
 
 	vmOption.Id(optionData.Id);
@@ -2599,21 +3036,25 @@ Option.prototype.syncJSON = function (optionData) {
 	if (vmOption.GetParent().OSyncJSONAdditional)
 	    vmOption.GetParent().OSyncJSONAdditional(vmOption, optionData);
 
-    while (vmOption.OptionVersions().length > optionData.OptionVersions.length) {
+	while (vmOption.OptionVersions().length > optionData.OptionVersions.length)
+	{// TODO: Don't use while loops
 		vmOption.OptionVersions.pop();
 	}
 
-    while (vmOption.OptionVersions().length < optionData.OptionVersions.length) {
+    while (vmOption.OptionVersions().length < optionData.OptionVersions.length)
+    {// TODO: Don't use while loops
 		vmOption.AddOptionVersion();
 	}
 
-    optionData.OptionVersions.sort(function (versionA, versionB) {
+	optionData.OptionVersions.sort(function(versionA, versionB)
+	{
 		return (versionA.VersionNumber < versionB.VersionNumber)
 			? 1 : (versionA.VersionNumber > versionB.VersionNumber)
 				? -1 : 0;
 	});
 
-    $.each(optionData.OptionVersions, function (versionIndex, versionData) {
+	$.each(optionData.OptionVersions, function(versionIndex, versionData)
+	{
 		var vmVersion = vmOption.OptionVersions()[versionIndex];
 
 		if (!vmVersion)
@@ -2625,7 +3066,8 @@ Option.prototype.syncJSON = function (optionData) {
 	return vmOption;
 };
 
-OptionVersion.prototype.syncJSON = function (versionData) {
+OptionVersion.prototype.syncJSON = function(versionData)
+{
 	var vmVersion = this;
 
 	vmVersion.OptionId(versionData.OptionId);
@@ -2640,14 +3082,17 @@ OptionVersion.prototype.syncJSON = function (versionData) {
 	if (vmVersion.GetParent().GetParent().OVSyncJSONAdditional)
 	    vmVersion.GetParent().GetParent().OVSyncJSONAdditional(vmVersion, versionData);
     
-    while (vmVersion.Quotes().length > versionData.Quotes.length) {
+	while (vmVersion.Quotes().length > versionData.Quotes.length)
+	{ // TODO: Don't use while loops
 		vmVersion.Quotes.pop();
 	}
 
-    $.each(versionData.Quotes, function (quoteIndex, quoteData) {
+	$.each(versionData.Quotes, function(quoteIndex, quoteData)
+	{
 		var vmQuote = vmVersion.Quotes()[quoteIndex];
 
-        if (!vmQuote) {
+		if (!vmQuote)
+		{
 			var quotesLength = vmVersion.AddQuote();
 
 			vmQuote = vmVersion.Quotes()[quotesLength - 1];
@@ -2659,7 +3104,8 @@ OptionVersion.prototype.syncJSON = function (versionData) {
 	return vmVersion;
 };
 
-Quote.prototype.syncJSON = function (quoteData) {
+Quote.prototype.syncJSON = function(quoteData)
+{
 	var vmQuote = this;
 
 	vmQuote.Id(quoteData.Id);
@@ -2704,9 +3150,12 @@ Quote.prototype.syncJSON = function (quoteData) {
 	
 	if ((quoteData._COB != undefined) && (quoteData._COB != null))
 		vmQuote._COB(quoteData._COB);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "COB", { code: quoteData.COBId }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "COB", { code: quoteData.COBId }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmQuote._COB(item.Code + " : " + item.Name);
 
 				return false;
@@ -2716,9 +3165,12 @@ Quote.prototype.syncJSON = function (quoteData) {
 
 	if ((quoteData._MOA != undefined) && (quoteData._MOA != null))
 		vmQuote._MOA(quoteData._MOA);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "MOA", { code: quoteData.MOA }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "MOA", { code: quoteData.MOA }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmQuote._MOA(item.Code + " : " + item.Description);
 
 				return false;
@@ -2728,9 +3180,12 @@ Quote.prototype.syncJSON = function (quoteData) {
 
 	if ((quoteData._OriginatingOffice != undefined) && (quoteData._OriginatingOffice != null))
 		vmQuote._OriginatingOffice(quoteData._OriginatingOffice);
-    else {
-        $.getJSON(window.ValidusServicesUrl + "Office", { code: quoteData.OriginatingOfficeId }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else
+	{
+		$.getJSON(window.ValidusServicesUrl + "Office", { code: quoteData.OriginatingOfficeId }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmQuote._OriginatingOffice(item.Code + " : " + item.Name);
 
 				return false;
@@ -2740,9 +3195,12 @@ Quote.prototype.syncJSON = function (quoteData) {
 
 	if ((quoteData._Currency != undefined) && (quoteData._Currency != null))
 		vmQuote._Currency(quoteData._Currency);
-    else if (quoteData.Currency) {
-        $.getJSON(window.ValidusServicesUrl + "Currency", { psu: quoteData.Currency }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else if (quoteData.Currency)
+	{
+		$.getJSON(window.ValidusServicesUrl + "Currency", { psu: quoteData.Currency }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmQuote._Currency(item.Psu + " : " + item.Name);
 
 				return false;
@@ -2752,9 +3210,12 @@ Quote.prototype.syncJSON = function (quoteData) {
 
 	if ((quoteData._LimitCCY != undefined) && (quoteData._LimitCCY != null))
 		vmQuote._LimitCCY(quoteData._LimitCCY);
-    else if (quoteData.LimitCCY) {
-        $.getJSON(window.ValidusServicesUrl + "Currency", { psu: quoteData.LimitCCY }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else if (quoteData.LimitCCY)
+	{
+		$.getJSON(window.ValidusServicesUrl + "Currency", { psu: quoteData.LimitCCY }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmQuote._LimitCCY(item.Psu + " : " + item.Name);
 
 				return false;
@@ -2765,9 +3226,12 @@ Quote.prototype.syncJSON = function (quoteData) {
 
 	if ((quoteData._ExcessCCY != undefined) && (quoteData._ExcessCCY != null))
 		vmQuote._ExcessCCY(quoteData._ExcessCCY);
-    else if (quoteData.ExcessCCY) {
-        $.getJSON(window.ValidusServicesUrl + "Currency", { psu: quoteData.ExcessCCY }, function (jsonData) {
-            $(jsonData).each(function (index, item) {
+	else if (quoteData.ExcessCCY)
+	{
+		$.getJSON(window.ValidusServicesUrl + "Currency", { psu: quoteData.ExcessCCY }, function(jsonData)
+		{
+			$(jsonData).each(function(index, item)
+			{
 				vmQuote._ExcessCCY(item.Psu + " : " + item.Name);
 
 				return false;
@@ -2796,16 +3260,16 @@ Quote.prototype.syncJSON = function (quoteData) {
 	    quoteExpiryDate = moment(quoteData.QuoteExpiryDate);
 
 	if (inceptionDate && inceptionDate.isValid())
-		vmQuote.InceptionDate(inceptionDate.format("YYYY-MM-DD"));
+		vmQuote.InceptionDate(inceptionDate.format("DD MMM YYYY"));
 	else
 		vmQuote.InceptionDate("");
 
 	if (expiryDate && expiryDate.isValid())
-		vmQuote.ExpiryDate(expiryDate.format("YYYY-MM-DD"));
+	    vmQuote.ExpiryDate(expiryDate.format("DD MMM YYYY"));
 	else vmQuote.ExpiryDate("");
 
 	if (quoteExpiryDate && quoteExpiryDate.isValid())
-		vmQuote.QuoteExpiryDate(quoteExpiryDate.format("YYYY-MM-DD"));
+		vmQuote.QuoteExpiryDate(quoteExpiryDate.format("DD MMM YYYY"));
 	else vmQuote.QuoteExpiryDate("");
 
 	vmQuote.AccountYear(quoteData.AccountYear);
@@ -2821,6 +3285,7 @@ Quote.prototype.syncJSON = function (quoteData) {
 	vmQuote.ExcessAmount(quoteData.ExcessAmount);
 
 	vmQuote.Comment(quoteData.Comment);
+	vmQuote.Description(quoteData.Description);
 
 	vmQuote.CreatedOn(quoteData.CreatedOn);
 	vmQuote.CreatedBy(quoteData.CreatedBy);
@@ -2886,22 +3351,25 @@ Quote.prototype.syncJSON = function (quoteData) {
 			}
 		};
 */
-vmSubmissionBase.prototype.toJSON = function (dirtyFlag) {
+vmSubmissionBase.prototype.toJSON = function(dirtyFlag)
+{
 	var vmSubmission = this.koTrim(dirtyFlag),
 	    insuredValues = (vmSubmission.InsuredName)
 		    ? vmSubmission.InsuredName.split(":") : [];
 
-	vmSubmission.InsuredName = (insuredValues[0]) ? insuredValues[0].trim() : "";
-	vmSubmission.InsuredId = (insuredValues[1]) ? insuredValues[1].trim() : "0";
+	vmSubmission.InsuredName = (insuredValues[0]) ? $.trim(insuredValues[0]) : "";
+	vmSubmission.InsuredId = (insuredValues[1]) ? $.trim(insuredValues[1]) : "0";
 
 	return ko.toJSON(vmSubmission, dirtyFlag);
 };
 
-vmSubmissionBase.prototype.koTrim = function (dirtyFlag) {
+vmSubmissionBase.prototype.koTrim = function(dirtyFlag)
+{
 	var vmSubmission = ko.toJS(this.Model);
 
 	// Front-End
-    if (dirtyFlag) {
+	if (dirtyFlag)
+	{
 		delete vmSubmission._Domicile;
 		delete vmSubmission._Leader;
 		delete vmSubmission._NonLondonBroker;
@@ -2916,23 +3384,27 @@ vmSubmissionBase.prototype.koTrim = function (dirtyFlag) {
 	delete vmSubmission.syncJSON;
 	delete vmSubmission.toJSON;
 
-    $.each(vmSubmission.Options, function (optionIndex, optionItem) {
+	$.each(vmSubmission.Options, function(optionIndex, optionItem)
+	{
 		vmSubmission.Options[optionIndex] = optionItem.koTrim(optionItem);
 	});
 
 	return vmSubmission;
 };
 
-Option.prototype.toJSON = function () {
+Option.prototype.toJSON = function()
+{
 	var vmOption = this.koTrim();
 
 	return ko.toJSON(vmOption);
 };
 
-Option.prototype.koTrim = function (thisOption, dirtyFlag) {
+Option.prototype.koTrim = function(thisOption, dirtyFlag)
+{
 	var vmOption = (!thisOption) ? ko.toJS(this) : thisOption;
 
-	// Garbage
+    // Garbage
+	delete vmOption.optionNumber;
 	delete vmOption.GetParent;
 	delete vmOption.GetIndex;
 
@@ -2954,6 +3426,9 @@ Option.prototype.koTrim = function (thisOption, dirtyFlag) {
 	delete vmOption.CanCopyOption;
 	delete vmOption.IsCurrentQuoteQuoted;
 	delete vmOption.RequiredFieldsCheck;
+    
+	delete vmOption.CanDelete;
+	delete vmOption.DeleteOption;
 
 	delete vmOption.NavigateToOption;
 	delete vmOption.NavigateToQuote;
@@ -2964,20 +3439,23 @@ Option.prototype.koTrim = function (thisOption, dirtyFlag) {
 	delete vmOption.syncJSON;
 	delete vmOption.toJSON;
 
-    $.each(vmOption.OptionVersions, function (versionIndex, versionItem) {
+	$.each(vmOption.OptionVersions, function(versionIndex, versionItem)
+	{
 		vmOption.OptionVersions[versionIndex] = versionItem.koTrim(versionItem, dirtyFlag);
 	});
 
 	return vmOption;
 };
 
-OptionVersion.prototype.toJSON = function () {
+OptionVersion.prototype.toJSON = function()
+{
 	var vmVersion = this.koTrim();
 
 	return ko.toJSON(vmVersion);
 };
 
-OptionVersion.prototype.koTrim = function (thisVersion, dirtyFlag) {
+OptionVersion.prototype.koTrim = function(thisVersion, dirtyFlag)
+{
 	var vmVersion = (!thisVersion) ? ko.toJS(this) : thisVersion;
 
 	// Garbage
@@ -2991,25 +3469,33 @@ OptionVersion.prototype.koTrim = function (thisVersion, dirtyFlag) {
 	delete vmVersion.koTrim;
 	delete vmVersion.syncJSON;
 	delete vmVersion.toJSON;
+    
+	delete vmVersion.CanDeleteCheck;
+	delete vmVersion.CanDelete;
+	delete vmVersion.DeleteOptionVersion;
 
-    $.each(vmVersion.Quotes, function (quoteIndex, quoteItem) {
+	$.each(vmVersion.Quotes, function(quoteIndex, quoteItem)
+	{
 		vmVersion.Quotes[quoteIndex] = quoteItem.koTrim(quoteItem, dirtyFlag);
 	});
 
 	return vmVersion;
 };
 
-Quote.prototype.toJSON = function () {
+Quote.prototype.toJSON = function()
+{
 	var vmQuote = this.koTrim();
 
 	return ko.toJSON(vmQuote);
 };
 
-Quote.prototype.koTrim = function (thisQuote, dirtyFlag) {
+Quote.prototype.koTrim = function(thisQuote, dirtyFlag)
+{
 	var vmQuote = (!thisQuote) ? ko.toJS(this) : thisQuote;
 
 	// Front-End 
-    if (dirtyFlag) {
+	if (dirtyFlag)
+	{ // TODO: This is missing some values
 		delete vmQuote._COB;
 		delete vmQuote._Currency;
 		delete vmQuote._ExcessCCY;
@@ -3045,6 +3531,10 @@ Quote.prototype.koTrim = function (thisQuote, dirtyFlag) {
 	delete vmQuote.ShowDeclinatureDialog;
 	delete vmQuote.ValidationErrors;
 	delete vmQuote.IsLocked;
+    
+	delete vmQuote.CanDeleteCheck;
+	delete vmQuote.CanDelete;
+	delete vmQuote.DeleteQuote;
 
 	delete vmQuote.koTrim;
 	delete vmQuote.syncJSON;
@@ -3054,26 +3544,31 @@ Quote.prototype.koTrim = function (thisQuote, dirtyFlag) {
 };
 
 // TODO: ko.dirtyFlag suggests it is generic, however, see Resynchronise()
+// TODO: Is KOLite dirty-flag better ?
 //var ConsoleIter = 0;
-ko.dirtyFlag = function (koObject) {
+ko.dirtyFlag = function(koObject)
+{
 	var self = this;
 
 	self.OriginalState = ko.observable(koObject.toJSON());
 	self.IsDirty = ko.observable(false);
 	self.RequiresReset = ko.observable(false);
 
-    self.Evaluate = ko.computed(function () {
+	self.Evaluate = ko.computed(function()
+	{
 		//console.log((ConsoleIter++).toString() + " - Submission Pre-Dirty: " + self.IsDirty());
 		//console.log(JSON.parse(self.OriginalState()));
 
-        if (self.RequiresReset()) {
+		if (self.RequiresReset())
+		{
 			//console.log("Resetting Dirty Flag");
 
 			self.OriginalState(koObject.toJSON());
 			self.IsDirty(false);
 			self.RequiresReset(false);
 		}
-        else if (!self.IsDirty()) {
+		else if (!self.IsDirty())
+		{
 			//console.log("Checking Dirty Flag");
 
 			self.IsDirty(self.OriginalState() !== koObject.toJSON());
@@ -3083,12 +3578,14 @@ ko.dirtyFlag = function (koObject) {
 		//console.log(JSON.parse(self.OriginalState()));
 	}, self);
 
-    self.Reset = function () {
+	self.Reset = function()
+	{
 		self.RequiresReset(true);
 	};
 
 	// TODO: Remove/re-think may be required as syncJSON is only used by Submission -> Quote VM's
-    self.Resynchronise = function () {
+	self.Resynchronise = function()
+	{
 		// TODO: Perhaps we could implement a something generic using hasOwnProperty() ?
 		koObject.syncJSON(JSON.parse(self.OriginalState()));
 

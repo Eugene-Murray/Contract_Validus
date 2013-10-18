@@ -2,9 +2,8 @@
 
 namespace Validus.Core.LogHandling
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.Practices.EnterpriseLibrary.Logging;
 
     public static class LogEntryData
@@ -30,16 +29,13 @@ namespace Validus.Core.LogHandling
 
         public static void LogEntryAsync(string message, LogSeverity logSeverity, LogCategory logCategory)
         {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(() => Logger.Write(new LogEntry
             {
-                Logger.Write(new LogEntry
-                {
-                    Title = logCategory.ToString(),
-                    Message = message,
-                    Categories = new List<string> { logCategory.ToString() },
-                    Severity = GetSeverity(logSeverity)
-                });
-            });
+	            Title = logCategory.ToString(),
+	            Message = message,
+	            Categories = new List<string> { logCategory.ToString() },
+	            Severity = GetSeverity(logSeverity)
+            }));
         }
 
         public static void LogEntry(string message, LogSeverity logSeverity, LogCategory logCategory)

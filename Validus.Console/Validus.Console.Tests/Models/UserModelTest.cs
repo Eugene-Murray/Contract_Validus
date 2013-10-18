@@ -1,4 +1,5 @@
-﻿using System;
+﻿extern alias globalVM;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Validus.Console.Controllers;
-using Validus.Models;
+using globalVM::Validus.Models;
 
 namespace Validus.Console.Tests.Models
 {

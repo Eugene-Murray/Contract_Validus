@@ -1,4 +1,5 @@
-﻿using System;
+﻿extern alias globalVM;
+using System;
 using System.Security.Principal;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.Unity;
 using Microsoft.Practices.Unity;
@@ -10,7 +11,7 @@ using Validus.Console.SubscribeService;
 using Validus.Console.Tests.Helpers;
 using Validus.Core.HttpContext;
 using Validus.Core.LogHandling;
-using Validus.Models;
+using globalVM::Validus.Models;
 
 namespace Validus.Console.Tests.Modules.Submission
 {
@@ -53,7 +54,7 @@ namespace Validus.Console.Tests.Modules.Submission
         {
             // Assign 
             var quote = new Quote();
-            var submission = new Validus.Models.Submission();
+            var submission = new globalVM::Validus.Models.Submission();
 
             // Act 
             SubmissionModuleHelpers.SetCopiedFrom(quote, submission);
@@ -80,7 +81,7 @@ namespace Validus.Console.Tests.Modules.Submission
         {
             // Assign 
             var quote = new Quote();
-            var submission = new Validus.Models.Submission();
+            var submission = new globalVM::Validus.Models.Submission();
 
             // Act 
             var actualUpdatePolicyResponse = SubmissionModuleHelpers.UpdateSubscribeRecord(quote, submission, _logHandler, _mockSubscribeService);
@@ -108,8 +109,8 @@ namespace Validus.Console.Tests.Modules.Submission
         public void CreateSubscribeRecord_Success()
         {
             // Assign 
-            var quote = new Quote(); 
-            var submission = new Validus.Models.Submission();
+            var quote = new Quote();
+            var submission = new globalVM::Validus.Models.Submission();
             var expectedPolId = "BAN165118A13";
 
             // Act 
@@ -153,7 +154,7 @@ namespace Validus.Console.Tests.Modules.Submission
         {
             // Assign 
             var quote = new Quote();
-            var submission = new Validus.Models.Submission();
+            var submission = new globalVM::Validus.Models.Submission();
             var policyContract = new PolicyContract { InsdNm = "Insured Name...", BkrSeqId = 1, NonLonBkr = "AON", Uwr = "UC", Brokerage = 3, AccYr = "1976", ExpyDt = "19761229", IncpDt = "19761229", SettDueDt = "19761229" };
 
             // Act 
@@ -190,7 +191,7 @@ namespace Validus.Console.Tests.Modules.Submission
         public void SynchroniseSubmission_Success()
         {
             // Assign
-            var submission = new Validus.Models.Submission();
+            var submission = new globalVM::Validus.Models.Submission();
             var policyContract = new PolicyContract { InsdNm = "Insured Name...", BkrSeqId = 1, NonLonBkr = "AON", Uwr = "UC", Brokerage = 3, AccYr = "1976", ExpyDt = "19761229", IncpDt = "19761229", SettDueDt = "19761229" };
 
             // Act 

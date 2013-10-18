@@ -36,6 +36,12 @@ namespace Validus.Console.Data
 				    }));
 			    }
 
+                parameters.Add(new ParameterValue
+                    {
+                        Name = "QuoteType",
+                        Value = dto.QuoteSheetTemplateName
+                    });
+
 			    reportService.LoadReport(reportPath, null);
 			    reportService.SetExecutionParameters(parameters.ToArray(), "en-gb");
 

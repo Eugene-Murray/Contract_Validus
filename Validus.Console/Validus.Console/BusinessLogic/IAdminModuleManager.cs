@@ -95,6 +95,10 @@ namespace Validus.Console.BusinessLogic
         List<TermsNConditionWordingSetting> GetTermsNConditionWordingsForTeamOffice(int? teamId, string officeId);
         string SaveTermsNConditionWordingsForTeamOffice(TeamTermsNConditionWordingsDto teamTermsNConditionWordingsDto);
 
-        
+
+        #region UnderwriterSignature
+        TeamUnderwriterSetting GetUnderwriterTeamSignature(string underwriterCode, int? teamId);
+        TeamUnderwriterSetting CreateOrEditUnderwriterTeamSignature(TeamUnderwriterSetting teamUnderwriterSetting); 
+        #endregion
     }
 }

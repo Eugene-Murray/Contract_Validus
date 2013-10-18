@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -11,17 +10,18 @@ using Validus.Models;
 
 namespace Validus.Console.Controllers
 {
-    [Authorize(Roles = @"ConsoleRead, ConsoleAdmin")] //, MvcModelStateFilter]
+	[Authorize(Roles = @"ConsoleRead, ConsoleAdmin")] // TODO: Add MvcModelStateFilter]
     public class AdminController : Controller
     {
-        public readonly IAdminModuleManager _adminModuleManager;
-        public readonly ILogHandler _logHandler;
+        public readonly IAdminModuleManager _adminModuleManager; // TODO: Rename and make private
+        public readonly ILogHandler _logHandler; // TODO: Remove if not needed after refactor
 
         public AdminController(IAdminModuleManager adminModuleManager, ILogHandler logHandler)
         {
             this._adminModuleManager = adminModuleManager;
             this._logHandler = logHandler;
         }
+        
         #region User Team Link
         [Authorize(Roles = @"ConsoleAdmin, ConsoleUW, ConsoleRead")]
         public ActionResult PersonalSettings()
@@ -35,40 +35,23 @@ namespace Validus.Console.Controllers
             return View();
         }
 
+        [Authorize(Roles = @"ConsoleAdmin")]
         public ActionResult ManageTeams()
         {
             return PartialView("_ManageTeams");
         }
 
+        [Authorize(Roles = @"ConsoleAdmin")]
         public ActionResult ManageUsers()
         {
             return PartialView("_ManageUsers");
         }
 
+        [Authorize(Roles = @"ConsoleAdmin")]
         public ActionResult ManageLinks()
         {
             return PartialView("_ManageLinks");
         }
-
-        //[HttpGet]
-        //[OutputCache(CacheProfile = "NoCacheProfile")]
-        //public ActionResult GetTeam(int teamId)
-        //{
-        //    try
-        //    {
-        //        var team = _adminModuleManager.GetTeam(teamId);
-
-        //        return new JsonNetResult
-        //        {
-        //            Data = team
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
-        //        throw new HttpException(500, "Server Error");
-        //    }
-        //}
 
         [HttpGet]
         [OutputCache(CacheProfile = "NoCacheProfile")]
@@ -83,7 +66,7 @@ namespace Validus.Console.Controllers
                     Data = team
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -103,7 +86,7 @@ namespace Validus.Console.Controllers
                     Data = teamList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -123,7 +106,7 @@ namespace Validus.Console.Controllers
                     Data = teamList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -144,7 +127,7 @@ namespace Validus.Console.Controllers
                 };
 
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -164,7 +147,7 @@ namespace Validus.Console.Controllers
                     Data = teamList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -184,7 +167,7 @@ namespace Validus.Console.Controllers
                     Data = teamList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -198,29 +181,27 @@ namespace Validus.Console.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    throw new ArgumentException("'Tilte' and 'Default QuoteExpiry Days' (Integer) are required");
-                }
+				if (!ModelState.IsValid) // TODO: Throw new HttpException with status code of bad request
+                    throw new ArgumentException("'Title' and 'Default QuoteExpiry Days' are required");
 
                 return new JsonNetResult
                         {
                             Data = _adminModuleManager.CreateTeam(team)
                         };
             }
-            catch (ArgumentException ex)
+			catch (ArgumentException ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(new { ErrorMessage = ex.Message });
             }
-            catch (ApplicationException ex)
+			catch (ApplicationException ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return Json(new { ErrorMessage = ex.Message });
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 this.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -241,7 +222,7 @@ namespace Validus.Console.Controllers
                     Data = updatedTeam
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -261,7 +242,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -288,7 +269,7 @@ namespace Validus.Console.Controllers
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(409, ex.Message);
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -308,12 +289,12 @@ namespace Validus.Console.Controllers
                         Data = updatedUser
                     };
             }
-            catch (ApplicationException ex)
+			catch (ApplicationException ex) // TODO: Are all application exceptions due to bad requests ?
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(400, "Bad Request: " + ex.ToString());
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -333,7 +314,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -357,7 +338,7 @@ namespace Validus.Console.Controllers
                     Data = newLink
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -380,7 +361,7 @@ namespace Validus.Console.Controllers
                     Data = updatedLink
                 };
             }
-            catch (Exception ex)
+            catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -400,7 +381,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -420,7 +401,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -440,7 +421,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -460,7 +441,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -480,7 +461,7 @@ namespace Validus.Console.Controllers
                     Data = linksList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -500,7 +481,7 @@ namespace Validus.Console.Controllers
                     Data = linksList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -520,7 +501,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -540,7 +521,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -560,7 +541,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -580,7 +561,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -594,7 +575,7 @@ namespace Validus.Console.Controllers
         public ActionResult CreateQuoteTemplate(QuoteTemplate quoteTemplate)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -605,7 +586,7 @@ namespace Validus.Console.Controllers
                     Data = newQuoteTemplate
                 };
             }
-            catch (Exception ex)
+            catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -616,7 +597,7 @@ namespace Validus.Console.Controllers
         [OutputCache(CacheProfile = "NoCacheProfile")]
         public ActionResult EditQuoteTemplate(QuoteTemplate quoteTemplate)
         {
-            if (!ModelState.IsValid)
+			if (!ModelState.IsValid) // TODO: Use Http status code enum and cast
                 throw new HttpException(406, "Not Acceptable - Invalid Data");
 
             try
@@ -628,7 +609,7 @@ namespace Validus.Console.Controllers
                     Data = updatedQuoteTemplate
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -648,7 +629,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -668,7 +649,7 @@ namespace Validus.Console.Controllers
                     Data = quoteTemplatesList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -688,7 +669,7 @@ namespace Validus.Console.Controllers
                     Data = quoteTemplatesList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -737,7 +718,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -751,7 +732,7 @@ namespace Validus.Console.Controllers
         public ActionResult CreateAccelerator(AppAccelerator accelerator)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -762,7 +743,7 @@ namespace Validus.Console.Controllers
                     Data = newAccelerator
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -774,7 +755,7 @@ namespace Validus.Console.Controllers
         public ActionResult EditAccelerator(AppAccelerator accelerator)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -785,7 +766,7 @@ namespace Validus.Console.Controllers
                     Data = updatedAccelerator
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -805,7 +786,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -846,7 +827,7 @@ namespace Validus.Console.Controllers
                     Data = acceleratorsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -866,7 +847,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -886,7 +867,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -911,18 +892,17 @@ namespace Validus.Console.Controllers
         {
             var result = _adminModuleManager.GetAcceleratorMetaDataById(Id);
             this.HttpContext.Response.Clear();
-            return this.Content(result, "text/xml");
+			return this.Content(result, "text/xml");  // TODO: Add MimeType utility class and use that
         }
         #endregion
 
         #region Market Wording
-        //GetMarketWordings
         [HttpPost]
         [OutputCache(CacheProfile = "NoCacheProfile")]
         public ActionResult CreateMarketWording(MarketWording marketWording)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -933,7 +913,7 @@ namespace Validus.Console.Controllers
                     Data = newMarketWording
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -945,7 +925,7 @@ namespace Validus.Console.Controllers
         public ActionResult EditMarketWording(MarketWording marketWording)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -956,7 +936,7 @@ namespace Validus.Console.Controllers
                     Data = updatedMarketWording
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -976,7 +956,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -997,7 +977,7 @@ namespace Validus.Console.Controllers
                     Data = appMarketWordingsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1007,34 +987,24 @@ namespace Validus.Console.Controllers
 
         [HttpGet]
         [OutputCache(CacheProfile = "NoCacheProfile")]
-        public ActionResult GetMarketWordingsByPaging(String sSearch, Int32 sEcho, Int32 iSortCol_0, String sSortDir_0,
-                                                      Int32 iDisplayLength = 10, Int32 iDisplayStart = 0)
+		public ActionResult GetMarketWordingsByPaging(string sSearch, int sEcho, int iSortCol_0, string sSortDir_0,
+													  int iDisplayLength = 10, int iDisplayStart = 0)
         {
             try
             {
-                Int32 iTotalRecords;
-                Int32 iTotalDisplayRecords;
-                String sortCol;
+				var iTotalRecords = default(int);
+				var iTotalDisplayRecords = default(int);
+				var sortCol = this.Request[string.Format("mDataProp_{0}", iSortCol_0)];
 
-                switch (iSortCol_0)
-                {
-                    case 0:
-                        sortCol = "WordingRefNumber";
-                        break;
-                    case 1:
-                        sortCol = "Title";
-                        break;
-                    default:
-                        sortCol = "WordingRefNumber";
-                        break;
-                }
                 var aaData = this._adminModuleManager.GetMarketWordingsByPaging(sSearch, sortCol, sSortDir_0,
                                                                                 iDisplayStart, iDisplayLength,
                                                                                 out iTotalDisplayRecords,
                                                                                 out iTotalRecords);
-                return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
+
+                // TODO: Use JsonNetResult
+				return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1054,7 +1024,7 @@ namespace Validus.Console.Controllers
                     Data = marketWordingsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1074,7 +1044,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1084,13 +1054,12 @@ namespace Validus.Console.Controllers
         #endregion
 
         #region SubjectToClause Wording
-        //GetSubjectToClauseWordings
         [HttpPost]
         [OutputCache(CacheProfile = "NoCacheProfile")]
         public ActionResult CreateSubjectToClauseWording(SubjectToClauseWording subjectToClauseWording)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -1101,7 +1070,7 @@ namespace Validus.Console.Controllers
                     Data = newSubjectToClauseWording
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1113,7 +1082,7 @@ namespace Validus.Console.Controllers
         public ActionResult EditSubjectToClauseWording(SubjectToClauseWording subjectToClauseWording)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+				throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -1124,7 +1093,7 @@ namespace Validus.Console.Controllers
                     Data = updatedSubjectToClauseWording
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1144,7 +1113,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1165,7 +1134,7 @@ namespace Validus.Console.Controllers
                     Data = appSubjectToClauseWordingsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1185,7 +1154,7 @@ namespace Validus.Console.Controllers
                     Data = SubjectToClauseWordingSettingsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1205,7 +1174,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1214,15 +1183,13 @@ namespace Validus.Console.Controllers
 
         #endregion
 
-
         #region TermsNCondition Wording
-        //GetTermsNConditionWordings
         [HttpPost]
         [OutputCache(CacheProfile = "NoCacheProfile")]
         public ActionResult CreateTermsNConditionWording(TermsNConditionWording termsNConditionWording)
         {
             if (!ModelState.IsValid)
-                throw new HttpException(406, "Not Acceptable - Invalid Data");
+                throw new HttpException(406, "Not Acceptable - Invalid Data"); // TODO: Use Http status code enum and cast
 
             try
             {
@@ -1233,7 +1200,7 @@ namespace Validus.Console.Controllers
                     Data = newTermsNConditionWording
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1256,7 +1223,7 @@ namespace Validus.Console.Controllers
                     Data = updatedTermsNConditionWording
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1276,7 +1243,7 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1297,50 +1264,39 @@ namespace Validus.Console.Controllers
                     Data = appTermsNConditionWordingsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
             }
         }
 
-        [HttpGet]
-        [OutputCache(CacheProfile = "NoCacheProfile")]
-        public ActionResult GetTermsNConditionWordingsByPaging(String sSearch, Int32 sEcho, Int32 iSortCol_0, String sSortDir_0,
-                                                      Int32 iDisplayLength = 10, Int32 iDisplayStart = 0)
-        {
-            try
-            {
-                Int32 iTotalRecords;
-                Int32 iTotalDisplayRecords;
-                String sortCol;
+	    [HttpGet]
+	    [OutputCache(CacheProfile = "NoCacheProfile")]
+	    public ActionResult GetTermsNConditionWordingsByPaging(string sSearch, int sEcho, int iSortCol_0, string sSortDir_0,
+	                                                           int iDisplayLength = 10, int iDisplayStart = 0)
+	    {
+		    try
+		    {
+			    var iTotalRecords = default(int);
+			    var iTotalDisplayRecords = default(int);
+			    var sortCol = this.Request[string.Format("mDataProp_{0}", iSortCol_0)];
 
-                switch (iSortCol_0)
-                {
-                    case 0:
-                        sortCol = "WordingRefNumber";
-                        break;
-                    case 1:
-                        sortCol = "Title";
-                        break;
-                    default:
-                        sortCol = "WordingRefNumber";
-                        break;
-                }
-                var aaData = this._adminModuleManager.GetTermsNConditionWordingsByPaging(sSearch, sortCol, sSortDir_0,
-                                                                                iDisplayStart, iDisplayLength,
-                                                                                out iTotalDisplayRecords,
-                                                                                out iTotalRecords);
-                return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
-                throw new HttpException(500, "Server Error");
-            }
-        }
+			    var aaData = this._adminModuleManager.GetTermsNConditionWordingsByPaging(sSearch, sortCol, sSortDir_0,
+			                                                                             iDisplayStart, iDisplayLength,
+			                                                                             out iTotalDisplayRecords,
+			                                                                             out iTotalRecords);
+			    // TODO: Use JsonNetResult
+			    return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
+		    }
+		    catch (Exception ex) // TODO: Remove
+		    {
+			    _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
+			    throw new HttpException(500, "Server Error");
+		    }
+	    }
 
-        [HttpGet]
+	    [HttpGet]
         [OutputCache(CacheProfile = "NoCacheProfile")]
         public ActionResult GetTermsNConditionWordingsForTeamOffice(int? teamId, string officeId)
         {
@@ -1353,7 +1309,7 @@ namespace Validus.Console.Controllers
                     Data = TermsNConditionWordingsList
                 };
             }
-            catch (Exception ex)
+			catch (Exception ex) // TODO: Remove
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
                 throw new HttpException(500, "Server Error");
@@ -1373,6 +1329,37 @@ namespace Validus.Console.Controllers
                     Data = result
                 };
             }
+			catch (Exception ex) // TODO: Remove
+            {
+                _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
+                throw new HttpException(500, "Server Error");
+            }
+        }
+
+        #endregion
+
+        #region UnderwriterSignature
+
+
+        [Authorize(Roles = @"ConsoleAdmin")]
+        public ActionResult ManangeUnderwriterSignature()
+        {
+            return PartialView("_ManangeUnderwriterSignature");
+        }
+
+        [HttpGet]
+        [OutputCache(CacheProfile = "NoCacheProfile")]
+        public ActionResult GetUnderwriterTeamSignature(string underwriterCode, int? teamId)
+        {
+            try
+            {
+                var newteamUnderwriterSetting = _adminModuleManager.GetUnderwriterTeamSignature(underwriterCode, teamId);
+
+                return new JsonNetResult
+                {
+                    Data = newteamUnderwriterSetting
+                };
+            }
             catch (Exception ex)
             {
                 _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
@@ -1380,6 +1367,28 @@ namespace Validus.Console.Controllers
             }
         }
 
+        [HttpPost]
+        [OutputCache(CacheProfile = "NoCacheProfile")]
+        public ActionResult CreateOrEditUnderwriterTeamSignature(TeamUnderwriterSetting teamUnderwriterSetting)
+        {
+            if (!ModelState.IsValid)
+                throw new HttpException(406, "Not Acceptable - Invalid Data");
+
+            try
+            {
+                var newteamUnderwriterSetting = _adminModuleManager.CreateOrEditUnderwriterTeamSignature(teamUnderwriterSetting);
+
+                return new JsonNetResult
+                {
+                    Data = newteamUnderwriterSetting
+                };
+            }
+            catch (Exception ex)
+            {
+                _logHandler.WriteLog(ex.ToString(), LogSeverity.Error, LogCategory.BusinessComponent);
+                throw new HttpException(500, "Server Error");
+            }
+        }
         #endregion
 
     }

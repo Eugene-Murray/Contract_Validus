@@ -330,3 +330,105 @@ hr
 {
 	padding-left: 0;
 }
+
+.control-group .tooltip {
+	line-height: 20px;
+}
+
+.control-group.warning .tooltip-inner {
+  border-color: #c09853;
+  background-color: #c09853;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.control-group.warning .tooltip.top .tooltip-arrow {
+  border-top-color: #c09853;
+}
+
+.control-group.warning .tooltip.left .tooltip-arrow {
+  border-left-color: #c09853;
+}
+
+.control-group.warning .tooltip.right .tooltip-arrow {
+  border-right-color: #c09853;
+}
+
+.control-group.warning .tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #c09853;
+}
+
+.control-group.error .tooltip-inner {
+  border-color: #b94a48;
+  background-color: #b94a48;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.control-group.error .tooltip.top .tooltip-arrow {
+  border-top-color: #b94a48;
+}
+
+.control-group.error .tooltip.left .tooltip-arrow {
+  border-left-color: #b94a48;
+}
+
+.control-group.error .tooltip.right .tooltip-arrow {
+  border-right-color: #b94a48;
+}
+
+.control-group.error .tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #b94a48;
+}
+
+.control-group.success .tooltip-inner,
+.control-group.success .tooltip-arrow {
+  border-color: #468847;
+  background-color: #468847;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.control-group.success .tooltip.top .tooltip-arrow {
+  border-top-color: #468847;
+}
+
+.control-group.success .tooltip.left .tooltip-arrow {
+  border-left-color: #468847;
+}
+
+.control-group.success .tooltip.right .tooltip-arrow {
+  border-right-color: #468847;
+}
+
+.control-group.success .tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #468847;
+}
+
+.control-group.info .tooltip-inner,
+.control-group.info .tooltip-arrow {
+  border-color: #3a87ad;
+  background-color: #3a87ad;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.control-group.success .tooltip.top .tooltip-arrow {
+  border-top-color: #3a87ad;
+}
+
+.control-group.success .tooltip.left .tooltip-arrow {
+  border-left-color: #3a87ad;
+}
+
+.control-group.success .tooltip.right .tooltip-arrow {
+  border-right-color: #3a87ad;
+}
+
+.control-group.success .tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #3a87ad;
+}

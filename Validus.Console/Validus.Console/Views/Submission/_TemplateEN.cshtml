@@ -35,11 +35,12 @@
         <input type="hidden" class="hide" name="DefaultOffice" value="@ViewBag.DefaultOffice" />
         <input type="hidden" class="hide" name="DefaultUnderwriter" value="@ViewBag.DefaultUnderwriter" />
         <input type="hidden" class="hide" name="DefaultPolicyType" value="@ViewBag.DefaultPolicyType" />
+        <input type="hidden" class="hide" name="NonLondonBroker" value="@ViewBag.NonLondonBroker" />
 
-        <div class="row-fluid">
+	    <div class="row-fluid">
             <div class="span6">
                 <div class="row-fluid">
-                    <div class="span11">
+                    <div class="span11 control-group">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.InsuredName)
                             <abbr title="Insured name is required">*</abbr>
@@ -48,17 +49,16 @@
                             { 
                                 { "id", ""},
                                 { "class", "span12 typeahead" },
-                                { "data-bind", "value: Model.InsuredName" },
+                                { "data-bind", "value: Model.InsuredName, validate: IsInitialised" },
                                 { "data-rest", "Insured" }
                             })
-                        @Html.ValidationMessageFor(model => model.InsuredName, null, new { @class = "help-block" })
                     </div>
                     <div class="span1">
                         <a href="#" class="showAuditTrail" data-toggle="popover" title="Audits"><i class="icon-file icon-black"></i></a>  
                 </div>
                 </div>
                 <div class="row-fluid">
-                    <div class="span12">
+                    <div class="span12 control-group">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.BrokerCode)
                             <abbr title="Broker is required">*</abbr>
@@ -67,15 +67,14 @@
                             { 
                                 @id = "",
                                 @class = "input-xlarge span12 typeahead",
-                                @data_bind = "value: Model.Broker",
+                                @data_bind = "value: Model.Broker, validate: IsInitialised",
                                 @data_rest = "Broker"
                             })
-                        @Html.ValidationMessageFor(model => model.BrokerCode, null, new { @class = "help-block" })
                     </div>
                 </div>
                 
                 <div class="row-fluid">
-					<div class="span6">
+					<div class="span6 control-group">
 						<label class="control-label">
 							@Html.DisplayNameFor(model => model.BrokerContact)
 						</label>
@@ -83,12 +82,11 @@
 							{ 
 								{ "id", ""},
 								{ "class", "input-xlarge span12 typeahead" },
-								{ "data-bind", "value: Model.BrokerContact" },
+								{ "data-bind", "value: Model.BrokerContact, validate: IsInitialised" },
 								{ "data-rest", "BrokerContact" }
 							})
-						@Html.ValidationMessageFor(model => model.BrokerContact, null, new { @class = "help-block" })
 					</div>
-					<div class="span6">
+					<div class="span6 control-group">
 						<label class="control-label">
 							Non-London Broker
 						</label>
@@ -96,14 +94,13 @@
 							{ 
 								{ "id", ""},
 								{ "class", "input-large span12 typeahead" },
-								{ "data-bind", "value: Model._NonLondonBroker" },
+								{ "data-bind", "value: Model._NonLondonBroker, validate: IsInitialised" },
 								{ "data-rest", "NonLondonBroker" }
 							})
-						@Html.ValidationMessageFor(model => model.NonLondonBrokerName, null, new { @class = "help-block" })
 					</div>
 				</div>
 				<div class="row-fluid">
-					<div class="span6">
+					<div class="span6 control-group">
 						<label class="control-label">
 							@Html.DisplayNameFor(model => model.UnderwriterCode)
 							<abbr title="Underwriter is required">*</abbr>
@@ -112,12 +109,11 @@
 							{ 
 								{ "id", ""},
 								{ "class", "input-small span12 typeahead" },
-								{ "data-bind", "value: Model._Underwriter" },
+								{ "data-bind", "value: Model._Underwriter, validate: IsInitialised" },
 								{ "data-rest", "Underwriter" }
 							})
-						@Html.ValidationMessageFor(model => model.UnderwriterCode, null, new { @class = "help-block" })
 					</div>
-					<div class="span6">
+					<div class="span6 control-group">
 						<label class="control-label">
 							@Html.DisplayNameFor(model => model.UnderwriterContactCode)
 							<abbr title="Underwriter contact is required">*</abbr>
@@ -126,78 +122,14 @@
 							{ 
 								{ "id", ""},
 								{ "class", "input-small span12 typeahead" },
-								{ "data-bind", "value: Model._UnderwriterContact" },
+								{ "data-bind", "value: Model._UnderwriterContact, validate: IsInitialised" },
 								{ "data-rest", "Underwriter" }
 							})
-						@Html.ValidationMessageFor(model => model.UnderwriterContactCode, null, new { @class = "help-block" })
 					</div>
 				</div>
 
-                @*<div class="row-fluid">
-                    <div class="span6">
-                        <label class="control-label">
-                            @Html.DisplayNameFor(model => model.BrokerContact)
-                        </label>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                @Html.TextBoxFor(model => model.BrokerContact, new Dictionary<string, object> 
-                                    { 
-                                        { "id", ""},
-                                        { "class", "input-xlarge span12 typeahead" },
-                                        { "data-bind", "value: Model.BrokerContact" },
-                                        { "data-rest", "BrokerContact" }
-                                    })
-                               
-                            </div>
-                        </div>  
-                        @Html.ValidationMessageFor(model => model.BrokerContact, null, new { @class = "help-block" })
-                    </div>
-                    <div class="span6">
-                        <label class="control-label">
-                            Non-London Broker
-                        </label>
-                        @Html.TextBoxFor(model => model.NonLondonBrokerName, new Dictionary<string, object> 
-                            { 
-                                { "id", ""},
-                                { "class", "input-large span12 typeahead" },
-                                { "data-bind", "value: Model._NonLondonBroker" },
-                                { "data-rest", "NonLondonBroker" }
-                            })
-                        @Html.ValidationMessageFor(model => model.NonLondonBrokerName, null, new { @class = "help-block" })
-                    </div>
-                </div>
                 <div class="row-fluid">
-                    <div class="span6">
-                        <label class="control-label">
-                            @Html.DisplayNameFor(model => model.UnderwriterCode)
-                            <abbr title="Underwriter is required">*</abbr>
-                        </label>
-                        @Html.TextBoxFor(model => model.UnderwriterCode, new Dictionary<string, object> 
-                            { 
-                                { "id", ""},
-                                { "class", "input-small span12 typeahead" },
-                                { "data-bind", "value: Model._Underwriter" },
-                                { "data-rest", "Underwriter" }
-                            })
-                        @Html.ValidationMessageFor(model => model.UnderwriterCode, null, new { @class = "help-block" })
-                    </div>
-                    <div class="span6">
-                        <label class="control-label">
-                            @Html.DisplayNameFor(model => model.UnderwriterContactCode)
-                            <abbr title="Underwriter contact is required">*</abbr>
-                        </label>
-                        @Html.TextBoxFor(model => model.UnderwriterContactCode, new Dictionary<string, object> 
-                            { 
-                                { "id", ""},
-                                { "class", "input-small span12 typeahead" },
-                                { "data-bind", "value: Model._UnderwriterContact" },
-                                { "data-rest", "Underwriter" }
-                            })
-                        @Html.ValidationMessageFor(model => model.UnderwriterContactCode, null, new { @class = "help-block" })
-                    </div>
-                </div>*@
-                <div class="row-fluid">
-                    <div class="span3">
+                    <div class="span3 control-group">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.QuotingOffice)
                             <abbr title="Office is required">*</abbr>
@@ -206,11 +138,10 @@
                             { 
                                 { "id", ""},
                                 { "class", "input-large span12" },
-                                { "data-bind", "options: ConsoleApp.OfficesList, optionsValue: 'Code', optionsText: 'Name', value: Model.QuotingOfficeId" }                                
+                                { "data-bind", "options: ConsoleApp.OfficesList, optionsValue: 'Code', optionsText: 'Name', value: Model.QuotingOfficeId, validate: IsInitialised" }                                
                             })
-                        @Html.ValidationMessageFor(model => model.QuotingOffice, null, new { @class = "help-block" })
                     </div>
-                    <div class="span3">
+                    <div class="span3 control-group">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.Domicile)
                             <abbr title="Domicile is required">*</abbr>
@@ -219,12 +150,11 @@
                             { 
                                 { "id", ""},
                                 { "class", "input-small span12 typeahead" },
-                                { "data-bind", "value: Model._Domicile" },
+                                { "data-bind", "value: Model._Domicile, validate: IsInitialised" },
                                 { "data-rest", "Domicile" }
                             })
-                        @Html.ValidationMessageFor(model => model.Domicile, null, new { @class = "help-block" })
                     </div>
-                    <div class="span3">
+                    <div class="span3 control-group">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.Leader)
                         </label>
@@ -232,12 +162,11 @@
                             { 
                                 { "id", ""},
                                 { "class", "input-small span12 typeahead" },
-                                { "data-bind", "value: Model._Leader" },
+                                { "data-bind", "value: Model._Leader, validate: IsInitialised" },
                                 { "data-rest", "Leader" }
                             })
-                        @Html.ValidationMessageFor(model => model.Leader, null, new { @class = "help-block" })
                     </div>
-                    <div class="span3">
+                    <div class="span3 control-group">
                         <label class="control-label">
                             @Html.DisplayNameFor(model => model.Brokerage)
                         </label>
@@ -245,27 +174,11 @@
                             { 
                                 { "id", ""},
                                 { "class", "input-small span12" },
-                                { "data-bind", "value: Model.Brokerage" }
+                                { "data-bind", "value: Model.Brokerage, validate: IsInitialised" }
                             })
-                        @Html.ValidationMessageFor(model => model.Brokerage, null, new { @class = "help-block" })
                     </div>
                 </div>
 
-                <div class="row-fluid">
-                    <div class="span12">
-                        <label class="control-label">
-                            @Html.DisplayNameFor(model => model.Description)
-                        </label>
-                        @Html.TextBoxFor(model => model.Description, new Dictionary<string, object> 
-                            { 
-                                { "id", ""},
-                                { "class", "input-xlarge span12" },
-                                { "data-bind", "value: Model.Description" }
-                            })
-                        @Html.ValidationMessageFor(model => model.Description, null, new { @class = "help-block" })
-                    </div>
-                </div>
-                
                 <div class="row-fluid" data-bind="visible: ValidationErrors().length > 0">
                     <div class="span12">
                         <div class="alert alert-error">
@@ -315,58 +228,11 @@
             </div>
         </div>
 
-
-
-
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="form-actions">
-                    <span>
-                        @* TODO: Implement reset functionality
-						<button type="button" class="btn btn-small" data-bind="click: Reset">Reset</button>
-					*@
-                        <button type="button" class="btn btn-small" data-bind="click: Cancel">Cancel</button>
-					    <button type="button" class="btn btn-small btn-primary" data-bind="click: Save, enable: !IsSaving()">
-                            Save <i class="val-loading-icon hide" data-bind="visible: IsSaving"></i>
-                        </button>
-                        
-                        <!-- ko if: (TeamQuoteTemplatesList().length === 1) -->
-                        
-                        <button type="button" class="btn btn-small" data-bind="click: QuoteSheetCreationCheck, enable: CanCreateQuoteSheet"
-                                title="Will be disabled until all Quotes have a Subscribe reference">
-                            Quote Sheet <i class="val-loading-icon hide" data-bind="visible: CreatingQuoteSheet"></i>
-                        </button>
-                        
-                        <!-- /ko -->
-                        
-                        <!-- ko if: (TeamQuoteTemplatesList().length > 1) -->
-                        
-                        <div class="btn-group">
-                            <button class="btn btn-small" type="button" data-bind="enable: CanCreateQuoteSheet"
-                                    title="Will be disabled until all Quotes have a Subscribe reference">
-                                Quote Sheet
-                                <i class="val-loading-icon hide" data-bind="visible: CreatingQuoteSheet"></i>
-                            </button>
-                            <button class="btn btn-small dropdown-toggle" type="button" data-toggle="dropdown">
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" data-bind="foreach: TeamQuoteTemplatesList">
-                                <li>
-                                    <a data-bind="text: Name, click: $parent.QuoteSheetCreationCheck, enable: $parent.CanCreateQuoteSheet"></a>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <!-- /ko -->
-
-                    </span>
-                </div>
-            </div>
-        </div>
+        @Html.Partial("_SaveQuoteSheetButtons")
 
         <div class="row-fluid">
             <div class="span12">
-                @Html.Action("_QuoteComparisonTable", "Submission")
+                @Html.Partial("_QuoteComparisonTable", "Submission")
             </div>
         </div>
 
@@ -394,8 +260,3 @@
 <!-- Create Broker pop over -->
 
 </form>
-
-
-
-
-

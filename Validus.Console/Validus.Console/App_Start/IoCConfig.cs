@@ -70,7 +70,10 @@ namespace Validus.Console.App_Start
 
 			container.RegisterType<IWorldCheckBusinessModule, WorldCheckBusinessModule>(new HttpContextLifetimeManager<IWorldCheckBusinessModule>());
 			container.RegisterType<IWorldCheckData, WorldCheckData>(new HttpContextLifetimeManager<IWorldCheckData>());
-            
+
+            container.RegisterType<IVersionService, VersionServiceClient>(new HttpContextLifetimeManager<IVersionService>());
+            container.RegisterType<VersionServiceClient>(new InjectionConstructor());
+
             System.Web.Mvc.DependencyResolver.SetResolver(new Unity.Mvc3.UnityDependencyResolver(container));
             config.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
         }

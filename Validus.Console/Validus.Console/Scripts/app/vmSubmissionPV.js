@@ -1,230 +1,147 @@
 ﻿$(function()
 {
     var ConsoleApp = window.ConsoleApp = window.ConsoleApp || {};
-    
-    //ConsoleApp.Cache = {};
-
-    //ConsoleApp.getData = function (val)
-    //{
-    //    // return either the cached value or an
-    //    // jqXHR object (which contains a promise)
-    //    return ConsoleApp.Cache[val] ||
-    //        $.ajax({
-	//	        type: 'GET',
-	//	        url: window.ValidusServicesUrl + val,
-	//	        dataType: 'json',
-	//	        success: function (data)
-	//	        {
-	//	            ConsoleApp.Cache[val] = data;
-	//	        }		        
-	//	    });
-    //    //    $.ajax('/foo/', {
-    //    //    data: { value: val },
-    //    //    dataType: 'json',
-    //    //    success: function (resp) {
-    //    //        cache[val] = resp;
-    //    //    }
-    //    //});
-    //}
-        
-	ConsoleApp.vmSubmissionPV = function(id, domId)
+     
+	ConsoleApp.vmSubmissionPV = function(id, domId, initialiseSelf, isReadOnly)
 	{
-	    var self = new vmSubmissionBase(id, domId, false);
+    	var self = new vmSubmissionBase(id, domId, false, isReadOnly);
 
-	    self.UpdateTSITotal = function (ov)
-	    {
-	        var tsitotal = parseFloat(ov.TSIPD()) + parseFloat(ov.TSIBI());
-	        if (ov.TSITotal() == "")
-	            ov.TSITotal(isNaN(tsitotal) ? "" : tsitotal);
-	    }
-      
-	    self.OVAddAdditional = function (a)
-	    {
-	        a.TSICurrency = ko.observable("");
-	        a._TSICurrency = ko.observable("");
-	        a._TSICurrency.subscribe(function (value)
-	        {
-	            var currencyValues = (value) ? value.split(":") : [],
-                    currencyPsu = (currencyValues[0]) ? currencyValues[0].trim() : "";
-
-	            a.TSICurrency(currencyPsu);
-	        });
-
-	        a.TSIPD = ko.observable("");
-	        a.TSIPD.subscribe(function() { self.UpdateTSITotal(a); });
-
-			a.TSIBI = ko.observable("");
-			a.TSIBI.subscribe(function () { self.UpdateTSITotal(a); });
-
-			a.TSITotal = ko.observable("");
-		};
-
-
-	    self.UpdateExcess = function (q)
-	    {
-	        var pd = q.PDExcessAmount();
-	        var bi = q.BIExcessAmount();
-	        if (q.BIPctgAmtDays() != "Days" && pd!= null && bi!= null && pd != "" && bi != "" && !isNaN(pd) && !isNaN(bi))
-	            q.ExcessAmount(parseFloat(q.PDExcessAmount()) + parseFloat(q.BIExcessAmount()));
-	        else
-	            q.ExcessAmount(0);
-	    }
-
-		self.QAddAdditional = function (a)
+		self.OVAddAdditional = function(vmOV)
 		{
-		    a.PDPctgAmt = ko.observable("");
-		    a.PDExcessCurrency = ko.observable("");
-		    a._PDExcessCurrency = ko.observable("");
-		    a._PDExcessCurrency.subscribe(function (value) {
-		        var currencyValues = (value) ? value.split(":") : [],
-                    currencyPsu = (currencyValues[0]) ? currencyValues[0].trim() : "";
+			vmOV.TSICurrency = ko.observable("");
+			vmOV._TSICurrency = ko.observable("");
+			vmOV._TSICurrency.subscribe(function(value)
+			{
+				var currencyValues = (value) ? value.split(":") : [],
+				    currencyPsu = (currencyValues[0]) ? $.trim(currencyValues[0]) : "";
 
-		        a.PDExcessCurrency(currencyPsu);
-		    });
-
-			a.PDExcessAmount = ko.observable("");
-			a.BIPctgAmtDays = ko.observable("");
-
-			a.BIExcessCurrency = ko.observable("");
-			a._BIExcessCurrency = ko.observable("");
-			a._BIExcessCurrency.subscribe(function (value) {
-			    var currencyValues = (value) ? value.split(":") : [],
-                    currencyPsu = (currencyValues[0]) ? currencyValues[0].trim() : "";
-
-			    a.BIExcessCurrency(currencyPsu);
+				vmOV.TSICurrency(currencyPsu);
 			});
-			
-			a.BIExcessAmount = ko.observable("");
-			a.LineSize = ko.observable("");
-			a.LineToStand = ko.observable(true);
 
-			a.PDExcessAmount.subscribe(function () { self.UpdateExcess(a); });
-			a.BIExcessAmount.subscribe(function () { self.UpdateExcess(a); });
+			vmOV.UpdateTSITotal = function()
+			{
+				var tsiBi = parseFloat(vmOV.TSIBI()), // KO dependency for TSIBI needed here
+				    tsiPd = parseFloat(vmOV.TSIPD()), // KO dependency for TSIPD needed here
+				    tsiTotal = ko.utils.peekObservable(vmOV.TSITotal);
+
+				if (tsiTotal === "")
+				{
+					tsiTotal = !isNaN(tsiBi) && !isNaN(tsiPd) ? Math.round(tsiBi + tsiPd).toString() : "";
+				}
+
+				return vmOV.TSITotal(tsiTotal ? tsiTotal.replace(/[^\d]/g, "") : "");
+			};
+
+			vmOV.TSIPD = ko.observable("");
+			vmOV.TSIBI = ko.observable("");
+			vmOV.TSITotal = ko.observable("");
+
+			vmOV.TSIPD.subscribe(vmOV.UpdateTSITotal);
+			vmOV.TSIBI.subscribe(vmOV.UpdateTSITotal);
 		};
 
-		self.SSyncJSONAdditional = function(a, b) {
-			a.Industry(b.Industry);
-			a.Situation(b.Situation);
-			a.Order(b.Order);
-			a.EstSignPctg(b.EstSignPctg);
+		self.QAddAdditional = function(vmQ)
+		{
+			vmQ.PDPctgAmt = ko.observable("");
+			vmQ.BIPctgAmtDays = ko.observable("");
+
+			vmQ.PDExcessAmount = ko.observable("");
+			vmQ.BIExcessAmount = ko.observable("");
+
+			vmQ.LineSize = ko.observable("");
+			vmQ.LineToStand = ko.observable(true);
+
+			vmQ.UpdateExcess = function()
+			{
+				var pdAmount = parseFloat(vmQ.PDExcessAmount()),
+					biAmount = parseFloat(vmQ.BIExcessAmount()),
+					pdType = vmQ.PDPctgAmt(),
+					biType = vmQ.BIPctgAmtDays(),
+					value = pdType === "Amt" && pdAmount && !isNaN(pdAmount)
+						? biType === "Amt" && biAmount && !isNaN(biAmount)
+							? Math.round(pdAmount + biAmount)
+							: Math.round(pdAmount)
+						: "";
+
+				vmQ.ExcessAmount(value);
+			};
+
+			vmQ.PDExcessAmount.subscribe(vmQ.UpdateExcess);
+			vmQ.BIExcessAmount.subscribe(vmQ.UpdateExcess);
+			vmQ.PDPctgAmt.subscribe(vmQ.UpdateExcess);
+			vmQ.BIPctgAmtDays.subscribe(vmQ.UpdateExcess);
 		};
 
-		self.OSyncJSONAdditional = function(a, b) {
+		self.SSyncJSONAdditional = function(vmS, jsonS)
+		{
+			vmS.Industry(jsonS.Industry);
+			vmS.Situation(jsonS.Situation);
+			vmS.Order(jsonS.Order);
+			vmS.EstSignPctg(jsonS.EstSignPctg);
 		};
 
-		self.OVSyncJSONAdditional = function (a, b)
+		self.OVSyncJSONAdditional = function(vmOV, jsonOV)
 		{		    
-		    a.TSICurrency(b.TSICurrency);
-		    if ((b._TSICurrency != undefined) && (b._TSICurrency != null))
-		        a._TSICurrency(b._TSICurrency);
-		    else if (b.TSICurrency)
+			vmOV.TSICurrency(jsonOV.TSICurrency);
+
+			if (jsonOV._TSICurrency !== undefined && jsonOV._TSICurrency !== null)
+				vmOV._TSICurrency(jsonOV._TSICurrency);
+			else if (jsonOV.TSICurrency)
 		    {
-		        $.getJSON(window.ValidusServicesUrl + "Currency", { psu: b.TSICurrency }, function (jsonData)
+				$.getJSON(window.ValidusServicesUrl + "Currency", { psu: jsonOV.TSICurrency }, function(jsonData)
 		        {
-		            $(jsonData).each(function (index, item)
+					$(jsonData).each(function(index, item)
 		            {
-		                a._TSICurrency(item.Psu + " : " + item.Name);
+						vmOV._TSICurrency(item.Psu + " : " + item.Name);
 
 		                return false;
 		            });
 		        });
 		    }
 
-			a.TSIPD(b.TSIPD);
-			a.TSIBI(b.TSIBI);
-			a.TSITotal(b.TSITotal);
+			vmOV.TSIPD(jsonOV.TSIPD);
+			vmOV.TSIBI(jsonOV.TSIBI);
+			vmOV.TSITotal(jsonOV.TSITotal);
 		};
 
-		self.QSyncJSONAdditional = function(a, b) {
-			a.PDPctgAmt(b.PDPctgAmt);
-			a.PDExcessCurrency(b.PDExcessCurrency);
-			if ((b._PDExcessCurrency != undefined) && (b._PDExcessCurrency != null))
-			    a._PDExcessCurrency(b._PDExcessCurrency);
-			else if (b.PDExcessCurrency) {
-			    $.getJSON(window.ValidusServicesUrl + "Currency", { psu: b.PDExcessCurrency }, function (jsonData) {
-			        $(jsonData).each(function (index, item) {
-			            a._PDExcessCurrency(item.Psu + " : " + item.Name);
+		self.QSyncJSONAdditional = function(vmQ, jsonQ)
+		{
+			vmQ.PDPctgAmt(jsonQ.PDPctgAmt);
+			vmQ.PDExcessAmount(jsonQ.PDExcessAmount);
 
-			            return false;
-			        });
-			    });
-			}
+			vmQ.BIPctgAmtDays(jsonQ.BIPctgAmtDays);
+			vmQ.BIExcessAmount(jsonQ.BIExcessAmount);
 
-			a.PDExcessAmount(b.PDExcessAmount);
-			a.BIPctgAmtDays(b.BIPctgAmtDays);
-			a.BIExcessCurrency(b.BIExcessCurrency);
-			if ((b._BIExcessCurrency != undefined) && (b._BIExcessCurrency != null))
-			    a._BIExcessCurrency(b._BIExcessCurrency);
-			else if (b.BIExcessCurrency) {
-			    $.getJSON(window.ValidusServicesUrl + "Currency", { psu: b.BIExcessCurrency }, function (jsonData) {
-			        $(jsonData).each(function (index, item) {
-			            a._BIExcessCurrency(item.Psu + " : " + item.Name);
-
-			            return false;
-			        });
-			    });
-			}
-
-			a.BIExcessAmount(b.BIExcessAmount);
-			a.LineSize(b.LineSize);
-			a.LineToStand(b.LineToStand);
+			vmQ.LineSize(jsonQ.LineSize);
+			vmQ.LineToStand(jsonQ.LineToStand);
 		};
 
-	    // Need to instaniate function before it is applied in Javascript
-	    //self.AddOptionVersion_PV = function (obj, e) {
-	    //    var useNewOptionVersionWithExtraProperties = true;
+		self.Model.submissionType = ko.observable("PV Submission");
+		self.Model.submissionTypeId = ko.observable("PV");
 
-	    //    var newOV = new OptionVersion(domId, this.CurrentVersion());
-
-	    //    newOV.PDPctgAmt = ko.observable("");
-	    //    newOV.PDExcessCurrency = ko.observable("");
-	    //    newOV.PDExcessAmount = ko.observable("");
-	    //    newOV.BIPctgAmtDays = ko.observable("");
-
-	    //    var length = this.CurrentVersion().AddOptionVersion(newOV, e, useNewOptionVersionWithExtraProperties);
-
-	    //    return length;
-	    //};
+		self.Model.Industry = ko.observable("");
 		
-        //  Submission
-		self.Model.submissionType = ko.observable('PV Submission');
-		self.Model.submissionTypeId = ko.observable('PV');
-
-		self.Model.Industry = ko.observable('');
-		
-		self.Model.Situation = ko.observable('');
-		self.Model.Order = ko.observable('');
+		self.Model.Situation = ko.observable("");
+		self.Model.Order = ko.observable("");
 		self.Model.EstSignPctg = ko.observable(100);
 
 		self.PDPctgAmtList = ko.observableArray(["%", "Amt"]);
 		self.BIPctgAmtDaysList = ko.observableArray(["%", "Amt", "Days"]);		
 
-        //  TODO: Why isn't this in the base?
-		var option1 = self.CreateFirstOption(self);
-		
-		self.Save_PVSubmission = function(element, e)
+		self.CreateFirstOption(self); // TODO: Move to the base
+
+		$.when($.ajax(
 		{
-			var isNew = (self.Id === 0);
-			var ajaxUrl = (!isNew) ? "/submission/EditSubmission" : "/submission/CreateSubmission";
+			type: 'GET',
+			url: window.ValidusServicesUrl + 'interest',
+			dataType: 'json'
+		})).done(function(data)
+		{
+			data.unshift({ Code: "", Description: "" });
+			self.InterestsList = data;
 
-			self.Save(element, e, null, ajaxUrl, self.syncPVJSON);
-		};
-		
-        $.when(
-		    $.ajax({
-		        type: 'GET',
-		        url: window.ValidusServicesUrl + 'interest',
-		        dataType: 'json'
-		    })
-		).done(
-            function (data, data2)
-		    {
-                data.unshift({ Code: "", Description: "" });
-                self.InterestsList = data;
-
-                self.Initialise(self); 
-            }
-        );
+			self.Initialise(self);
+		});
 
 		return self;
 	};

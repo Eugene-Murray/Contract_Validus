@@ -48,14 +48,9 @@
                 );
 
                 self.selectedAllAccelerator(new ConsoleApp.Accelerator());
-                toastr["info"]("Accelerator successfully created");
+                toastr.info("Accelerator successfully created");
 
                 $('#CreateEditAccelerator_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -69,13 +64,8 @@
 
             response.success(function (data) {
 
-                toastr["info"]("Accelerator successfully updated");
+                toastr.info("Accelerator successfully updated");
                 $('#CreateEditAccelerator_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -91,12 +81,7 @@
 
                 self.allAcceleratorsList.remove(function (item) { return item.Id == self.selectedAllAccelerator().Id; });
 
-                toastr["info"]("Accelerator successfully deleted");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Accelerator successfully deleted");
             });
         };
 
@@ -126,20 +111,13 @@
                     });
                 }
                 else {
-                    toastr["info"]("No Accelerators Found");
+                    toastr.info("No Accelerators Found");
                 }
 
 
                 self.showImageProcessing_LoadingAppAccelerators('none');
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr);
-                console.log(textStatus);
-            });
-
         };
 
         self.GetTeamsBasicData = function () {
@@ -156,10 +134,6 @@
                     self.teamList.push({ key: value.Id, name: value.Title });
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
 
         self.GetAcceleratorsForTeam = function () {
@@ -173,7 +147,7 @@
 
             response.success(function (data) {
 
-                console.log(data);
+                //console.log(data);
 
                 if (data.length > 0) {
 
@@ -218,11 +192,6 @@
                 }
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-            });
         };
 
         self.SaveAcceleratorsForTeam = function () {
@@ -241,12 +210,7 @@
             var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
-                toastr["info"]("Team Accelerators successfully updated");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Team Accelerators successfully updated");
             });
         };
 
@@ -299,7 +263,7 @@
         self.onClickAllAcceleratorsItem = function (e) {
 
             self.selectedAllAccelerator(this);
-            console.log(self.selectedAllAccelerator());
+            //console.log(self.selectedAllAccelerator());
         };
 
         self.click_DeleteAccelerator = function () {

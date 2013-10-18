@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
@@ -11,9 +10,11 @@ using System.Web.Routing;
 using Newtonsoft.Json;
 using Validus.Console.App_Start;
 using Validus.Console.Controllers;
-using Validus.Console.Data;
 using Validus.Console.Init;
 using Validus.Core.LogHandling;
+
+using ApiModelValidatorProvider = System.Web.Http.Validation.ModelValidatorProvider;
+using MvcModelValidatorProvider = System.Web.Mvc.ModelValidatorProvider;
 
 namespace Validus.Console
 {
@@ -29,9 +30,6 @@ namespace Validus.Console
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 			IoCConfig.RegisterIoC(GlobalConfiguration.Configuration);
-            GlobalConfiguration.Configuration.Services.RemoveAll(
- typeof(System.Web.Http.Validation.ModelValidatorProvider),
- v => v is InvalidModelValidatorProvider);
             // TODO: comment back in if you want to regenerate the DB...
 			//Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConsoleRepository, Configuration>());
 			//new ConsoleRepository().Database.Initialize(true);
@@ -40,7 +38,8 @@ namespace Validus.Console
 			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
 			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.DateParseHandling = DateParseHandling.DateTime;
-            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+			GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+			GlobalConfiguration.Configuration.Services.RemoveAll(typeof(ApiModelValidatorProvider), mvp => mvp is InvalidModelValidatorProvider);
 
             DatabaseInit.SyncSemiStaticData();
 
@@ -89,6 +88,7 @@ namespace Validus.Console
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             var xSubmissionType = this.Context.Request.Headers["X-SubmissionType"];
+
             if(!string.IsNullOrEmpty(xSubmissionType))
                 CallContext.LogicalSetData("X-SubmissionType", xSubmissionType);
         }

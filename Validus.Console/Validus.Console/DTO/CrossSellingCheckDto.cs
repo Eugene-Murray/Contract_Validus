@@ -12,6 +12,8 @@ namespace Validus.Console.DTO
         public string SubmissionTypeId { get; set; }
         public string SubmissionTitle { get; set; }
         public string QuotingOffice { get; set; }
-        public string Underwriter { get; set; } 
+        public string Underwriter { get; set; }
+        public string ButtonTitle { get; set; }
+        public bool IsReadOnly { get; set; }
     }
 }

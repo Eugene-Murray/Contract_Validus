@@ -151,28 +151,26 @@
 
 	    <footer class="footer container-fluid">
 			<div class="row-fluid">
-				<div class="span12">
-					<p>&copy; @DateTime.Now.Year Validus Holdings</p>
-				</div>
+			    <div class="span12">
+			        <p>&copy; @DateTime.Now.Year Validus Holdings</p>
+			    </div>
 			</div>
         </footer>
-
+		
 	    <script type="text/javascript">
     		/*
 				Global variables
 			*/
     		ValidusServicesUrl = "@ConfigurationManager.AppSettings["serviceURL"]";
 	    	WebPolicyUrl = "@ConfigurationManager.AppSettings["WebPolicyURL"]";
-	        WorldCheckURL = "@ConfigurationManager.AppSettings["WorldCheckURL"]";
-	    	//ValidusServicesUrl = "http://localhost:55548/api/";
+	        WorldCheckUrl = "@ConfigurationManager.AppSettings["WorldCheckURL"]";
     	</script>
 
 		@Scripts.Render("~/bundles/min")
-		@Scripts.Render("~/bundles/lib")
 		@Scripts.Render("~/bundles/app")
 		@Scripts.Render("~/bundles/vm")
 
-        @RenderSection("scripts", required: false)
+        @RenderSection("scripts", false) @* TODO: Remove *@
 
 		@Scripts.Render("~/bundles/main")
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -9,84 +6,57 @@ using System.Xml;
 using System.Xml.Xsl;
 using Validus.Console.DTO;
 using Validus.Console.Data;
-using Validus.Core.LogHandling;
 
 namespace Validus.Console.BusinessLogic
 {
     public class SearchBusinessModule : ISearchBusinessModule
-    {
+	{
+		// TODO: Use a configuration setting
+		private const string XSLTTransformFile = "~/content/xml/searchtransform.xslt";
 
-        ISearchData _searchData = null;
-        ILogHandler _logHandler;
+		private readonly ISearchData SearchData;
 
-        public SearchBusinessModule(ISearchData rep, ILogHandler logHandler)
-        {
-            _searchData = rep;
-            _logHandler = logHandler;
+        public SearchBusinessModule(ISearchData searchData)
+		{
+			this.SearchData = searchData;
         }
 
-        public SearchResponseDto GetSearchResults(string searchTerm, int skip, int take)
-        {
-            return _searchData.GetSearchResults(searchTerm, skip, take);
-        }
+		public SearchResponseDto GetSearchResults(string term, int skip, int take)
+		{
+			return this.SearchData.GetSearchResults(term, skip, take);
+		}
 
-        public string GetSearchResultsHtml(string searchTerm, int skip, int take)
-        {
-            XsltSettings xslSettings = new XsltSettings(true, true);
-            XmlUrlResolver xslResolver = new XmlUrlResolver();
-            xslResolver.Credentials = CredentialCache.DefaultCredentials;
-            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-            xmlWriterSettings.OmitXmlDeclaration = true;
-            XmlWriter xmlWriter = null;
-            XmlReader xmlReader = null;
-            XmlReader xslReader = null;
-            XslCompiledTransform xFormer = null;
+		public string GetSearchResultsHtml(string term, int skip, int take)
+		{
+			var response = new StringBuilder();
 
-            try
-            {
-                // get the search restuls
-                XmlDocument searchResultsDoc = _searchData.GetSearchResultsXML(searchTerm, skip, take);
-                if (searchResultsDoc != null)
-                {
-                    xmlReader = XmlReader.Create(new StringReader(searchResultsDoc.OuterXml));
-                    xslReader = XmlReader.Create(HttpContext.Current.Server.MapPath("~/Content/xml/SearchTransform.xslt"));
-                    
-                    xFormer = new XslCompiledTransform();
+			var xmlResults = this.SearchData.GetSearchResultsXML(term, skip, take);
 
-                    xFormer.Load(xslReader, xslSettings, xslResolver);
+			if (xmlResults != null)
+			{
+				using (var xmlReader = XmlReader.Create(new StringReader(xmlResults.OuterXml)))
+				{
+					using (var xslReader = XmlReader.Create(HttpContext.Current.Server.MapPath(XSLTTransformFile)))
+					{
+						using (var xmlWriter = XmlWriter.Create(response, new XmlWriterSettings
+						{
+							OmitXmlDeclaration = true
+						}))
+						{
+							var xslTransformer = new XslCompiledTransform();
 
-                    StringBuilder stringBuilder = new StringBuilder();
-                    xmlWriter = XmlWriter.Create(stringBuilder, xmlWriterSettings);
-                    xFormer.Transform(xmlReader, xmlWriter);                   
-                    
-                    return stringBuilder.ToString();
-                }
-            }
-            /*catch
-            {
-                // todo
-            }*/
-            finally
-            {
-                if(xmlWriter!=null){
-                    xmlWriter.Close();
-                    xmlWriter = null;
-                }
-                if (xslReader != null)
-                {
-                    xslReader.Close();
-                    xslReader = null;
-                }
-                if (xmlReader != null)
-                {
-                    xmlReader.Close();
-                    xmlReader = null;
-                }
-                xslSettings = null;
-                xslResolver = null;
-                xFormer = null;
-            }
-            return string.Empty;
-        }
+							xslTransformer.Load(xslReader, new XsltSettings(true, true), new XmlUrlResolver
+							{
+								Credentials = CredentialCache.DefaultCredentials
+							});
+
+							xslTransformer.Transform(xmlReader, xmlWriter);
+						}
+					}
+				}
+			}
+
+			return response.ToString();
+		}
     }
 }

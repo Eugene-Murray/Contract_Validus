@@ -223,10 +223,12 @@
     <ProjectReference Include="..\Validus.Core\Validus.Core.csproj">
       <Project>{2e49c350-33b5-46da-8dd3-e526b2511caa}</Project>
       <Name>Validus.Core</Name>
+      <Aliases>global</Aliases>
     </ProjectReference>
     <ProjectReference Include="..\Validus.Models\Validus.Models.csproj">
       <Project>{b68b0755-d2e1-41aa-bee9-87c642d7ea11}</Project>
       <Name>Validus.Models</Name>
+      <Aliases>globalVM</Aliases>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

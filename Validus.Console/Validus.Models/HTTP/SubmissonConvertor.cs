@@ -19,10 +19,23 @@ namespace Validus.Models.HTTP
                     }
                 case "PV":
                     {
-                        return new SubmissionEN();
+                        return new SubmissionPV();
                     }
                 case "FI":
                     {
+                        return new Submission();
+                    }
+                case "CA":
+                    {
+                        return new Submission();
+                    }
+                case "HM":
+                    {
+                        return new Submission();
+                    }
+                case "ME":
+                    {
+                        return new Submission();
                     }
                     break;
             }
@@ -49,6 +62,18 @@ namespace Validus.Models.HTTP
                     {
                         return new OptionFI();
                     }
+                case "CA":
+                    {
+                        return new Option();
+                    }
+                case "HM":
+                    {
+                        return new Option();
+                    }
+                case "ME":
+                    {
+                        return new Option();
+                    }
                     break;
             }
             return new Option();
@@ -71,6 +96,18 @@ namespace Validus.Models.HTTP
                         return new OptionVersionPV();
                     }
                 case "FI":
+                    {
+                        return new OptionVersion();
+                    }
+                case "CA":
+                    {
+                        return new OptionVersionCA();
+                    }
+                case "HM":
+                    {
+                        return new OptionVersionHM();
+                    }
+                case "ME":
                     {
                         return new OptionVersion();
                     }
@@ -98,6 +135,18 @@ namespace Validus.Models.HTTP
                 case "FI":
                     {
                         return new QuoteFI();
+                    }
+                case "CA":
+                    {
+                        return new QuoteCA();
+                    }
+                case "HM":
+                    {
+                        return new QuoteHM();
+                    }
+                case "ME":
+                    {
+                        return new QuoteME();
                     }
                     break;
             }

@@ -113,6 +113,59 @@
 {
     text-align: right
 }
+.val-search form.val-advanced-quicksearch
+{
+	margin: 0;
+	width: 300px;
+}
+.val-search .popover
+{
+	width: auto;
+}
+.val-search .val-searchlabel
+{
+	display: none;
+}
+.val-search.val-advanced-search .val-searchlabel
+{
+	display: inline;
+}
+.val-search.val-advanced-search .control-label
+{
+	width: 300px;
+}
+.val-advanced-quicksearch .controls.controls-row
+{
+	margin-top: 3px;
+}
+.val-advanced-quicksearch a.btn,
+.val-advanced-quicksearch a.btn:active,
+.val-advanced-quicksearch a.btn:hover,
+.val-advanced-quicksearch a.btn:visited,
+.val-advanced-quicksearch a.btn:first-child,
+.val-advanced-quicksearch a.btn:last-child
+{
+	/* TODO: Remove the important attributes */
+	background: none !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	-webkit-border-radius: 0 !important;
+}
+.val-advanced-quicksearch.form-horizontal .control-group
+{
+	margin-left: 0;
+	margin-bottom: 5px;
+}
+.val-advanced-quicksearch.form-horizontal .controls
+{
+	margin: 0;
+}
+.val-advanced-quicksearch.form-horizontal .control-label
+{
+	text-align: left;
+}
 .val-processing,
 .val-searching
 {
@@ -285,10 +338,17 @@
     padding-left: 24px;
 }
 .val-add-renewal-tab,
-.val-add-workflowtasks-tab
+.val-add-workflowtasks-tab,
+.val-add-submissions-detailed-tab
 {
     cursor: pointer
 }
+
+.search-found 
+{
+     background-color: #DBD59C;
+}
+
 /*  Added by FB to stop tables becoming too tall, need non-absolute width alternative? */
 .val-worldcheck-detail-alias-datatable td > div,
 .val-worldcheck-detail-spelling-datatable td > div,
@@ -317,7 +377,7 @@
 .val-recentquotes-datatable td > div
 {
     height: 21px;
-    width: 200px;
+    width: 100px;
     overflow: hidden;
 }
 .val-worldcheck-match-name td > div

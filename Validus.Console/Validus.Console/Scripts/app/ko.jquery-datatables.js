@@ -83,7 +83,7 @@ ko.bindingHandlers["dataTable2"] = {
 
 		if (binding)
 		{
-			//toastr["info"]("KO: " + binding.length.toString() + " DT: " + $(element).dataTable().fnSettings().fnRecordsTotal().toString());
+			//toastr.info("KO: " + binding.length.toString() + " DT: " + $(element).dataTable().fnSettings().fnRecordsTotal().toString());
 			
 			/*
 			var ex = document.getElementById('example');

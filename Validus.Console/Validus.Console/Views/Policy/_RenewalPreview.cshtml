@@ -10,7 +10,7 @@
         <div class="span12">
             <strong>@Html.DisplayNameFor(model => model.InsuredName)</strong>
             <br />
-            <span>@Html.DisplayTextFor(model => model.InsuredName)</span>
+            <span class="insuredname">@Html.DisplayTextFor(model => model.InsuredName)</span>
         </div>
     </div>
     <div class="row-fluid">
@@ -89,8 +89,8 @@
     </div>
     <hr />
         <div class="row-fluid">
-            <div class="span12">
-                @Html.Action("_InsuredDetailsPreview","Insured",new { insuredName = Model.InsuredName})
+            <div class="span12 insureddetails">
+                @*@Html.Action("_InsuredDetailsPreview","Insured",new { insuredName = Model.InsuredName})*@
             </div>
         </div>
     

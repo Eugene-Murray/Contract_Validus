@@ -54,9 +54,6 @@ ko.bindingHandlers["bootstrap-carousel"] = {
 		$("a.carousel-control.left", element).attr("data-slide", "next").attr("href", "#" + domId).addClass("hide");
 		$("a.carousel-control.right", element).attr("data-slide", "prev").attr("href", "#" + domId).addClass("hide");
 
-		$("li:first", domIndicators).addClass("active");
-		$("div.item:first", domPanes).addClass("active");
-
 		ko.bindingHandlers["bootstrap-carousel"]["init-carousel"](element);
 
 		koValue.afterRender(element);
@@ -93,14 +90,20 @@ ko.bindingHandlers["bootstrap-carousel"] = {
 	"init-carousel": function(element)
 	{
 		var domIndicators = $("ol.carousel-indicators:first", element),
-			/*domPanes = $("div.carousel-inner:first", element),*/
+			domPanes = $("div.carousel-inner:first", element),
 			domId = $(element).attr("id");
+
+		if ($("li.active", domIndicators).length === 0)
+		    $("li:first", domIndicators).addClass("active");
+
+		if ($("div.item.active", domPanes).length === 0)
+	        $("div.item:first", domPanes).addClass("active");
 
 		domIndicators.children("li").each(function(index, item)
 		{
 			$(this).attr("data-target", "#" + domId).attr("data-slide-to", index);
 		});
-
+	   
 		$(element).carousel({ interval: -1 });
 	},
 	"generate-uid": function()

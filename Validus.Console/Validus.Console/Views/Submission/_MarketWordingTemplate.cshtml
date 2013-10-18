@@ -5,7 +5,7 @@
     <div class="span5">
 
         <table class="val-wordings-datatable table table-condensed table-bordered table-hover"
-            data-bind="dataTable3: { rowClick: onClickMarketWordingItem, captionTemplate: 'tableAvailableMarketWordingsCaption', rowTemplate: 'tableAvailableMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'AvailableMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
+            data-bind="dataTable: { rowClick: onClickMarketWordingItem, captionTemplate: 'tableAvailableMarketWordingsCaption', rowTemplate: 'tableAvailableMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'AvailableMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
     columns:
 	[
 	    { 'name': 'WordingRefNumber' },
@@ -36,7 +36,7 @@
     <div class="span5">
 
         <table class="table table-condensed table-bordered table-hover"
-               data-bind="dataTable3: {
+               data-bind="dataTable: {
 dataSource: Model.SubmissionMarketWordingsList, rowClick: onClickSubmissionMarketWordingItem, rowTemplate: 'tableSubmissionMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'SubmissionMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
     columns:
 	[
@@ -97,7 +97,7 @@ dataSource: Model.SubmissionMarketWordingsList, rowClick: onClickSubmissionMarke
         </div>
         <div class="span5">
             <table class="table table-condensed table-bordered table-hover"
-                   data-bind="dataTable3: {
+                   data-bind="dataTable: {
 dataSource: Model.CustomSubmissionMarketWordingsList, rowClick: onClick_CustomSubmissionMarketWordingItem, rowTemplate: 'tableCustomSubmissionMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'CustomSubmissionMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
     columns:
 	[

@@ -30,8 +30,6 @@ namespace Validus.Console.BusinessLogic
 
         public Submission GetSubmissionById(int id) 
         {
-            var synchronised = false;
-
             var submission =
                 _repository.Query<Submission>(u => u.Id == id,
                                               s => s.Options.Select(o => o.OptionVersions.Select(ov => ov.Quotes)),
@@ -65,8 +63,7 @@ namespace Validus.Console.BusinessLogic
                     {
                         var policyContract = Utility.XmlDeserializeFromString<PolicyContract>(outputXml);
 
-                        if (!synchronised)
-                            synchronised = SubmissionModuleHelpers.SynchroniseSubmission(submission, policyContract);
+						SubmissionModuleHelpers.SynchroniseSubmission(submission, policyContract);
 
                         if (!quote.SubscribeTimestamp.HasValue
                             || policyContract.TimeStamp != quote.SubscribeTimestamp)
@@ -492,41 +489,42 @@ namespace Validus.Console.BusinessLogic
                         {
                             var removeListTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>();
 
-                            foreach (var dbmarketWordingSetting in submissionT.TermsNConditionWordingSettings)
+                            foreach (var dbtermsNConditionWordingSetting in submissionT.TermsNConditionWordingSettings)
                             {
-                                if (_TermsNConditionWordingSettings.All(mws => mws.Id != dbmarketWordingSetting.Id))
+                                if (_TermsNConditionWordingSettings.All(mws => mws.Id != dbtermsNConditionWordingSetting.Id))
                                 {
-                                    removeListTermsNConditionWordingSettings.Add(dbmarketWordingSetting);
+                                    removeListTermsNConditionWordingSettings.Add(dbtermsNConditionWordingSetting);
                                 }
                             }
-                            foreach (var dbmarketWordingSettingToRemove in removeListTermsNConditionWordingSettings)
+                            foreach (var dbtermsNConditionWordingSettingToRemove in removeListTermsNConditionWordingSettings)
                             {
-                                submissionT.TermsNConditionWordingSettings.Remove(dbmarketWordingSettingToRemove);
-                                _repository.Delete(dbmarketWordingSettingToRemove);
+                                submissionT.TermsNConditionWordingSettings.Remove(dbtermsNConditionWordingSettingToRemove);
+                                _repository.Delete(dbtermsNConditionWordingSettingToRemove);
 
                             }
                         }
 
-                        foreach (var marketWordingSetting in _TermsNConditionWordingSettings)
+                        foreach (var termsNConditionWordingSetting in _TermsNConditionWordingSettings)
                         {
-                            if (marketWordingSetting.Id == 0)
+                            if (termsNConditionWordingSetting.Id == 0)
                             {
                                 if (submissionT.TermsNConditionWordingSettings != null)
                                 {
-                                    TermsNConditionWordingSetting setting = marketWordingSetting;
-                                    marketWordingSetting.TermsNConditionWording =
+                                    TermsNConditionWordingSetting setting = termsNConditionWordingSetting;
+                                    termsNConditionWordingSetting.TermsNConditionWording =
                                         _repository.Query<TermsNConditionWording>(
                                             mw => mw.Id == setting.TermsNConditionWording.Id).First();
-                                    submissionT.TermsNConditionWordingSettings.Add(marketWordingSetting);
+                                    submissionT.TermsNConditionWordingSettings.Add(termsNConditionWordingSetting);
                                 }
                             }
                             else
                             {
                                 if (submissionT.TermsNConditionWordingSettings != null)
                                 {
-                                    var dbmarketWordingSetting =
-                                        submissionT.TermsNConditionWordingSettings.First(mws => mws.Id == marketWordingSetting.Id);
-                                    dbmarketWordingSetting.DisplayOrder = marketWordingSetting.DisplayOrder;
+                                    var dbtermsNConditionWordingSetting =
+                                        submissionT.TermsNConditionWordingSettings.First(mws => mws.Id == termsNConditionWordingSetting.Id);
+                                    dbtermsNConditionWordingSetting.DisplayOrder = termsNConditionWordingSetting.DisplayOrder;
+                                    dbtermsNConditionWordingSetting.IsStrikeThrough = termsNConditionWordingSetting.IsStrikeThrough;
                                 }
                             }
                         }
@@ -565,6 +563,7 @@ namespace Validus.Console.BusinessLogic
                                     var dbcustomTermsNConditionWordingSetting =
                                         submissionT.CustomTermsNConditionWordingSettings.First(mws => mws.Id == customTermsNConditionWordingSetting.Id);
                                     dbcustomTermsNConditionWordingSetting.DisplayOrder = customTermsNConditionWordingSetting.DisplayOrder;
+                                    dbcustomTermsNConditionWordingSetting.IsStrikeThrough = customTermsNConditionWordingSetting.IsStrikeThrough;
                                 }
                             }
                         }
@@ -609,9 +608,10 @@ namespace Validus.Console.BusinessLogic
                             {
                                 if (submissionT.SubjectToClauseWordingSettings != null)
                                 {
-                                    var dbmarketWordingSetting =
+                                    var dbsubjectToClauseWordingSetting =
                                         submissionT.SubjectToClauseWordingSettings.First(mws => mws.Id == subjectToClauseWordingSetting.Id);
-                                    dbmarketWordingSetting.DisplayOrder = subjectToClauseWordingSetting.DisplayOrder;
+                                    dbsubjectToClauseWordingSetting.DisplayOrder = subjectToClauseWordingSetting.DisplayOrder;
+                                    dbsubjectToClauseWordingSetting.IsStrikeThrough = subjectToClauseWordingSetting.IsStrikeThrough;
                                 }
                             }
                         }
@@ -650,6 +650,7 @@ namespace Validus.Console.BusinessLogic
                                     var dbcustomSubjectToClauseWordingSetting =
                                         submissionT.CustomSubjectToClauseWordingSettings.First(mws => mws.Id == customSubjectToClauseWordingSetting.Id);
                                     dbcustomSubjectToClauseWordingSetting.DisplayOrder = customSubjectToClauseWordingSetting.DisplayOrder;
+                                    dbcustomSubjectToClauseWordingSetting.IsStrikeThrough = customSubjectToClauseWordingSetting.IsStrikeThrough;
                                 }
                             }
                         }
@@ -714,7 +715,7 @@ namespace Validus.Console.BusinessLogic
 												 .Where(w => w.UnderwriterCode != null)
 												 .Select(w => w.UnderwriterCode).ToArray();
 
-				subs = _repository.Query<Submission>().Where
+                subs = _repository.Query<Submission>(s => s.Options.Select(o => o.OptionVersions.Select(ov => ov.Quotes))).Where
 						(
 							s => (
 									(
@@ -795,11 +796,14 @@ namespace Validus.Console.BusinessLogic
 
 			iTotalDisplayRecords = iTotalRecords = subs.Count();
 
-			return String.Equals(sortDir, "ASC", StringComparison.OrdinalIgnoreCase) ?
+			var result = String.Equals(sortDir, "ASC", StringComparison.OrdinalIgnoreCase) ?
 				(from sub in subs
 				 select new
 				 {
-					 sub.BrokerPseudonym,
+                     InceptionDate = (sub.Options.FirstOrDefault().OptionVersions.FirstOrDefault().Quotes.FirstOrDefault().InceptionDate.HasValue) 
+                            ? (sub.Options.FirstOrDefault().OptionVersions.FirstOrDefault().Quotes.FirstOrDefault().InceptionDate.Value) 
+                            : new DateTime(),
+                     sub.BrokerPseudonym,
 					 sub.InsuredName,
 					 sub.Id
 
@@ -808,17 +812,159 @@ namespace Validus.Console.BusinessLogic
 				(from sub in subs
 				 select new
 				 {
-					 sub.BrokerPseudonym,
+                     InceptionDate = (sub.Options.FirstOrDefault().OptionVersions.FirstOrDefault().Quotes.FirstOrDefault().InceptionDate.HasValue) 
+                            ? (sub.Options.FirstOrDefault().OptionVersions.FirstOrDefault().Quotes.FirstOrDefault().InceptionDate.Value)
+                            : new DateTime(),
+                     sub.BrokerPseudonym,
 					 sub.InsuredName,
 					 sub.Id
-
 				 }).OrderByDescending(sortCol).Skip(skip).Take(take).ToArray();
+
+		    return result;
 		}
+
+        public Submission[] GetSubmissionsDetailed(string sSearch, int skip, int take, string sortCol, string sortDir, bool applyProfileFilters, out int iTotalDisplayRecords, out int iTotalRecords)
+        {
+            IQueryable<Submission> subs;
+
+            if (applyProfileFilters)
+            {
+                var currentUser = _webSiteModuleManager.EnsureCurrentUser();
+
+                var filterCOBs = currentUser.FilterCOBs
+                                            .Select(w => w.Id).ToArray();
+                var filterOffices = currentUser.FilterOffices
+                                               .Select(w => w.Id).ToArray();
+                var filterMembers = currentUser.FilterMembers
+                                               .Where(w => w.UnderwriterCode != null)
+                                               .Select(w => w.UnderwriterCode).ToArray();
+                var additionalCOBs = currentUser.AdditionalCOBs
+                                                .Select(w => w.Id).ToArray();
+                var additionalOffices = currentUser.AdditionalOffices
+                                                   .Select(w => w.Id).ToArray();
+                var additionalUsers = currentUser.AdditionalUsers
+                                                 .Where(w => w.UnderwriterCode != null)
+                                                 .Select(w => w.UnderwriterCode).ToArray();
+
+                subs = _repository.Query<Submission>().Where
+                        (
+                            s => (
+                                    (
+                                        String.IsNullOrEmpty(sSearch)
+                                        ||
+                                        s.InsuredName.Contains(sSearch)
+                                        ||
+                                        s.BrokerPseudonym.Contains(sSearch)
+                                        ||
+                                        s.BrokerContact.Contains(sSearch)
+                                        ||
+                                        s.NonLondonBrokerName.Contains(sSearch)
+                                        ||
+                                        s.UnderwriterCode == sSearch
+                                        ||
+                                        s.QuotingOfficeId == sSearch
+                                        ||
+                                        s.Domicile == sSearch
+                                        ||
+                                        s.Leader == sSearch
+                                        ||
+                                        s.Options.Any
+                                        (
+                                            o => o.OptionVersions.Any
+                                            (
+                                                ov => ov.Quotes.Any
+                                                (
+                                                    q => q.SubscribeReference == sSearch
+                                                )
+                                            )
+                                        )
+                                    )
+                                &&
+                                s.Options.Any
+                                (
+                                    o => o.OptionVersions.Any
+                                    (
+                                        ov => ov.Quotes.Any
+                                        (
+                                            q => (
+                                                    (
+                                                        filterCOBs.Contains(q.COBId)
+                                                        &&
+                                                        filterMembers.Contains(q.OptionVersion.Option.Submission.UnderwriterCode)
+                                                        &&
+                                                        filterOffices.Contains(q.OriginatingOfficeId)
+                                                        &&
+                                                        (q.EntryStatus != "NTU" || q.SubmissionStatus != "DECLINED")
+                                                    )
+                                                    ||
+                                                    (
+                                                    additionalCOBs.Contains(q.COBId)
+                                                    ||
+                                                    additionalUsers.Contains(q.OptionVersion.Option.Submission.UnderwriterCode)
+                                                    ||
+                                                    additionalOffices.Contains(q.OriginatingOfficeId)
+                                                    &&
+                                                    (q.EntryStatus != "NTU" || q.SubmissionStatus != "DECLINED")
+                                                    )
+                                                )
+                                        )
+                                    )
+                                ))
+                        );
+            }
+            else
+            {
+                subs = _repository.Query<Submission>().Where
+                    (
+                        s => (
+                                String.IsNullOrEmpty(sSearch)
+                                ||
+                                s.InsuredName.Contains(sSearch)
+                                ||
+                                s.BrokerPseudonym.Contains(sSearch)
+                                ||
+                                s.BrokerContact.Contains(sSearch)
+                                ||
+                                s.NonLondonBrokerName.Contains(sSearch)
+                                ||
+
+                                s.UnderwriterCode == sSearch
+                                ||
+                                s.QuotingOfficeId == sSearch
+                                ||
+                                s.Domicile == sSearch
+                                ||
+                                s.Leader == sSearch
+                                ||
+                                s.Options.Any
+                                (
+                                    o => o.OptionVersions.Any
+                                    (
+                                        ov => ov.Quotes.Any
+                                        (
+                                            q => q.SubscribeReference == sSearch
+                                        )
+                                    )
+                                )
+                              )
+                    );
+            }
+
+            iTotalDisplayRecords = iTotalRecords = subs.Count();
+
+            return String.Equals(sortDir, "ASC", StringComparison.OrdinalIgnoreCase) ?
+                subs.OrderBy(sortCol).Skip(skip).Take(take).ToArray()
+                         :
+                subs.OrderByDescending(sortCol).Skip(skip).Take(take).ToArray();
+        }
 
 		public SubmissionPreviewDto GetSubmissionPreviewById(int id)
 		{
 			var submissionPreviewDto = new SubmissionPreviewDto();
-            
+
+            var teamMemberships = _webSiteModuleManager.EnsureCurrentUser().TeamMemberships;
+            var currentUserSubmissionTypeIds = teamMemberships.Select(t => t.Team.SubmissionTypeId).ToList();
+
 		    _repository.Query<Submission>(u => u.Id == id,
 		                                  s =>
 		                                  s.Options.Select(
@@ -832,13 +978,24 @@ namespace Validus.Console.BusinessLogic
 
 			if (submission != null)
 			{
-				submissionPreviewDto.SubmissionId = submission.Id.ToString();
+                if (currentUserSubmissionTypeIds.Any(c => c == submission.SubmissionTypeId))
+                {
+                    submissionPreviewDto.ButtonTitle = "Edit";
+                    submissionPreviewDto.IsReadOnly = false;
+                }
+                else
+                {
+                    submissionPreviewDto.ButtonTitle = "View";
+                    submissionPreviewDto.IsReadOnly = true;
+                }
+                
+                submissionPreviewDto.SubmissionId = submission.Id.ToString();
 				submissionPreviewDto.Title = submission.Title;
 				submissionPreviewDto.InsuredName = (submission.InsuredName.Length < 25) ? submission.InsuredName : submission.InsuredName.Remove(24);
 				submissionPreviewDto.BrokerPseudonym = submission.BrokerPseudonym;
 				submissionPreviewDto.BrokerContact = submission.BrokerContact;
 				submissionPreviewDto.BrokerCode = submission.BrokerCode;
-				submissionPreviewDto.Comments = submission.QuoteSheetNotes;
+			    submissionPreviewDto.Comments = submission.UnderwriterNotes;
 			    submissionPreviewDto.SubmissionTypeId = submission.SubmissionTypeId;
 
 				if (submission.Options != null && submission.Options.Count > 0)
@@ -858,7 +1015,6 @@ namespace Validus.Console.BusinessLogic
 								EntryStatus = q.SubmissionStatus.Take(1).FirstOrDefault().ToString(),
 								StatusTooltip = q.SubmissionStatus,
 								SubscribeReference = q.SubscribeReference
-
 							};
 						}).ToList();
 
@@ -889,22 +1045,38 @@ namespace Validus.Console.BusinessLogic
 
         public List<CrossSellingCheckDto> CrossSellingCheck(string insuredName, int thisSubmissionId)
         {
+            var teamMemberships = _webSiteModuleManager.EnsureCurrentUser().TeamMemberships;
+            var currentUserSubmissionTypeIds = teamMemberships.Select(t => t.Team.SubmissionTypeId).ToList();
+
             var submissions =
               _repository.Query<Submission>(u => u.InsuredName == insuredName && u.Id != thisSubmissionId,
                                             s => s.Options.Select(o => o.OptionVersions.Select(ov => ov.Quotes))).ToList();
 
-            return (from submission in submissions let options = submission.Options.Select(o => o) 
-                    let optionVersions = options.SelectMany(ov => ov.OptionVersions) 
-                    let anyQuotes = optionVersions.SelectMany(ov => ov.Quotes).Any(q => q.SubmissionStatus != "FIRM ORDER") 
-                    where anyQuotes 
-                    select new CrossSellingCheckDto
-                        {
-                            SubmissionId = submission.Id.ToString(),
-                            SubmissionTitle = submission.Title,
-                            SubmissionTypeId = submission.SubmissionTypeId,
-                            Underwriter = submission.UnderwriterCode,
-                            QuotingOffice = submission.QuotingOfficeId
-                        }).ToList();
+
+            var allcrossSellList = (from submission in submissions
+                                    let options = submission.Options.Select(o => o)
+                                    let optionVersions = options.SelectMany(ov => ov.OptionVersions)
+                                    let anyQuotes = optionVersions.SelectMany(ov => ov.Quotes).Any(q => q.SubmissionStatus != "FIRM ORDER")
+                                    where anyQuotes
+                                    select new CrossSellingCheckDto
+                                    {
+                                        SubmissionId = submission.Id.ToString(),
+                                        SubmissionTitle = submission.Title,
+                                        SubmissionTypeId = submission.SubmissionTypeId,
+                                        Underwriter = submission.UnderwriterCode,
+                                        QuotingOffice = submission.QuotingOfficeId,
+                                        ButtonTitle = "View",
+                                        IsReadOnly = true
+                                    }).ToList();
+
+            foreach (var crossSellingCheckDto in allcrossSellList.Where(crossSellingCheckDto =>
+                    currentUserSubmissionTypeIds.Any(c => c == crossSellingCheckDto.SubmissionTypeId)))
+            {
+                crossSellingCheckDto.ButtonTitle = "Edit";
+                crossSellingCheckDto.IsReadOnly = false;
+            }
+
+            return allcrossSellList;
         }
 
 		public void Dispose()

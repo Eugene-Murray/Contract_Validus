@@ -93,6 +93,11 @@
     <Compile Include="AuditTrail.cs" />
     <Compile Include="Broker.cs" />
     <Compile Include="COB.cs" />
+    <Compile Include="QuoteME.cs" />
+    <Compile Include="QuoteHM.cs" />
+    <Compile Include="OptionVersionHM.cs" />
+    <Compile Include="OptionVersionCA.cs" />
+    <Compile Include="QuoteCA.cs" />
     <Compile Include="OptionFI.cs" />
     <Compile Include="RiskCode.cs" />
     <Compile Include="QuoteFI.cs" />
@@ -122,6 +127,7 @@
     <Compile Include="Team.cs" />
     <Compile Include="TeamMembership.cs" />
     <Compile Include="TeamOfficeSetting.cs" />
+    <Compile Include="TeamUnderwriterSetting.cs" />
     <Compile Include="TermsNConditionWording.cs" />
     <Compile Include="TermsNConditionWordingSetting.cs" />
     <Compile Include="Underwriter.cs" />

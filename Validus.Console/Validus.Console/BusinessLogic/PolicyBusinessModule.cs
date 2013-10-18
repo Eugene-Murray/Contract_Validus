@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Validus.Console.Data;
 using Validus.Console.DTO;
 using Validus.Console.SubscribeService;
@@ -211,6 +212,7 @@ namespace Validus.Console.BusinessLogic
         {
             using (var svc = new PolicyServiceSoapClient())
             {
+                // TODO: make only one call...
                 var policy = svc.GetPolicy(polId);
                 var resp = _subscribeService.GetReference(new GetReferenceRequest() {strPolId = polId});
 
@@ -234,5 +236,12 @@ namespace Validus.Console.BusinessLogic
                 }
                 return filteredPols;
             }
+
+
+        public async Task<RiskPreviewDto> RiskPreview(string polId)
+        {
+            await Task.Delay(2000);
+            return new RiskPreviewDto();
         }
     }
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿extern alias globalVM;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ using Validus.Console.SubscribeService;
 using Validus.Console.Tests.Helpers;
 using Validus.Core.HttpContext;
 using Validus.Core.LogHandling;
-using Validus.Models;
+using globalVM::Validus.Models;
 
 namespace Validus.Console.Tests
 {
@@ -30,10 +31,12 @@ namespace Validus.Console.Tests
     {
         public static IPolicyService _mockSubscribeService;
         public static ICurrentHttpContext _currentHttpContext;
-        public static Validus.Models.Submission _basicSubmission;
-        public static Validus.Models.Submission _complexSubmission;
-        public static Validus.Models.SubmissionEN _basicEnergySubmission;
-        public static Validus.Models.SubmissionEN _complexEnergySubmission;
+        public static globalVM::Validus.Models.Submission _basicSubmission;
+        public static globalVM::Validus.Models.Submission _complexSubmission;
+        public static globalVM::Validus.Models.SubmissionEN _basicEnergySubmission;
+        public static globalVM::Validus.Models.SubmissionEN _complexEnergySubmission;
+        
+      
 
         [AssemblyInitialize]
         public static void SeedDb(TestContext context)
@@ -155,7 +158,7 @@ namespace Validus.Console.Tests
 
         public static void CreateBasicSubmission()
         {
-            _basicSubmission = new Validus.Models.Submission
+            _basicSubmission = new globalVM::Validus.Models.Submission
             {
                 CreatedBy = "InitialSetup",
                 CreatedOn = DateTime.Now,
@@ -169,7 +172,7 @@ namespace Validus.Console.Tests
                 InsuredId = 182396,
                 Brokerage = 1,
                 BrokerContact = "ALLAN MURRAY",
-                Description = "Unit Test Submission",
+                
                 UnderwriterCode = "AED",
                 UnderwriterContactCode = "JAC",
                 QuotingOfficeId = "LON",
@@ -236,7 +239,7 @@ namespace Validus.Console.Tests
 
         public static void CreateComplexSubmission()
         {
-            _complexSubmission = new Validus.Models.Submission
+            _complexSubmission = new globalVM::Validus.Models.Submission
             {
                 CreatedBy = "InitialSetup",
                 CreatedOn = DateTime.Now,
@@ -250,7 +253,7 @@ namespace Validus.Console.Tests
                 InsuredId = 182396,
                 Brokerage = 1,
                 BrokerContact = "ALLAN MURRAY",
-                Description = "Unit Test Submission",
+                
                 UnderwriterCode = "AED",
                 UnderwriterContactCode = "JAC",
                 QuotingOfficeId = "LON",
@@ -444,7 +447,7 @@ namespace Validus.Console.Tests
 
         public static void CreateBasicEnergySubmission()
         {
-            _basicEnergySubmission = new Validus.Models.SubmissionEN
+            _basicEnergySubmission = new globalVM::Validus.Models.SubmissionEN
             {
                 CreatedBy = "InitialSetup",
                 CreatedOn = DateTime.Now,
@@ -458,7 +461,7 @@ namespace Validus.Console.Tests
                 InsuredId = 182396,
                 Brokerage = 1,
                 BrokerContact = "ALLAN MURRAY",
-                Description = "Unit Test Submission",
+               
                 UnderwriterCode = "AED",
                 UnderwriterContactCode = "JAC",
                 QuotingOfficeId = "LON",
@@ -525,7 +528,7 @@ namespace Validus.Console.Tests
 
         public static void CreateComplexEnergySubmission()
         {
-            _complexEnergySubmission = new Validus.Models.SubmissionEN
+            _complexEnergySubmission = new globalVM::Validus.Models.SubmissionEN
             {
                 CreatedBy = "InitialSetup",
                 CreatedOn = DateTime.Now,
@@ -539,7 +542,7 @@ namespace Validus.Console.Tests
                 InsuredId = 182396,
                 Brokerage = 1,
                 BrokerContact = "ALLAN MURRAY",
-                Description = "Unit Test Submission",
+               
                 UnderwriterCode = "AED",
                 UnderwriterContactCode = "JAC",
                 QuotingOfficeId = "LON",
@@ -730,5 +733,888 @@ namespace Validus.Console.Tests
                 }
             };
         }
+
+        #region Submission Cargo
+
+        public static globalVM::Validus.Models.Submission _basicCargoSubmission;
+        public static globalVM::Validus.Models.Submission _complexCargoSubmission;
+
+        public static void CreateBasicCargoSubmission()
+        {
+            _basicCargoSubmission = new globalVM::Validus.Models.Submission
+            {
+                CreatedBy = "InitialSetup",
+                CreatedOn = DateTime.Now,
+                ModifiedBy = "InitialSetup",
+                ModifiedOn = DateTime.Now,
+
+                InsuredName = "- N/A",
+                BrokerCode = "1111",
+                BrokerPseudonym = "AAA",
+                BrokerSequenceId = 822,
+                InsuredId = 182396,
+                Brokerage = 1,
+                BrokerContact = "ALLAN MURRAY",
+                
+                UnderwriterCode = "AED",
+                UnderwriterContactCode = "JAC",
+                QuotingOfficeId = "LON",
+                Leader = "AG",
+                Domicile = "AD",
+                Title = "Unit Test Submission",
+                MarketWordingSettings = new List<MarketWordingSetting>(),
+                TermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                SubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomMarketWordingSettings = new List<MarketWordingSetting>(),
+                CustomSubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                Options = new List<Option>{
+                        new Option 
+                        { 
+                            Id = 1, 
+                            Title = "Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersionCA { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteCA
+                                            { 
+                                            COBId = "AD", 
+                                            MOA = "FA", 
+                                            InceptionDate = DateTime.Now, 
+                                            ExpiryDate = DateTime.Now.AddMonths(12), 
+                                            QuoteExpiryDate = DateTime.Now, 
+                                            AccountYear = 2013, 
+                                            Currency = "USD", 
+                                            LimitCCY = "USD", 
+                                            ExcessCCY = "USD", 
+                                            CorrelationToken = Guid.NewGuid(), 
+                                            IsSubscribeMaster = true, 
+                                            PolicyType = "NONMARINE", 
+                                            EntryStatus = "PARTIAL", 
+                                            SubmissionStatus = "SUBMITTED", 
+                                            TechnicalPricingBindStatus = "PRE", 
+                                            TechnicalPricingPremiumPctgAmt = "AMT", 
+                                            TechnicalPricingMethod = "UW" ,
+                                            CreatedBy = "InitialSetup",
+                                            CreatedOn = DateTime.Now,
+                                            ModifiedBy = "InitialSetup",
+                                            ModifiedOn = DateTime.Now,
+                                            OriginatingOfficeId = "LON",
+                                          }
+                                        }
+                                }}
+                        }}
+            };
+        }
+
+        public static void CreateComplexCargoSubmission()
+        {
+            _complexCargoSubmission = new globalVM::Validus.Models.Submission
+            {
+                CreatedBy = "InitialSetup",
+                CreatedOn = DateTime.Now,
+                ModifiedBy = "InitialSetup",
+                ModifiedOn = DateTime.Now,
+
+                InsuredName = "- N/A",
+                BrokerCode = "1111",
+                BrokerPseudonym = "AAA",
+                BrokerSequenceId = 822,
+                InsuredId = 182396,
+                Brokerage = 1,
+                BrokerContact = "ALLAN MURRAY",
+               
+                UnderwriterCode = "AED",
+                UnderwriterContactCode = "JAC",
+                QuotingOfficeId = "LON",
+                Leader = "AG",
+                Domicile = "AD",
+                Title = "Unit Test Submission",
+                SubmissionTypeId = "EN",
+                MarketWordingSettings = new List<MarketWordingSetting>(),
+                TermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                SubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomMarketWordingSettings = new List<MarketWordingSetting>(),
+                CustomSubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                Options = new List<Option>{
+                        new Option 
+                        { 
+                            Id = 1, 
+                            Title = "Option 1 - Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersionCA { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "OptionVersion 1 - Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteCA
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON"
+                                            },
+                                            new QuoteCA 
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON"
+                                            }
+                                        }
+                                }}
+                        }, 
+                        new Option 
+                        { 
+                            Id = 2, 
+                            Title = "Option 2 - Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersionCA { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "OptionVersion 2 - Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteCA
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            },
+                                            new QuoteCA
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            },
+                                            new QuoteCA 
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            }
+
+                                        }
+                                }
+                            }
+                        }
+                }
+            };
+        }
+        #endregion
+
+        #region Submission Hull & Marine
+        public static globalVM::Validus.Models.Submission _basicHullSubmission;
+        public static globalVM::Validus.Models.Submission _complexHullSubmission;
+
+        public static void CreateBasicHullSubmission()
+        {
+            _basicHullSubmission = new globalVM::Validus.Models.Submission
+            {
+                CreatedBy = "InitialSetup",
+                CreatedOn = DateTime.Now,
+                ModifiedBy = "InitialSetup",
+                ModifiedOn = DateTime.Now,
+
+                InsuredName = "- N/A",
+                BrokerCode = "1111",
+                BrokerPseudonym = "AAA",
+                BrokerSequenceId = 822,
+                InsuredId = 182396,
+                Brokerage = 1,
+                BrokerContact = "ALLAN MURRAY",
+                
+                UnderwriterCode = "AED",
+                UnderwriterContactCode = "JAC",
+                QuotingOfficeId = "LON",
+                Leader = "AG",
+                Domicile = "AD",
+                Title = "Unit Test Submission",
+                MarketWordingSettings = new List<MarketWordingSetting>(),
+                TermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                SubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomMarketWordingSettings = new List<MarketWordingSetting>(),
+                CustomSubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                Options = new List<Option>{
+                        new Option 
+                        { 
+                            Id = 1, 
+                            Title = "Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersionHM { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteHM
+                                            { 
+                                            COBId = "AD", 
+                                            MOA = "FA", 
+                                            InceptionDate = DateTime.Now, 
+                                            ExpiryDate = DateTime.Now.AddMonths(12), 
+                                            QuoteExpiryDate = DateTime.Now, 
+                                            AccountYear = 2013, 
+                                            Currency = "USD", 
+                                            LimitCCY = "USD", 
+                                            ExcessCCY = "USD", 
+                                            CorrelationToken = Guid.NewGuid(), 
+                                            IsSubscribeMaster = true, 
+                                            PolicyType = "NONMARINE", 
+                                            EntryStatus = "PARTIAL", 
+                                            SubmissionStatus = "SUBMITTED", 
+                                            TechnicalPricingBindStatus = "PRE", 
+                                            TechnicalPricingPremiumPctgAmt = "AMT", 
+                                            TechnicalPricingMethod = "UW" ,
+                                            CreatedBy = "InitialSetup",
+                                            CreatedOn = DateTime.Now,
+                                            ModifiedBy = "InitialSetup",
+                                            ModifiedOn = DateTime.Now,
+                                            OriginatingOfficeId = "LON",
+                                          }
+                                        }
+                                }}
+                        }}
+            };
+        }
+
+        public static void CreateComplexHullSubmission()
+        {
+            _complexHullSubmission = new globalVM::Validus.Models.Submission
+            {
+                CreatedBy = "InitialSetup",
+                CreatedOn = DateTime.Now,
+                ModifiedBy = "InitialSetup",
+                ModifiedOn = DateTime.Now,
+
+                InsuredName = "- N/A",
+                BrokerCode = "1111",
+                BrokerPseudonym = "AAA",
+                BrokerSequenceId = 822,
+                InsuredId = 182396,
+                Brokerage = 1,
+                BrokerContact = "ALLAN MURRAY",
+              
+                UnderwriterCode = "AED",
+                UnderwriterContactCode = "JAC",
+                QuotingOfficeId = "LON",
+                Leader = "AG",
+                Domicile = "AD",
+                Title = "Unit Test Submission",
+                SubmissionTypeId = "EN",
+                MarketWordingSettings = new List<MarketWordingSetting>(),
+                TermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                SubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomMarketWordingSettings = new List<MarketWordingSetting>(),
+                CustomSubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                Options = new List<Option>{
+                        new Option 
+                        { 
+                            Id = 1, 
+                            Title = "Option 1 - Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersionHM { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "OptionVersion 1 - Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteHM
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON"
+                                            },
+                                            new QuoteHM
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON"
+                                            }
+                                        }
+                                }}
+                        }, 
+                        new Option 
+                        { 
+                            Id = 2, 
+                            Title = "Option 2 - Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersionHM { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "OptionVersion 2 - Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteHM
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            },
+                                            new QuoteHM
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            },
+                                            new QuoteHM 
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            }
+
+                                        }
+                                }
+                            }
+                        }
+                }
+            };
+        }
+        #endregion
+
+        #region Marine&Energy
+        public static globalVM::Validus.Models.Submission _basicMarineSubmission;
+        public static globalVM::Validus.Models.Submission _complexMarineSubmission;
+
+        public static void CreateBasicMarineSubmission()
+        {
+            _basicMarineSubmission = new globalVM::Validus.Models.Submission
+            {
+                CreatedBy = "InitialSetup",
+                CreatedOn = DateTime.Now,
+                ModifiedBy = "InitialSetup",
+                ModifiedOn = DateTime.Now,
+
+                InsuredName = "- N/A",
+                BrokerCode = "1111",
+                BrokerPseudonym = "AAA",
+                BrokerSequenceId = 822,
+                InsuredId = 182396,
+                Brokerage = 1,
+                BrokerContact = "ALLAN MURRAY",
+               
+                UnderwriterCode = "AED",
+                UnderwriterContactCode = "JAC",
+                QuotingOfficeId = "LON",
+                Leader = "AG",
+                Domicile = "AD",
+                Title = "Unit Test Submission",
+                MarketWordingSettings = new List<MarketWordingSetting>(),
+                TermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                SubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomMarketWordingSettings = new List<MarketWordingSetting>(),
+                CustomSubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                Options = new List<Option>{
+                        new Option 
+                        { 
+                            Id = 1, 
+                            Title = "Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersion { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteME
+                                            { 
+                                            COBId = "AD", 
+                                            MOA = "FA", 
+                                            InceptionDate = DateTime.Now, 
+                                            ExpiryDate = DateTime.Now.AddMonths(12), 
+                                            QuoteExpiryDate = DateTime.Now, 
+                                            AccountYear = 2013, 
+                                            Currency = "USD", 
+                                            LimitCCY = "USD", 
+                                            ExcessCCY = "USD", 
+                                            CorrelationToken = Guid.NewGuid(), 
+                                            IsSubscribeMaster = true, 
+                                            PolicyType = "NONMARINE", 
+                                            EntryStatus = "PARTIAL", 
+                                            SubmissionStatus = "SUBMITTED", 
+                                            TechnicalPricingBindStatus = "PRE", 
+                                            TechnicalPricingPremiumPctgAmt = "AMT", 
+                                            TechnicalPricingMethod = "UW" ,
+                                            CreatedBy = "InitialSetup",
+                                            CreatedOn = DateTime.Now,
+                                            ModifiedBy = "InitialSetup",
+                                            ModifiedOn = DateTime.Now,
+                                            OriginatingOfficeId = "LON",
+                                          }
+                                        }
+                                }}
+                        }}
+            };
+        }
+
+        public static void CreateComplexMarineSubmission()
+        {
+            _complexMarineSubmission = new globalVM::Validus.Models.Submission
+            {
+                CreatedBy = "InitialSetup",
+                CreatedOn = DateTime.Now,
+                ModifiedBy = "InitialSetup",
+                ModifiedOn = DateTime.Now,
+
+                InsuredName = "- N/A",
+                BrokerCode = "1111",
+                BrokerPseudonym = "AAA",
+                BrokerSequenceId = 822,
+                InsuredId = 182396,
+                Brokerage = 1,
+                BrokerContact = "ALLAN MURRAY",
+               
+                UnderwriterCode = "AED",
+                UnderwriterContactCode = "JAC",
+                QuotingOfficeId = "LON",
+                Leader = "AG",
+                Domicile = "AD",
+                Title = "Unit Test Submission",
+                SubmissionTypeId = "EN",
+                MarketWordingSettings = new List<MarketWordingSetting>(),
+                TermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                SubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomMarketWordingSettings = new List<MarketWordingSetting>(),
+                CustomSubjectToClauseWordingSettings = new List<SubjectToClauseWordingSetting>(),
+                CustomTermsNConditionWordingSettings = new List<TermsNConditionWordingSetting>(),
+                Options = new List<Option>{
+                        new Option 
+                        { 
+                            Id = 1, 
+                            Title = "Option 1 - Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersion { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "OptionVersion 1 - Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteME
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON"
+                                            },
+                                            new QuoteME
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON"
+                                            }
+                                        }
+                                }}
+                        }, 
+                        new Option 
+                        { 
+                            Id = 2, 
+                            Title = "Option 2 - Unit Test Submission",
+                            CreatedBy = "InitialSetup",
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = "InitialSetup",
+                            ModifiedOn = DateTime.Now,
+                            OptionVersions = new List<OptionVersion>{
+                                new OptionVersion { 
+                                    OptionId = 0, 
+                                    VersionNumber = 0, 
+                                    Comments = "OptionVersion Comments", 
+                                    Title = "OptionVersion 2 - Unit Test Submission", 
+                                    CreatedBy = "InitialSetup",
+                                    CreatedOn = DateTime.Now,
+                                    ModifiedBy = "InitialSetup",
+                                    ModifiedOn = DateTime.Now,
+                                    Quotes = new List<Quote>
+                                        {
+                                            new QuoteME
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            },
+                                            new QuoteME
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            },
+                                            new QuoteME 
+                                            { 
+                                                COBId = "AD", 
+                                                MOA = "FA", 
+                                                InceptionDate = DateTime.Now, 
+                                                ExpiryDate = DateTime.Now.AddMonths(12), 
+                                                QuoteExpiryDate = DateTime.Now, 
+                                                AccountYear = 2013, 
+                                                Currency = "USD", 
+                                                LimitCCY = "USD", 
+                                                ExcessCCY = "USD", 
+                                                CorrelationToken = Guid.NewGuid(), 
+                                                IsSubscribeMaster = true, 
+                                                PolicyType = "NONMARINE", 
+                                                EntryStatus = "PARTIAL", 
+                                                SubmissionStatus = "SUBMITTED", 
+                                                TechnicalPricingBindStatus = "PRE", 
+                                                TechnicalPricingPremiumPctgAmt = "AMT", 
+                                                TechnicalPricingMethod = "UW" ,
+                                                CreatedBy = "InitialSetup",
+                                                CreatedOn = DateTime.Now,
+                                                ModifiedBy = "InitialSetup",
+                                                ModifiedOn = DateTime.Now,
+                                                OriginatingOfficeId = "LON",
+                                            }
+
+                                        }
+                                }
+                            }
+                        }
+                }
+            };
+        }
+	    #endregion
     }
 }

@@ -53,14 +53,9 @@ $(function () {
                 );
 
                 self.selectedAllTermsNConditionWording(new ConsoleApp.TermsNConditionWording());
-                toastr["info"]("TermsNConditionWording successfully created");
+                toastr.info("TermsNConditionWording successfully created");
 
                 $('#CreateEditTermsNConditionWording_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -74,13 +69,8 @@ $(function () {
 
             response.success(function (data) {
 
-                toastr["info"]("TermsNConditionWording successfully updated");
+                toastr.info("TermsNConditionWording successfully updated");
                 $('#CreateEditTermsNConditionWording_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -96,19 +86,13 @@ $(function () {
                 if (data == "Success") {
                     self.allTermsNConditionWordingsList.remove(function (item) { return item.Id == self.selectedAllTermsNConditionWording().Id; });
 
-                    toastr["info"]("TermsNCondition successfully deleted");
+                    toastr.info("TermsNCondition successfully deleted");
                 }
                 else {
-                    toastr["info"]("TermsNCondition not deleted");
+                    toastr.info("TermsNCondition not deleted");
                 }
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-            });
         };
-
 
         self.GetTermsNConditionWordings = function () {
 
@@ -130,20 +114,11 @@ $(function () {
                     });
                 }
                 else {
-                    toastr["info"]("No TermsNConditionWordings Found");
+                    toastr.info("No TermsNConditionWordings Found");
                 }
-
-
+				
                 self.showImageProcessing_LoadingTermsNConditionWordings('none');
-
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr);
-                console.log(textStatus);
-            });
-
         };
 
         self.GetTeamsFullData = function () {
@@ -166,13 +141,7 @@ $(function () {
 
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
-
-
 
         self.GetTermsNConditionWordingsForTeamOffice = function () {
 
@@ -185,7 +154,7 @@ $(function () {
 
             response.success(function (data) {
 
-                console.log(data);
+                //console.log(data);
 
                 if (data.length > 0) {
 
@@ -230,12 +199,6 @@ $(function () {
                                 .Title(value.Title()));
                     });
                 }
-
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -260,12 +223,7 @@ $(function () {
             var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
-                toastr["info"]("Team TermsNConditionWordings successfully updated");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Team TermsNConditionWordings successfully updated");
             });
         };
 
@@ -288,7 +246,6 @@ $(function () {
             else {
                 alert("Select a Market wording to remove");
             }
-
         };
 
         self.click_AddTermsNConditionWordingToTeamOffice = function (e) {
@@ -364,7 +321,7 @@ $(function () {
         self.onClickAllTermsNConditionWordingsItem = function (e) {
 
             self.selectedAllTermsNConditionWording(this);
-            console.log(self.selectedAllTermsNConditionWording());
+            //console.log(self.selectedAllTermsNConditionWording());
         };
 
         self.click_DeleteTermsNConditionWording = function () {

@@ -49,6 +49,9 @@ namespace Validus.Models
 		[DisplayName("Underwriter")]
 		public Underwriter Underwriter { get; set; }
 
+        [DisplayName("NonLondonBroker")]
+        public string NonLondonBroker { get; set; }
+
 		[DisplayName("Primary Office Id")]
 		public String PrimaryOfficeId { get; set; }
 

@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Validus.Console.BusinessLogic;
 using Validus.Console.DTO;
 using Validus.Core.MVC;
-using Validus.Models;
-using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
-using Validator = System.ComponentModel.DataAnnotations.Validator;
-
 
 namespace Validus.Console.Controllers
 {
@@ -66,156 +59,266 @@ namespace Validus.Console.Controllers
 				                                                      underwriter.Code,
 				                                                      underwriter.Name)
 				                                      : string.Empty;
+
+                this.ViewBag.NonLondonBroker = (user.NonLondonBroker != null) ? user.NonLondonBroker : string.Empty;
 		    }
 	    }
 
+		#region Base Templates
+
+		// TODO: public PartialViewResult _Template()
+		// TODO: public PartialViewResult _OptionTemplate()
+		// TODO: public PartialViewResult _OptionVersionTemplate()
+		// TODO: public PartialViewResult _QuoteTemplate()
+
+		// GET: /Submission/_Preview/5
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _Preview(int id)
+		{
+			var submission = this.SubmissionModule.GetSubmissionPreviewById(id);
+
+			if (submission == null)
+			{
+				this.Response.StatusCode = (int)HttpStatusCode.NotFound;
+			}
+
+			return this.PartialView("_Preview", submission);
+		}
+
+		// GET: /Submission/_QuoteComparisonTable
+		public PartialViewResult _QuoteComparisonTable()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_SubmissionIndexDetailed
+		public PartialViewResult _SubmissionIndexDetailed()
+		{
+			return PartialView();
+		}
+
+		#endregion
+
+		#region CA Templates
+
+		// GET: /Submission/_TemplateCA
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _TemplateCA()
+		{
+			this.SetupTemplate("CA");
+
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionTemplateCA
+		[HttpGet]
+		public PartialViewResult _OptionTemplateCA()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionVersionTemplateCA
+		[HttpGet]
+		public PartialViewResult _OptionVersionTemplateCA()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_QuoteTemplateCA
+		[HttpGet]
+		public PartialViewResult _QuoteTemplateCA()
+		{
+			return this.PartialView();
+		}
+
+		#endregion
+
+		#region EN Templates
 
 		// GET: /Submission/_TemplateEN
-        [HttpGet,
-        OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
-        public PartialViewResult _TemplateEN()
-        {
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _TemplateEN()
+		{
 			this.SetupTemplate("EN");
 
-            return this.PartialView();
-        }
+			return this.PartialView();
+		}
 
-		//
+		// GET: /Submission/_OptionTemplateEN
+		[HttpGet]
+		public PartialViewResult _OptionTemplateEN()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_QuoteTemplateEN
+		[HttpGet]
+		public PartialViewResult _QuoteTemplateEN()
+		{
+			return this.PartialView();
+		}
+
+		#endregion
+
+		#region FI Templates
+
 		// GET: /Submission/_TemplatePV
-        [HttpGet,
-        OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
-        public PartialViewResult _TemplatePV()
-        {
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _TemplateFI()
+		{
+			this.SetupTemplate("FI");
+
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionTemplateFI
+		[HttpGet]
+		public PartialViewResult _OptionTemplateFI()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_QuoteTemplateFI
+		[HttpGet]
+		public PartialViewResult _QuoteTemplateFI()
+		{
+			return this.PartialView();
+		}
+
+		#endregion
+
+		#region HM Templates
+
+		// GET: /Submission/_TemplateHM
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _TemplateHM()
+		{
+			this.SetupTemplate("HM");
+
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionTemplateHM
+		[HttpGet]
+		public PartialViewResult _OptionTemplateHM()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionVersionTemplateHM
+		[HttpGet]
+		public PartialViewResult _OptionVersionTemplateHM()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_QuoteTemplateHM
+		[HttpGet]
+		public PartialViewResult _QuoteTemplateHM(string typeId = null)
+		{
+			return this.PartialView();
+		}
+
+		#endregion
+
+		#region ME Templates
+
+		// GET: /Submission/_TemplateME
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _TemplateME()
+		{
+			this.SetupTemplate("ME");
+
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionTemplateME
+		[HttpGet]
+		public PartialViewResult _OptionTemplateME()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_QuoteTemplateME
+		[HttpGet]
+		public PartialViewResult _QuoteTemplateME()
+		{
+			return this.PartialView();
+		}
+
+		#endregion
+
+		#region PV Templates
+
+		// GET: /Submission/_TemplatePV
+		[HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
+		public PartialViewResult _TemplatePV()
+		{
 			this.SetupTemplate("PV");
 
-            return this.PartialView();
-        }
+			return this.PartialView();
+		}
 
-        //
-        // GET: /Submission/_TemplatePV
-        [HttpGet,
-        OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
-        public PartialViewResult _TemplateFI()
-        {
-            this.SetupTemplate("FI");
-
-            return this.PartialView();
-        }
-
-        //
-		// GET: /Submission/_OptionTemplate
-        // NOTE: Cannot set OutputCache as it is a child action of _Template
-		//[HttpGet] TODO: Bring back and use as a base
-		//public PartialViewResult _OptionTemplate()
-		//{
-		//	return this.PartialView();
-		//}
-
-		//
-		// GET: /Submission/_OptionTemplateEN
-        [HttpGet]
-        public PartialViewResult _OptionTemplateEN()
-        {
-            return this.PartialView();
-        }
-
-		//
 		// GET: /Submission/_OptionTemplatePV
-        [HttpGet]
-        public PartialViewResult _OptionTemplatePV()
-        {
-            return this.PartialView();
-        }
+		[HttpGet]
+		public PartialViewResult _OptionTemplatePV()
+		{
+			return this.PartialView();
+		}
 
-        //
-        // GET: /Submission/_OptionTemplateFI
-        [HttpGet]
-        public PartialViewResult _OptionTemplateFI()
-        {
-            //var user = this.WebSiteModuleManager.EnsureCurrentUser();
-
-            //if (user != null)
-            //{
-            //    if (user.TeamMemberships != null)
-            //    {
-            //        var membership = user.TeamMemberships
-            //                             .FirstOrDefault(tm => tm.IsCurrent &&
-            //                                                   tm.Team.SubmissionTypeId == "FI");
-
-            //        if (membership != null && membership.Team != null)
-            //        {
-            //            ViewBag.RelatedRiskList = membership.Team.RelatedRisks;
-            //        }
-            //    }
-            //}
-
-            return this.PartialView();
-        }
-
-		//
 		// GET: /Submission/_OptionVersionTemplatePV
+		[HttpGet]
+		public PartialViewResult _OptionVersionTemplatePV()
+		{
+			return this.PartialView();
+		}
+
+		// GET: /Submission/_OptionTemplatePV
+		[HttpGet]
+		public PartialViewResult _QuoteTemplatePV()
+		{
+			return this.PartialView();
+		}
+
+		#endregion
+
+        #region Wordings
+
+        // GET: /Submission/_MarketWordingTemplate
         [HttpGet]
-        public PartialViewResult _OptionVersionTemplatePV()
+		public PartialViewResult _CreateBrokerContact()
         {
             return this.PartialView();
         }
 
-		//
-		// GET: /Submission/_OptionTemplateExampleEnergy
-        [HttpGet]
-        public PartialViewResult _OptionTemplateExampleEnergy()
+		// GET: /Submission/_CrossSellingCheck
+		[HttpGet, OutputCache(CacheProfile = "NoCacheProfile")]
+		public PartialViewResult _CrossSellingCheck(string insuredName, int submissionId)
         {
-            return this.PartialView();
+			return this.PartialView(!string.IsNullOrEmpty(insuredName)
+				? this.SubmissionModule.CrossSellingCheck(Uri.UnescapeDataString(insuredName), submissionId)
+				: new List<CrossSellingCheckDto>());
         }
 
-		//
-		// GET: /Submission/_QuoteTemplate
-		// NOTE: Cannot set OutputCache as it is a child action of _OptionTemplate
-		//[HttpGet] TODO: Bring back and use as a base
-		//public PartialViewResult _QuoteTemplate()
-		//{
-		//	return this.PartialView();
-		//}
-
-		//
-		// GET: /Submission/_QuoteTemplateEN
-        [HttpGet]
-		public PartialViewResult _QuoteTemplateEN(string typeId = null)
-        {
-            return this.PartialView();
-        }
-
-		//
-		// GET: /Submission/_QuoteTemplatePV
-        [HttpGet]
-		public PartialViewResult _QuoteTemplatePV(string typeId = null)
-        {
-            return this.PartialView();
-        }
-
-        //
-        // GET: /Submission/_QuoteTemplateFI
-        [HttpGet]
-        public PartialViewResult _QuoteTemplateFI(string typeId = null)
-        {
-            return this.PartialView();
-        }
-
-        [HttpGet]
-        public PartialViewResult _QuoteTemplateExampleEnergy()
-        {
-            return this.PartialView();
-        }
-
-		//
 		// GET: /Submission/_MarketWordingTemplate
-        [HttpGet]
-        public PartialViewResult _MarketWordingTemplate()
+		public PartialViewResult _MarketWordingTemplate()
         {
             return this.PartialView();
         }
 
-		//
+		// GET: /Submission/_SubjectToClauseWordingTemplate
+        [HttpGet]
+        public PartialViewResult _SubjectToClauseWordingTemplate()
+        {
+			return this.PartialView();
+        }
+
+		// GET: /Submission/_SubmissionSideBar
+        public PartialViewResult _SubmissionSideBar()
+        {
+			return this.PartialView();
+        }
+
 		// GET: /Submission/_TermsNConditionTemplate
         [HttpGet]
         public PartialViewResult _TermsNConditionTemplate()
@@ -223,287 +326,70 @@ namespace Validus.Console.Controllers
             return this.PartialView();
         }
 
-		//
-		// GET: /Submission/_SubjectToClauseWordingTemplate
-        [HttpGet]
-        public PartialViewResult _SubjectToClauseWordingTemplate()
+		// GET: /Submission/_WorldCheckAuditTrailForSubmission
+	    [Authorize(Roles = @"ConsoleUW"), OutputCache(CacheProfile = "NoCacheProfile")]
+		public PartialViewResult _WorldCheckAuditTrailForSubmission(int id)
+        {
+			return this.PartialView(this.AuditTrailModule.GetAuditTrails("Submission", id.ToString()));
+        }
+
+        public PartialViewResult _SaveQuoteSheetButtons()
         {
             return this.PartialView();
         }
 
+		#endregion
+
+		#region jQuery Data-Tables Actions
+
 		//
-		// GET: /Submission/_QuoteComparisonTable
-        public PartialViewResult _QuoteComparisonTable()
-        {
-			return this.PartialView();
-        }
-
-        public PartialViewResult _CreateBrokerContact()
-        {
-			return this.PartialView();
-        }
-
-        public PartialViewResult _SubmissionSideBar()
-        {
-			return this.PartialView();
-        }
-
-        //
-		// GET: /Submission/GetSubmission/5
-        [HttpGet,
-        OutputCache(CacheProfile = "NoCacheProfile")]
-        public ActionResult GetSubmission(int id = 0)
-        {
-            var submission = this.SubmissionModule.GetSubmissionById(id);
-
-	        if (submission == null)
-		        throw new HttpException((int)HttpStatusCode.NotFound,
-		                                string.Format("Submission of id '{0}' could not be found", id));
-
-            return new JsonNetResult
-            {
-                Data = new { Submission = submission }
-            };
-        }
-
-        [HttpGet,
-        OutputCache(CacheProfile = "NoCacheProfile")]
-        public ActionResult _CrossSellingCheck(string insuredName, int thisSubmissionId)
-        {
-            if (string.IsNullOrEmpty(insuredName)) 
-                return this.PartialView(new List<CrossSellingCheckDto>());
-
-            var matches = this.SubmissionModule.CrossSellingCheck(Uri.UnescapeDataString(insuredName), thisSubmissionId);
-
-                Response.StatusCode = (Int32)HttpStatusCode.Created;
-            return PartialView(matches);
-        }
-       
-        [HttpPost, 
-		Authorize(Roles = @"ConsoleUW")]
-        public ActionResult CreateSubmission(SubmissionDto submissionDto)
+		// GET: /Submission/_IndexJSON
+		[HttpGet]
+		public ActionResult _IndexJSON(string sSearch, int sEcho, int iSortCol_0, string sSortDir_0,
+									   bool applyProfileFilters = true, int iDisplayLength = 10, int iDisplayStart = 0)
 		{
-			var savedSubmission = default(Submission);
-            var errors = new List<string>();
+			var iTotalRecords = default(int);
+			var iTotalDisplayRecords = default(int);
+			var sortCol = string.Empty;
 
-            switch (submissionDto.SubmissionTypeId)
-            {
-	            case "EN":
-	            {
-		            var submissionEnergy = SubmissionModuleHelpers.SetupENSubmission(submissionDto);
-                    
-                    var results = Validation.Validate(submissionEnergy);
-                    if (!results.IsValid)
-                    {
-                        errors.AddRange(results.Select(vr=>vr.Message));
-                    
-                    }
+			sortCol = this.Request[String.Format("mDataProp_{0}", iSortCol_0)];
 
-	                if (errors.Count == 0)
-	                {
-	                    savedSubmission = this.SubmissionModule.CreateSubmission(submissionEnergy, out errors);
-	                }
-	            } break;
-	            case "PV":
-	            {
-		            var submissionPV = SubmissionModuleHelpers.SetupPVSubmission(submissionDto);
-                    
-                    var results = Validation.Validate(submissionPV);
-                    if (!results.IsValid)
-                    {
-                        errors.AddRange(results.Select(vr => vr.Message));
+			var aaData = this.SubmissionModule.GetSubmissions(sSearch, iDisplayStart, iDisplayLength,
+			                                                  sortCol, sSortDir_0, applyProfileFilters, out iTotalDisplayRecords,
+			                                                  out iTotalRecords);
 
-                    }
+			// TODO: Change to JsonNetResult
+			return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
+		}
 
-	                if (errors.Count == 0)
-	                {
-	                    savedSubmission = this.SubmissionModule.CreateSubmission(submissionPV, out errors);
-	                }
-	            } break;
-                case "FI":
-                    {
-                        var submissionFI = SubmissionModuleHelpers.SetupFISubmission(submissionDto);
-
-                        savedSubmission = this.SubmissionModule.CreateSubmission(submissionFI, out errors);
-                    } break;
-				default:
-		            throw new NotImplementedException(submissionDto.SubmissionTypeId);
-            }
-           
-            if (errors.Count == 0)
-            {
-                //foreach (var auditTrail in submissionDto.AuditTrails.Where(at => at.Description.Contains(savedSubmission.InsuredName)))
-                if (submissionDto.AuditTrails != null)
-                    foreach (var auditTrail in submissionDto.AuditTrails.Where(at => at.Description.Length > "World Check requested for insured name: ".Length))
-                {
-                    this.AuditTrailModule.Audit(auditTrail.Source, savedSubmission.Id.ToString(), auditTrail.Title, auditTrail.Description);
-                }
-
-                this.Response.StatusCode = (int)HttpStatusCode.Created;
-                this.Response.AddHeader("Location", "/submission/getsubmission/" + savedSubmission.Id);
-            }
-            else
-            {
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }
-
-            return new JsonNetResult
-            {
-                Data = new
-                {
-                    Submission = savedSubmission,
-                    Error = new Dictionary<string, string[]> { { "Subscribe", errors.ToArray() } }
-                }
-            };
-        }
-
-        [HttpPut, 
-		Authorize(Roles = @"ConsoleUW")]
-        public ActionResult EditSubmission(SubmissionDto submissionDto)
-		{
-			var submission = default(Submission);
-            var errors = new List<String>();
-            var quotes = new List<Quote>();
-
-            switch (submissionDto.SubmissionTypeId)
-            {
-	            case "EN":
-	            {
-		            var submissionEnergy = SubmissionModuleHelpers.SetupENSubmission(submissionDto);
-                    var results = Validation.Validate(submissionEnergy);
-                    if (!results.IsValid)
-                    {
-                        errors.AddRange(results.Select(vr=>vr.Message));
-                    
-                    }
-
-	                if (errors.Count == 0)
-	                {
-	                    submission = this.SubmissionModule.UpdateSubmission(submissionEnergy, out errors, out quotes);
-	                }
-
-	            } break;
-	            case "PV":
-	            {
-		            var submissionPV = SubmissionModuleHelpers.SetupPVSubmission(submissionDto);
-                    var results = Validation.Validate(submissionPV);
-                    if (!results.IsValid)
-                    {
-                        errors.AddRange(results.Select(vr=>vr.Message));
-                    
-                    }
-
-	                if (errors.Count == 0)
-	                {
-	                    submission = this.SubmissionModule.UpdateSubmission(submissionPV, out errors, out quotes);
-	                }
-	            } break;
-                case "FI":
-                    {
-                        var submissionFI = SubmissionModuleHelpers.SetupFISubmission(submissionDto);
-
-                        submission = this.SubmissionModule.UpdateSubmission(submissionFI, out errors, out quotes);
-                    } break;
-				default:
-		            throw new NotImplementedException(submissionDto.SubmissionTypeId);
-            }
-
-           
-
-	        if (errors.Count == 0)
-	        {
-		        //foreach (var auditTrail in submissionDto.AuditTrails.Where(at => at.Description.Contains(submission.InsuredName)))
-	            if (submissionDto.AuditTrails != null)
-	                foreach (var auditTrail in submissionDto.AuditTrails.Where(at => at.Description.Length > "World Check requested for insured name: ".Length))
-		        {
-			        this.AuditTrailModule.Audit(auditTrail.Source,
-			                                    submission.Id.ToString(),
-			                                    auditTrail.Title,
-			                                    auditTrail.Description);
-		        }
-	        }
-	        else
-	        {
-		        this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-	        }
-
-	        return new JsonNetResult
-            {
-                Data = new
-                {
-                    Submission = submission,
-                    Error = new Dictionary<string, string[]> { { "Subscribe", errors.ToArray() } }
-                }
-            };
-        }
-
-
-
-	    [Authorize(Roles = @"ConsoleUW"),
-		OutputCache(CacheProfile = "NoCacheProfile")]
-	    public ActionResult _WorldCheckAuditTrailForSubmission(int id)
+		//
+		// GET: /Submission/_IndexJSONDetailed
+	    [HttpGet]
+		public ActionResult _IndexJSONDetailed(string sSearch, int sEcho, int iSortCol_0, string sSortDir_0,
+											   bool applyProfileFilters = true, int iDisplayLength = 10,
+											   int iDisplayStart = 0)
 	    {
-			var auditTrails = this.AuditTrailModule.GetAuditTrails("Submission", id.ToString());
+		    var iTotalRecords = default(int);
+		    var iTotalDisplayRecords = default(int);
+		    var sortCol = string.Empty;
 
-			this.Response.StatusCode = (int)HttpStatusCode.Created;
+		    sortCol = this.Request[String.Format("mDataProp_{0}", iSortCol_0)];
 
-			return this.PartialView(auditTrails);
+		    var aaData = this.SubmissionModule.GetSubmissionsDetailed(sSearch, iDisplayStart, iDisplayLength,
+		                                                              sortCol, sSortDir_0, applyProfileFilters,
+		                                                              out iTotalDisplayRecords,
+		                                                              out iTotalRecords);
+
+		    // TODO: Change to JsonNetResult
+		    return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
 	    }
 
-	    //
-        // GET: /Submission/_IndexJSON
-        [HttpGet]
-        public ActionResult _IndexJSON(String sSearch, Int32 sEcho, Int32 iSortCol_0, String sSortDir_0,
-            Boolean applyProfileFilters = true, Int32 iDisplayLength = 10, Int32 iDisplayStart = 0)
-        {
-            var iTotalRecords = default(int);
-			var iTotalDisplayRecords = default(int);
-            var sortCol = string.Empty;
-
-            //  iSortCol_0 currently comes from the order of columns in the UI I think. This looks a bit fragile - is DataTables the best grid?
-            switch (iSortCol_0)
-            {
-                case 0:
-                    sortCol = "Id";
-                    break;
-                case 1:
-                    sortCol = "InsuredName";
-                    break;
-                case 2:
-                    sortCol = "BrokerPseudonym";
-                    break;
-                default:
-                    sortCol = "InceptionDate";
-                    break;
-            }
-
-            var aaData = this.SubmissionModule.GetSubmissions(sSearch, iDisplayStart, iDisplayLength,
-                                                                sortCol, sSortDir_0, applyProfileFilters, out iTotalDisplayRecords,
-                                                                out iTotalRecords);
-
-            // TODO: Change to JsonNetResult
-            return Json(new { sEcho, iTotalRecords, iTotalDisplayRecords, aaData }, JsonRequestBehavior.AllowGet);
-        }
-
-        //
-        // GET: /Submission/_Preview/5
-        [HttpGet,
-        OutputCache(NoStore = true, Duration = 0, VaryByParam = "none")]
-        public ActionResult _Preview(int id)
-        {
-            var submission = this.SubmissionModule.GetSubmissionPreviewById(id);
-
-            if (submission == null)
-            {
-                this.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            }
-
-            return this.PartialView("_Preview", submission);
-        }
+	    #endregion
 
         protected override void Dispose(bool disposing)
         {
             this.SubmissionModule.Dispose();
+			this.WebSiteModuleManager.Dispose();
 
             base.Dispose(disposing);
         }

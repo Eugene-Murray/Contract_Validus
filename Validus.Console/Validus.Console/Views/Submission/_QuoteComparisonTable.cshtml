@@ -36,7 +36,7 @@
             <!-- ko foreach: Model.Options -->
             <!-- ko foreach: CurrentVersion().Quotes -->
             <th rowspan="1" colspan="1" data-bind="click: $parent.NavigateToQuote">
-                <span data-bind="text: $index"></span>: <span data-bind="    text: COBId"></span>
+                <span data-bind="text: $index"></span>: <span data-bind="text: COBId"></span>
             </th>
             <!-- /ko -->
             <!-- /ko -->
@@ -49,7 +49,7 @@
             <!-- ko foreach: CurrentVersion().Quotes -->
             <td>
                 <span data-bind="text: LimitCCY"></span>
-                <span data-bind="text: LimitAmount"></span>
+                <span data-bind="auto-numeric: { data: LimitAmount }"></span>
             </td>
             <!-- /ko -->
             <!-- /ko -->
@@ -60,7 +60,7 @@
             <!-- ko foreach: CurrentVersion().Quotes -->
             <td>
                 <span data-bind="text: ExcessCCY"></span>
-                <span data-bind="text: ExcessAmount"></span>
+                <span data-bind="auto-numeric: { data: ExcessAmount }"></span>
             </td>
             <!-- /ko -->
             <!-- /ko -->
@@ -71,7 +71,7 @@
             <!-- ko foreach: CurrentVersion().Quotes -->
             <td>
                 <span data-bind="text: Currency"></span>
-                <span data-bind="text: QuotedPremium"></span>
+                <span data-bind="auto-numeric: { data: QuotedPremium }"></span>
             </td>
             <!-- /ko -->
             <!-- /ko -->

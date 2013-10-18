@@ -70,7 +70,7 @@
                         <!-- /ko -->\
                     </ul></div>");
 
-    // The "simpleGrid" binding
+	// The "pageGrid" binding
     ko.bindingHandlers.pageGrid = {
         init: function () {
             return { 'controlsDescendantBindings': true };

@@ -27,7 +27,7 @@ $.fn.dataTableExt.oApi.fnDisplayRow = function (oSettings, nRow) {
     this.oApi._fnDraw(oSettings);
 };
 
-ko.bindingHandlers.dataTable3 = {
+ko.bindingHandlers.dataTable = {
     'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 
         if ($.data(element, isInitialisedKey) === true)
@@ -86,7 +86,7 @@ ko.bindingHandlers.dataTable3 = {
             })
         }
 
-        console.log(options);
+        //console.log(options);
 
         if (binding.sortingFixed && binding.sortingFixed.length) {
             options.aaSortingFixed = [];

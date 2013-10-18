@@ -27,7 +27,7 @@
         	if (self.selectedTeam())
         	{
         		var dirty = self.selectedTeam().dirtyFlag.isDirty();
-        		//console.log(dirty);
+        		////console.log(dirty);
         		return dirty; 
         	}
         }, this);
@@ -126,10 +126,6 @@
             	self.teamList(teamList);
             	self.showImageProcessing_LoadingTeams('none');
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
 
         self.GetUsers = function () {
@@ -153,11 +149,6 @@
                 }
 
             }, this));
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-            });
         };
 
         self.CreateTeam = function () {
@@ -189,7 +180,7 @@
                 $('#CreateEditTeam_ModalAlert').modal('hide');
             	self.selectedTeam(new ConsoleApp.Team().Id(0));
                 //self.selectedTeam(new ConsoleApp.Team().Id(0));
-                toastr["info"]("Team successfully created");
+                toastr.info("Team successfully created");
 
                 // Update the Other views team lists
                 ConsoleApp.vmManageUsers.GetTeamsBasicData();
@@ -198,63 +189,65 @@
                 ConsoleApp.vmManageMarketWordings.GetTeamsFullData();
                 ConsoleApp.vmManageTermsNConditionWordings.GetTeamsFullData();
                 ConsoleApp.vmManageSubjectToClauseWordings.GetTeamsFullData();
+                ConsoleApp.vmManageUnderwriterSignature.GetTeamsFullData();
 
             });
 
+			/* TODO: Modal check required on generic handler
             response.fail(function (jqXhr, textStatus) {
                 var errors = $.parseJSON(jqXhr.responseText);                
                 alert(errors.ErrorMessage); // Can't use modal as we're already in a modal.
-            });
+            });*/
         };
 
-        self.EditTeam = function () {
+	    self.EditTeam = function()
+	    {
 
-            var data = ko.toJSON(self.selectedTeam());
-            console.log(data);
+		    var data = ko.toJSON(self.selectedTeam());
+		    //console.log(data);
 
-            var ajaxConfig = { Url: "/Admin/EditTeam", VerbType: "POST", ContentType: "application/json;charset=utf-8", Data: data };
+		    var ajaxConfig = { Url: "/Admin/EditTeam", VerbType: "POST", ContentType: "application/json;charset=utf-8", Data: data };
 
-            var response = ConsoleApp.AjaxHelper(ajaxConfig);
+		    var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
-            response.success(function (data) {
+		    response.success(function(data)
+		    {
 
-                toastr["info"]("Team successfully updated");
-                $('#CreateEditTeam_ModalAlert').modal('hide');
-                self.SetButtonStatus(false);
-                self.selectedTeam(new ConsoleApp.Team().Id(0));
+			    toastr.info("Team successfully updated");
+			    $('#CreateEditTeam_ModalAlert').modal('hide');
+			    self.SetButtonStatus(false);
+			    self.selectedTeam(new ConsoleApp.Team().Id(0));
 
-                // Update the User View
-                // Update the Other views team lists
-                ConsoleApp.vmManageUsers.GetTeamsBasicData();
-                ConsoleApp.vmManageLinks.GetTeamsBasicData();
-                ConsoleApp.vmManageAccelerators.GetTeamsBasicData();
-                ConsoleApp.vmManageMarketWordings.GetTeamsFullData();
-                ConsoleApp.vmManageTermsNConditionWordings.GetTeamsFullData();
-                ConsoleApp.vmManageSubjectToClauseWordings.GetTeamsFullData();
+			    // Update the User View
+			    // Update the Other views team lists
+			    ConsoleApp.vmManageUsers.GetTeamsBasicData();
+			    ConsoleApp.vmManageLinks.GetTeamsBasicData();
+			    ConsoleApp.vmManageAccelerators.GetTeamsBasicData();
+			    ConsoleApp.vmManageMarketWordings.GetTeamsFullData();
+			    ConsoleApp.vmManageTermsNConditionWordings.GetTeamsFullData();
+			    ConsoleApp.vmManageSubjectToClauseWordings.GetTeamsFullData();
 
-            });
+		    });
 
-            response.fail(function (jqXhr, textStatus) {
-            	toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-                self.SetButtonStatus(false);
-            });
-        };
+		    response.fail(function(xhr, status)
+		    {
+			    self.SetButtonStatus(false);
+		    });
+	    };
 
         self.DeleteTeam = function () {
 
             var data = ko.toJSON(self.selectedTeam());
-            console.log(data);
+            //console.log(data);
 
-            var ajaxConfig = { Url: "/Admin/DeleteTeam", VerbType: "DELETE", Data: data };
-
-            var response = ConsoleApp.AjaxHelper(ajaxConfig);
+            var ajaxConfig = { Url: "/Admin/DeleteTeam", VerbType: "DELETE", Data: data },
+                response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
 
                 self.teamList.remove(function (item) { return item.Id == ConsoleApp.vmManageTeams.selectedTeam().Id });
 
-                toastr["info"]("Team successfully deleted");
+                toastr.info("Team successfully deleted");
 
                 self.SetButtonStatus(false);
 
@@ -262,11 +255,6 @@
                 ConsoleApp.vmManageUsers.GetTeamsBasicData();
                 ConsoleApp.vmManageLinks.GetTeamsBasicData();
 
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -322,13 +310,7 @@
                     .AllUsers(allUserList);
 
                 self.selectedTeam(newTeam);
-
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
-
         };
 	    
         // Paging
@@ -476,10 +458,10 @@
 						self.selectedTeam().Users.unshift(self.selectedItem().IsCurrentMembership(true));
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -490,10 +472,10 @@
 						self.selectedTeam().AllUsers.unshift(self.selectedItem().IsCurrentMembership(false));
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -504,10 +486,10 @@
 						self.selectedTeam().Links.unshift(self.selectedItem());
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -518,10 +500,10 @@
 						self.selectedTeam().AllLinks.unshift(self.selectedItem());
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -532,10 +514,10 @@
 						self.selectedTeam().RelatedCOBs.unshift(self.selectedItem());
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -546,10 +528,10 @@
 						self.selectedTeam().AllRelatedCOBs.unshift(self.selectedItem());
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -561,10 +543,10 @@
 						self.selectedItem(null);
  
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -575,10 +557,10 @@
 						self.selectedTeam().AllRelatedOffices.unshift(self.selectedItem());
 						self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 	    

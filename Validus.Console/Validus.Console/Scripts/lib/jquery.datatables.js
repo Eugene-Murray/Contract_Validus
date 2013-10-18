@@ -4711,7 +4711,7 @@
 				if ( DataTable.ext.sErrMode == 'alert' )
 				{
 					// VALIDUS: alert( sAlert );
-					toastr["warning"](sAlert);
+					toastr.warning(sAlert);
 				}
 				else
 				{

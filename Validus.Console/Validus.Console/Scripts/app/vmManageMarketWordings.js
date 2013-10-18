@@ -53,14 +53,9 @@ $(function () {
                 );
 
                 self.selectedAllMarketWording(new ConsoleApp.MarketWording());
-                toastr["info"]("MarketWording successfully created");
+                toastr.info("MarketWording successfully created");
 
                 $('#CreateEditMarketWording_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -74,13 +69,8 @@ $(function () {
 
             response.success(function (data) {
 
-                toastr["info"]("MarketWording successfully updated");
+                toastr.info("MarketWording successfully updated");
                 $('#CreateEditMarketWording_ModalAlert').modal('hide');
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -95,16 +85,11 @@ $(function () {
             response.success(function (data) {
                 if (data == "Success") {
                     self.allMarketWordingsList.remove(function (item) { return item.Id == self.selectedAllMarketWording().Id; });
-                    toastr["info"]("Market wording successfully deleted");
+                    toastr.info("Market wording successfully deleted");
                 }
                 else {
-                    toastr["info"]("Market wording not deleted");
+                    toastr.info("Market wording not deleted");
                 }
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
             });
         };
 
@@ -129,20 +114,13 @@ $(function () {
                     });
                 }
                 else {
-                    toastr["info"]("No MarketWordings Found");
+                    toastr.info("No MarketWordings Found");
                 }
 
 
                 self.showImageProcessing_LoadingMarketWordings('none');
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr);
-                console.log(textStatus);
-            });
-
         };
 
         self.GetTeamsFullData = function () {
@@ -165,13 +143,7 @@ $(function () {
 
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
-
-
 
         self.GetMarketWordingsForTeamOffice = function () {
 
@@ -184,7 +156,7 @@ $(function () {
 
             response.success(function (data) {
 
-                console.log(data);
+                //console.log(data);
 
                 if (data.length > 0) {
 
@@ -231,11 +203,6 @@ $(function () {
                 }
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-            });
         };
 
         self.SaveMarketWordingsForTeamOffice = function () {
@@ -257,12 +224,7 @@ $(function () {
             var response = ConsoleApp.AjaxHelper(ajaxConfig);
 
             response.success(function (data) {
-                toastr["info"]("Team MarketWordings successfully updated");
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+                toastr.info("Team MarketWordings successfully updated");
             });
         };
 
@@ -285,7 +247,6 @@ $(function () {
             else {
                 alert("Select a Market wording to remove");
             }
-
         };
 
         self.click_AddMarketWordingToTeamOffice = function (e) {
@@ -346,7 +307,7 @@ $(function () {
         self.onClickAllMarketWordingsItem = function (e) {
 
             self.selectedAllMarketWording(this);
-            console.log(self.selectedAllMarketWording());
+            //console.log(self.selectedAllMarketWording());
         };
 
         self.click_DeleteMarketWording = function () {

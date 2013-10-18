@@ -25,15 +25,17 @@
         self.showImageProcessing_LoadUser = ko.observable('none');
         self.showImageProcessing_SavingUser = ko.observable('none');
         self._Underwriter = ko.observable('');
+        self._NonLondonBroker = ko.observable('');
+        self._DomainLogon = ko.observable('');
+        
         // Save Mode
         self.saveMode = ko.observable("EDIT"); // CREATE or EDIT
         // User to Create / Edit
         self.userToManage = ko.observable(new ConsoleApp.User());
         // Selected Item
         self.selectedItem = ko.observable();
-	    
-       
 
+        self.showNonLondonBroker = ko.observable(false);
 
         self.Initialize = function (pageConfig) {
 
@@ -63,9 +65,6 @@
         		self.saveMode("CREATE");
 
         		self.GetRequiredDataCreateUser();
-        		
-        		self.SetUpUserTypeAhead();
-        		self.SetUpUnderwriterTypeAhead();
         	}
 
             if (pageMode == "EDIT_SEARCH") {
@@ -79,9 +78,6 @@
                 self.showDivTopButtonArea(true);
                 self._Underwriter('');
                 self.saveMode("EDIT");
-                
-                self.SetUpUserTypeAhead();
-                self.SetUpUnderwriterTypeAhead();
             }
 
             if (pageMode == "EDIT_FROM_TEAMPAGE") {
@@ -98,9 +94,6 @@
                 self.saveMode("EDIT");
 	            
                 self.GetSelectedUserByName(selectedUser, null);
-	            
-                self.SetUpUserTypeAhead();
-                self.SetUpUnderwriterTypeAhead();
             }
 
             if (pageMode == "EDIT_FROM_PERSONALSETTINGS") {
@@ -115,92 +108,33 @@
                 self.saveMode("EDIT");
 	            
                 self.GetUserPersonalSettings();
-	            
-                self.SetUpUserTypeAhead();
-                self.SetUpUnderwriterTypeAhead();
             }
         };
 
-        self.SetUpUnderwriterTypeAhead = function() {
-        	console.log("SetUpUnderwriterTypeAhead()");
-
-        	var onSuccess = function(callback, data)
-        	{
-        		callback(data);
-        	};
-
-        	var apiController = "Underwriter";
-        	$(".typeahead[data-rest='" + apiController + "']").typeahead(
-			{
-				labelField: "Name",
-				setWithLabel: false,
-				valueField: "Code",
-				source: function(query, limit, callback) 
-				{
-					$.ajax(
-					{
-						url: window.ValidusServicesUrl + apiController,
-						data: { term: query, skip: 0, take: 10 },
-						dataType: "json",
-						contentType: "application/json",
-						success: function(data)
-						{
-							onSuccess(callback, data);
-						},
-						error: function(xhr, status, error)
-						{
-							toastr.error("Error: " + error);
-						}
-					});
-				},
-				updater: function(selection)
-				{
-					//alert("You selected: " + selection)
-				}
-			});
-
-        };
-
-	    self.SetUpUserTypeAhead = function() {
-
-	    	console.log("SetUpUserTypeAhead()");
-
-	    	var onSuccess = function(callback, data)
+	    self.SetUpTypeAhead = function(data) {
+		    var dataArray = [];
+		    $(data).each(function(index, item) {
+			    dataArray.push(
+				    {
+					    Title: item.Code + ' : ' + item.Name,
+					    Value: item.Code
+				    });
+		    });
+		    return dataArray;
+	    };
+	    
+	    self.SetUpTypeAheadUser = function(data)
+	    {
+	    	var dataArray = [];
+	    	$(data).each(function(index, item)
 	    	{
-	    		callback(data);
-	    	};
-
-	    	var apiController = "User";
-	    	$(".typeahead[data-rest='" + apiController + "']").typeahead(
-			{
-				labelField: "DisplayName",
-				setWithLabel: false,
-				valueField: "UserName",
-				source: function(query, limit, callback) // TODO: Implement limit
-				{
-					$.ajax(
-					{
-						//url: "http://localhost:55548/rest/api/user",
-						url: window.ValidusServicesUrl + apiController,
-						data: { term: query, skip: 0, take: 10 },
-						dataType: "json",
-						contentType: "application/json",
-						success: function(data)
-						{
-							onSuccess(callback, data);
-						},
-						error: function(xhr, status, error)
-						{
-							toastr.error("Error: " + error);
-						}
-					});
-				},
-				updater: function(selection)
-				{
-					//alert("You selected: " + selection)
-				}
-			});
-
+	    		dataArray.push(
+				    {
+				    	DisplayName: item.DisplayName,
+				    	UserName: item.UserName
+				    });
+	    	});
+	    	return dataArray;
 	    };
 
         self.GetRequiredDataCreateUser = function () {
@@ -215,11 +149,10 @@
                 self.showImageProcessing_LoadUser('none');
             });
 
-            response.fail(function (jqXhr, textStatus) {
-                console.log('Error:' + jqXhr + ' ' + textStatus);
-                toastr["error"]("An Error Has Occurred!");
-                self.showImageProcessing_LoadUser('none');
-            });
+	        response.fail(function(jqXhr, textStatus)
+	        {
+		        self.showImageProcessing_LoadUser('none');
+	        });
         };
 
         self.SetRequiredData = function (data) {
@@ -333,10 +266,6 @@
                     self.usersTeamList.push({ key: value.Id, name: value.Title });
                 });
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-            });
         };
 
         self.GetUsers = function () {
@@ -360,38 +289,30 @@
                 }
 
             });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-            });
         };
 
-        self.GetSelectedUserByName = function (userName, callback) {
+	    self.GetSelectedUserByName = function(userName, callback)
+	    {
+		    self.showImageProcessing_LoadUser('block');
+		    self.userToManage(new ConsoleApp.User());
+		    self.ClearAllLists();
 
-            self.showImageProcessing_LoadUser('block');
-            self.userToManage(new ConsoleApp.User());
-            self.ClearAllLists();
+		    var ajaxConfig = { Url: "/Admin/GetSelectedUserByName?userName=" + userName, VerbType: "GET" },
+		        response = ConsoleApp.AjaxHelper(ajaxConfig);
 
-            var ajaxConfig = { Url: "/Admin/GetSelectedUserByName?userName=" + userName, VerbType: "GET" };
+		    response.success(function(data)
+		    {
+			    self.SetUser(data);
+			    self.showImageProcessing_LoadUser('none');
 
-            var response = ConsoleApp.AjaxHelper(ajaxConfig);
+			    if (callback) callback();
+		    });
 
-            response.success(function (data) {
-
-                self.SetUser(data);
-                self.showImageProcessing_LoadUser('none');
-
-	            if (callback)
-		            callback();
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
-                self.showImageProcessing_LoadUser('none');
-            });
-        };
+		    response.fail(function(xhr, status)
+		    {
+			    self.showImageProcessing_LoadUser('none');
+		    });
+	    };
 
         self.GetUserPersonalSettings = function () {
 
@@ -399,24 +320,20 @@
             self.userToManage(new ConsoleApp.User());
             self.ClearAllLists();
 
-            var ajaxConfig = { Url: "/Admin/GetUserPersonalSettings", VerbType: "GET" };
+            var ajaxConfig = { Url: "/Admin/GetUserPersonalSettings", VerbType: "GET" },
+                response = ConsoleApp.AjaxHelper(ajaxConfig);
 
-            var response = ConsoleApp.AjaxHelper(ajaxConfig);
+	        response.success(function(data)
+	        {
+		        self.SetUser(data);
+		        self.showImageProcessing_LoadUser('none');
+	        });
 
-            response.success(function (data) {
-
-                self.SetUser(data);
-                self.showImageProcessing_LoadUser('none');
-
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
-                console.log(jqXhr + " " + textStatus);
+            response.fail(function(xhr, status)
+            {
                 self.showImageProcessing_LoadUser('none');
             });
         };
-
 
         self.SetUser = function (data) {
 
@@ -427,6 +344,7 @@
                 self.userToManage().DefaultOrigOffice(new ConsoleApp.Office().Id(data.DefaultOrigOffice != null ? data.DefaultOrigOffice.Id : "").Title(data.DefaultOrigOffice != null ? data.DefaultOrigOffice.Title : ""));
                 self.userToManage().DefaultUW(new ConsoleApp.User().Id(data.DefaultUW != null ? data.DefaultUW.Id : "").DomainLogon(data.DefaultUW != null ? data.DefaultUW.DomainLogon : ""));
                 self._Underwriter(data.UnderwriterId);
+                self._NonLondonBroker(data.NonLondonBroker);
                 self.userToManage().UnderwriterId(data.UnderwriterId);
 
                 if (data.PrimaryOfficeList != null) {
@@ -526,7 +444,7 @@
                 self.SetRequiredData(data);
 
             } else {
-                toastr["info"]("No User found");
+                toastr.info("No User found");
             }
         };
 
@@ -568,6 +486,7 @@
             userToSave.Id = self.userToManage().Id;
             userToSave.DomainLogon = self.userToManage().DomainLogon;
             userToSave.PrimaryOffice = self.userToManage().PrimaryOffice;
+            userToSave.NonLondonBroker = self.userToManage().NonLondonBroker;
             userToSave.DefaultOrigOffice = self.userToManage().DefaultOrigOffice;
             userToSave.DefaultUW = self.userToManage().DefaultUW;
             userToSave.IsActive = self.userToManage().IsActive;
@@ -599,17 +518,12 @@
                 ConsoleApp.vmManageTeams.GetTeamsFullData();
             });
 
-            response.fail(function (jqXhr, textStatus) {
-
-                var error = ko.toJS(jqXhr);
-                var errorMsg = ko.toJS(error.responseText);
-
-                toastr["error"](errorMsg);
-
-                self.showImageProcessing_SavingUser('none');
-                self.saveUser_Status(true);
-            });
-        };
+	        response.fail(function(xhr, status)
+	        {
+		        self.showImageProcessing_SavingUser('none');
+		        self.saveUser_Status(true);
+	        });
+                                          };
 
         self.SearchForUser = function () {
 
@@ -629,13 +543,9 @@
                     });
                 }
                 else {
-                    toastr["info"]("No Users Found");
+                    toastr.info("No Users Found");
                 }
 
-            });
-
-            response.fail(function (jqXhr, textStatus) {
-                toastr["error"]("An Error Has Occurred!");
             });
         };
 
@@ -665,10 +575,10 @@
         			self.userToManage().AllTeamMemberships.unshift(self.selectedItem().IsCurrent(false).PrimaryTeamMembership(false));
         			self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -681,10 +591,10 @@
         			self.userToManage().TeamMemberships.unshift(self.selectedItem().IsCurrent(true));
         			self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -696,26 +606,33 @@
                     self.userToManage().AllFilterCOBs.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
-        self.click_AddFilterCOBs = function () {
-            if (self.selectedItem() != null) {
-                if (self.userToManage().AllFilterCOBs.indexOf(self.selectedItem()) !== -1) {
-                    self.userToManage().AllFilterCOBs.remove(self.selectedItem());
-                    self.userToManage().FilterCOBs.unshift(self.selectedItem());
-                    self.selectedItem(null);
-                } else {
-                    toastr["info"]("No value selected");
-                }
-            } else {
-                toastr["info"]("No value selected");
-            }
-        };
+	    self.click_AddFilterCOBs = function()
+	    {
+		    if (self.selectedItem() != null)
+		    {
+			    if (self.userToManage().AllFilterCOBs.indexOf(self.selectedItem()) !== -1)
+			    {
+				    self.userToManage().AllFilterCOBs.remove(self.selectedItem());
+				    self.userToManage().FilterCOBs.unshift(self.selectedItem());
+				    self.selectedItem(null);
+			    }
+			    else
+			    {
+				    toastr.info("No value selected");
+			    }
+		    }
+		    else
+		    {
+			    toastr.info("No value selected");
+		    }
+	    };
 
         // FilterOffices
         self.click_RemoveFilterOffices = function () {
@@ -725,10 +642,10 @@
                     self.userToManage().AllFilterOffices.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -739,10 +656,10 @@
                     self.userToManage().FilterOffices.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -754,10 +671,10 @@
                     self.userToManage().AllFilterMembers.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -768,10 +685,10 @@
                     self.userToManage().FilterMembers.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -783,10 +700,10 @@
                     self.userToManage().AllAdditionalCOBs.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -797,10 +714,10 @@
                     self.userToManage().AdditionalCOBs.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -812,10 +729,10 @@
                     self.userToManage().AllAdditionalOffices.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -826,10 +743,10 @@
                     self.userToManage().AdditionalOffices.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -841,10 +758,10 @@
                     self.userToManage().AllAdditionalUsers.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
@@ -855,15 +772,15 @@
                     self.userToManage().AdditionalUsers.unshift(self.selectedItem());
                     self.selectedItem(null);
                 } else {
-                    toastr["info"]("No value selected");
+                    toastr.info("No value selected");
                 }
             } else {
-                toastr["info"]("No value selected");
+                toastr.info("No value selected");
             }
         };
 
         self.onClickSetSelectedItem = function () {
-        	console.log('onClickSetSelectedItem()');
+        	//console.log('onClickSetSelectedItem()');
         	self.selectedItem(this);
         };
 
@@ -871,16 +788,16 @@
 
             var form = $('#formCreateEditUser');
 
-	        console.log('check is form valid');
+	        //console.log('check is form valid');
             if (form.valid()) {
             	if (self.saveMode() === "EDIT")
             	{
-            		console.log('SaveUser - Edit Mode');
+            		//console.log('SaveUser - Edit Mode');
                     self.SaveUser("EditUser");
             	}
             	else if (self.saveMode() === "CREATE")
             	{
-            		console.log('SaveUser - Create Mode');
+            		//console.log('SaveUser - Create Mode');
                     self.SaveUser("CreateUser");
                 }
             }
@@ -922,7 +839,22 @@
         		self.userToManage().UnderwriterId(newVal);
         });
 	    
+        self._NonLondonBroker.subscribe(function(newVal)
+        {
+        	if (newVal !== undefined)
+        		self.userToManage().NonLondonBroker(newVal);
+        });
+	    
+        $.pubsub.subscribe('primaryOfficeChanged', function(topic, msg) {
 
+	        if (msg.officeTitle !== 'London') {
+		        self.showNonLondonBroker(true);
+	        } else {
+	        	self.showNonLondonBroker(false);
+	        	self._NonLondonBroker('');
+		        $('.nonLondonBroker').val('');
+	        }
+        });
 	    
         return self;
     };

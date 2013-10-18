@@ -17,5 +17,7 @@ namespace Validus.Console.BusinessLogic
         RenewalPolicyDetailed GetRenewalPolicyDetailsByPolId(string polId);
 
         Object GetPolicyDetailsByPolId(string polId);
+
+        Task<RiskPreviewDto> RiskPreview(string polId);
     }
 }

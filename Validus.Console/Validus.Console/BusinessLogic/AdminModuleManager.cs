@@ -438,6 +438,36 @@ namespace Validus.Console.BusinessLogic
             using (ConsoleRepository)
             {
                 ConsoleRepository.Attach<Team>(team);
+                ConsoleRepository
+                    .Query<Team>(t => t.Id == team.Id,
+                                                t=>t.AppAccelerators,
+                                                t=>t.RelatedCOBs,
+                                                t => t.RelatedOffices,
+                                                t => t.RelatedQuoteTemplates,
+                                                t => t.RelatedRisks,
+                                                t => t.Links,
+                                                t=>t.Memberships,
+                                              t => t.TeamOfficeSettings.Select(tos => tos.MarketWordingSettings),
+                                              t => t.TeamOfficeSettings.Select(tos => tos.TermsNConditionWordingSettings),
+                                              t => t.TeamOfficeSettings.Select(tos => tos.SubjectToClauseWordingSettings)
+                                              ).FirstOrDefault();
+                foreach (var teamOfficeSetting in team.TeamOfficeSettings.ToList())
+                {
+                    foreach (var marketWordingSetting in teamOfficeSetting.MarketWordingSettings.ToList())
+                    {
+                        ConsoleRepository.Delete(marketWordingSetting);
+                    }
+                    foreach (var termsNConditionWordingSetting in teamOfficeSetting.TermsNConditionWordingSettings.ToList())
+                    {
+                        ConsoleRepository.Delete(termsNConditionWordingSetting);
+                    }
+                    foreach (var subjectToClauseWordingSetting in teamOfficeSetting.SubjectToClauseWordingSettings.ToList())
+                    {
+                        ConsoleRepository.Delete(subjectToClauseWordingSetting);
+                    }
+                    ConsoleRepository.Delete(teamOfficeSetting);
+                }
+                
                 ConsoleRepository.Delete<Team>(team);
                 ConsoleRepository.SaveChanges();
                 return "Successfully Deleted Team";
@@ -458,6 +488,7 @@ namespace Validus.Console.BusinessLogic
                 user.DomainLogon = userDto.DomainLogon;
                 user.IsActive = userDto.IsActive;
                 user.UnderwriterCode = userDto.UnderwriterId;
+                user.NonLondonBroker = userDto.NonLondonBroker;
                 user.PrimaryOffice =
                     ConsoleRepository.Query<Office>().FirstOrDefault(o => o.Id == userDto.PrimaryOffice.Id);
                 user.DefaultOrigOffice =
@@ -584,6 +615,7 @@ namespace Validus.Console.BusinessLogic
                 user.DomainLogon = userDto.DomainLogon;
                 user.IsActive = userDto.IsActive;
                 user.UnderwriterCode = userDto.UnderwriterId;
+                user.NonLondonBroker = userDto.NonLondonBroker;
                 user.PrimaryOffice = (userDto.PrimaryOffice != null)
                                          ? ConsoleRepository.Query<Office>()
                                                             .FirstOrDefault(o => o.Id == userDto.PrimaryOffice.Id)
@@ -1221,56 +1253,11 @@ namespace Validus.Console.BusinessLogic
 
         public List<UserTeamLinkDto> GetUserTeamLinks()
         {
-            var userName = HttpContext.Current.User.Identity.Name;
-
-            if (string.IsNullOrEmpty(userName))
-                throw new Exception("UserName is null"); // TODO: throw new NullReferenceException(userName)
-
-            using (ConsoleRepository)
-            {
-                // 1. Get user by name
-                var user =
-                    ConsoleRepository.Query<User>(u => u.DomainLogon == userName,
-                                                  t => t.TeamMemberships.Select(tm => tm.Team.Links)).FirstOrDefault();
-
-                if (user == null)
-                    throw new Exception("User not found");
-
-                // 2. Get all the teams they are in
-                var userTeamLinkList = new List<UserTeamLinkDto>();
-
-                var allUrls = new List<Url>();
-                foreach (var teamMembership in user.TeamMemberships)
-                {
-                    allUrls.AddRange(teamMembership.Team.Links.Select(l =>
-                        {
-                            if (!string.IsNullOrEmpty(l.Url))
-                            {
-                                return new Url { LinkUrl = l.Url, Title = l.Title, LinkCategory = l.Category };
-                            }
-
-                            return null;
-
-                        }).ToList());
-                }
-
-                var distinctUrls = allUrls.Select(u => u).Distinct();
-
-                var groupedUrls = distinctUrls.GroupBy(u => u.LinkCategory);
-
-                foreach (var category in groupedUrls)
-                {
-                    var urls = category.Select(u =>
-                        {
-                            return new Url { Title = u.Title, LinkUrl = u.LinkUrl };
-                        }).ToList();
-
-
-                    userTeamLinkList.Add(new UserTeamLinkDto { CategoryName = category.Key, Urls = urls });
-                }
-
-                return userTeamLinkList;
-            }
+            return WebSiteModuleManager.EnsureCurrentUser().TeamMemberships.SelectMany(tm => tm.Team.Links)
+             .Distinct()
+             .GroupBy(l => l.Category,
+                     l => new Url() { LinkUrl = l.Url, LinkCategory = l.Category, Title = l.Title },
+                     (t, f) => (new UserTeamLinkDto() { CategoryName = t, Urls = new List<Url>(f).ToList() })).ToList();
         }
 
         public TeamDto GetTeamBySubmissionTypeId(string submissionTypeId)
@@ -2236,7 +2223,36 @@ namespace Validus.Console.BusinessLogic
                 }
             }
         }
-        
+
+
+        #endregion
+
+        #region UnderwriterSignature
+        public TeamUnderwriterSetting GetUnderwriterTeamSignature(string underwriterCode, int? teamId)
+        {
+            using (ConsoleRepository)
+            {
+               return ConsoleRepository.Query<TeamUnderwriterSetting>(
+                    tws => tws.TeamId == teamId && tws.UnderwriterCode == underwriterCode).SingleOrDefault();
+            }
+        }
+        public TeamUnderwriterSetting CreateOrEditUnderwriterTeamSignature(TeamUnderwriterSetting teamUnderwriterSetting)
+        {
+             var dbTeamUnderwriterSetting = ConsoleRepository.Query<TeamUnderwriterSetting>(
+                   tws => tws.TeamId == teamUnderwriterSetting.TeamId && tws.UnderwriterCode == teamUnderwriterSetting.UnderwriterCode).SingleOrDefault();
+            if (dbTeamUnderwriterSetting != null)
+            {
+                dbTeamUnderwriterSetting.Signature = teamUnderwriterSetting.Signature;
+            }
+            else
+            {
+                ConsoleRepository.Add(teamUnderwriterSetting);
+                dbTeamUnderwriterSetting = teamUnderwriterSetting;
+            }
+
+            ConsoleRepository.SaveChanges();
+            return dbTeamUnderwriterSetting;
+        }
         #endregion
 
         #region Helpers
@@ -2311,6 +2327,7 @@ namespace Validus.Console.BusinessLogic
                                     ? new UserDto { Id = user.DefaultUW.Id, DomainLogon = user.DefaultUW.DomainLogon }
                                     : null;
             userDto.UnderwriterId = user.UnderwriterCode;
+            userDto.NonLondonBroker = user.NonLondonBroker; 
 
             OfficeDto officeDto = null;
             var officeList = _consoleRepository.Query<Office>().ToList();

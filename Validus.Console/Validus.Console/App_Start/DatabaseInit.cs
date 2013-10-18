@@ -1,191 +1,226 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web;
-using System.Web.Http;
-using Validus.Console.BusinessLogic;
 using Validus.Console.Data;
+using Validus.Core.Data;
 using Validus.Core.LogHandling;
 using Validus.Models;
-using Validus.Services.Models;
 
 namespace Validus.Console.Init
 {
-    public static class DatabaseInit
-    {
-        private static IConsoleRepository _consoleRepository = new ConsoleRepository();
-        private static ILogHandler _logHandler = new LogHandler();
+	public static class DatabaseInit
+	{
+		private static readonly ILogHandler _LogHandler = new LogHandler();
 
-        //  How to inject interface here?
-        public static void SyncSemiStaticData()
-        {
-            _logHandler.WriteLog("SyncSemiStaticData()", LogSeverity.Information, LogCategory.DataAccess);
-            
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.UseDefaultCredentials = true;
+		public static void SyncSemiStaticData()
+		{
+			DatabaseInit._LogHandler.WriteLog("SyncSemiStaticData()", LogSeverity.Information, LogCategory.DataAccess);
 
-            HttpClient client = new HttpClient(handler);
-            client.BaseAddress = new Uri(Properties.Settings.Default.ServicesHostUrl);
+			using (var httpHandler = new HttpClientHandler())
+			{
+				httpHandler.UseDefaultCredentials = true;
 
-            // Add an Accept header for JSON format. 
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/xml"));
+				using (var httpClient = new HttpClient(httpHandler))
+				{
+					httpClient.BaseAddress = new Uri(Properties.Settings.Default.ServicesHostUrl);
+					httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
+					using (var consoleRepository = new ConsoleRepository())
+					{
+						DatabaseInit.SyncBrokers(httpClient, consoleRepository);
+						DatabaseInit.SyncCOBs(httpClient, consoleRepository);
+						DatabaseInit.SyncOffices(httpClient, consoleRepository);
+						DatabaseInit.SyncUnderwriters(httpClient, consoleRepository);
+						DatabaseInit.SyncRiskCodes(httpClient, consoleRepository);
 
-            using (_consoleRepository)
-            {
-                HttpResponseMessage response = client.GetAsync("rest/api/cob").Result;  // Blocking call! 
-                if (response.IsSuccessStatusCode)
-                {
-                    // Parse the response body. Blocking! 
-                    var cobs = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.COB>>().Result;
+						consoleRepository.SaveChanges();
+					}
+				}
+			}
+		}
 
+		private static void SyncBrokers(HttpClient httpClient, IRepository consoleRepository)
+		{
+			DatabaseInit._LogHandler.WriteLog("SyncBrokers()", LogSeverity.Information, LogCategory.DataAccess);
 
-                    foreach (var p in cobs)
-                    {
-                        //bm.AddCOBIfNotAlreadyPresent(c);
+			var response = httpClient.GetAsync("rest/api/broker").Result;
 
-                        if (!(_consoleRepository.Query<Validus.Models.COB>().Where(s => s.Id == p.Code).Any()))
-                        {
-                            Validus.Models.COB c = new Validus.Models.COB() { Id = p.Code, Narrative = p.Name };
-                            _consoleRepository.Add<Validus.Models.COB>(c);
-                        }
-                    }
-                }
-                else
-                {
-                    _logHandler.WriteLog("Get rest/api/cob failed", LogSeverity.Information, LogCategory.DataAccess);
-                }
+			if (response.IsSuccessStatusCode)
+			{
+				var serviceBrokers = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.Broker>>().Result;
 
-                response = client.GetAsync("rest/api/Office").Result;  // Blocking call! 
-                if (response.IsSuccessStatusCode)
-                {
-                    // Parse the response body. Blocking! 
-                    var Offices = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.Office>>().Result;
+				foreach (var serviceBroker in serviceBrokers)
+				{
+					if (!consoleRepository.Query<Broker>().Any(cb => cb.BrokerSequenceId == serviceBroker.Id))
+					{
+						consoleRepository.Add(new Broker
+						{
+							BrokerSequenceId = serviceBroker.Id,
+							Name = serviceBroker.Name,
+							Code = serviceBroker.Code,
+							Psu = serviceBroker.Psu,
+							GroupCode = serviceBroker.GrpCd
+						});
+					}
+					else
+					{
+						var consoleBroker = consoleRepository.Query<Broker>()
+						                                     .FirstOrDefault(cb => cb.BrokerSequenceId == serviceBroker.Id);
 
+						if (consoleBroker != null)
+						{
+							consoleBroker.Code = serviceBroker.Code;
+							consoleBroker.GroupCode = serviceBroker.GrpCd;
+							consoleBroker.Name = serviceBroker.Name;
+							consoleBroker.Psu = serviceBroker.Psu;
 
-                    foreach (var p in Offices)
-                    {
-                        //bm.AddOfficeIfNotAlreadyPresent(c);
+							consoleRepository.Attach(consoleBroker);
+						}
+					}
+				}
+			}
+			else
+			{
+				DatabaseInit._LogHandler.WriteLog("Get rest/api/broker failed", LogSeverity.Warning, LogCategory.DataAccess);
+			}
+		}
 
-                        if (!(_consoleRepository.Query<Validus.Models.Office>().Any(s => s.Id == p.Code)))
-                        {
-                            Validus.Models.Office c = new Validus.Models.Office() { Id = p.Code, Name = p.Name };
-                            _consoleRepository.Add<Validus.Models.Office>(c);
-                        }
-                    }
+		private static void SyncCOBs(HttpClient httpClient, IRepository consoleRepository)
+		{
+			DatabaseInit._LogHandler.WriteLog("SyncCOBs()", LogSeverity.Information, LogCategory.DataAccess);
 
-                }
-                else
-                {
-                    _logHandler.WriteLog("Get rest/api/Office failed", LogSeverity.Information, LogCategory.DataAccess);
-                }
+			var response = httpClient.GetAsync("rest/api/cob").Result;
 
+			if (response.IsSuccessStatusCode)
+			{
+				var serviceCOBs = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.COB>>().Result;
 
-                response = client.GetAsync("rest/api/Broker").Result;  // Blocking call! 
-                if (response.IsSuccessStatusCode)
-                {
-                    // Parse the response body. Blocking! 
-                    var brokers = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.Broker>>().Result;
+				foreach (var serviceCOB in serviceCOBs.Where(sc => !consoleRepository.Query<COB>()
+				                                                                     .Any(cc => cc.Id == sc.Code)))
+				{
+					consoleRepository.Add(new COB
+					{
+						Id = serviceCOB.Code,
+						Narrative = serviceCOB.Name
+					});
+				}
+			}
+			else
+			{
+				DatabaseInit._LogHandler.WriteLog("Get rest/api/cob failed", LogSeverity.Warning, LogCategory.DataAccess);
+			}
+		}
 
-                    foreach (var broker in brokers)
-                    {
-                        if (!(_consoleRepository.Query<Validus.Models.Broker>().Any(b => b.BrokerSequenceId == broker.Id)))
-                        {
-                            _consoleRepository.Add(new Validus.Models.Broker { BrokerSequenceId = broker.Id, Name = broker.Name, Code = broker.Code, Psu = broker.Psu, GroupCode = broker.GrpCd });
-                        }
-                        else
-                        {
-                            var updateBroker =
-                                _consoleRepository.Query<Validus.Models.Broker>().FirstOrDefault(b => b.BrokerSequenceId == broker.Id);
+		private static void SyncOffices(HttpClient httpClient, IRepository consoleRepository)
+		{
+			DatabaseInit._LogHandler.WriteLog("SyncOffices()", LogSeverity.Information, LogCategory.DataAccess);
 
-                            if (updateBroker != null)
-                            {
-                                updateBroker.Code = broker.Code;
-                                updateBroker.GroupCode = broker.GrpCd;
-                                updateBroker.Name = broker.Name;
-                                updateBroker.Psu = broker.Psu;
-                                _consoleRepository.Attach<Validus.Models.Broker>(updateBroker);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    _logHandler.WriteLog("Get rest/api/Broker failed", LogSeverity.Information, LogCategory.DataAccess);
-                }
+			var response = httpClient.GetAsync("rest/api/office").Result;
 
-                response = client.GetAsync("rest/api/Underwriter").Result;  // Blocking call! 
-                if (response.IsSuccessStatusCode)
-                {
-                    // Parse the response body. Blocking! 
-                    var underwriters = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.Underwriter>>().Result;
+			if (response.IsSuccessStatusCode)
+			{
+				var serviceOffices = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.Office>>().Result;
 
-                    foreach (var underwriter in underwriters)
-                    {
-                        if (!(_consoleRepository.Query<Validus.Models.Underwriter>().Any(u => u.Code == underwriter.Code)))
-                        {
-                            _consoleRepository.Add(new Validus.Models.Underwriter { Code = underwriter.Code, Name = underwriter.Name });
-                        }
-                        else
-                        {
-                            var updateUnderwriter =
-                                _consoleRepository.Query<Validus.Models.Underwriter>().FirstOrDefault(b => b.Code == underwriter.Code);
+				foreach (var serviceOffice in serviceOffices.Where(so => !consoleRepository.Query<Office>()
+				                                                                           .Any(co => co.Id == so.Code)))
+				{
+					consoleRepository.Add(new Office
+					{
+						Id = serviceOffice.Code,
+						Name = serviceOffice.Name,
+						Title = serviceOffice.Name
+					});
+				}
+			}
+			else
+			{
+				DatabaseInit._LogHandler.WriteLog("Get rest/api/office failed", LogSeverity.Warning, LogCategory.DataAccess);
+			}
+		}
 
-                            if (updateUnderwriter != null)
-                            {
-                                updateUnderwriter.Code = underwriter.Code;
-                                updateUnderwriter.Name = underwriter.Name;
-                                _consoleRepository.Attach<Validus.Models.Underwriter>(updateUnderwriter);
-                            }
-                        }
-                    }
+		private static void SyncUnderwriters(HttpClient httpClient, IRepository consoleRepository)
+		{
+			DatabaseInit._LogHandler.WriteLog("SyncUnderwriters()", LogSeverity.Information, LogCategory.DataAccess);
 
-                }
-                else
-                {
-                    _logHandler.WriteLog("Get rest/api/Underwriter failed", LogSeverity.Information, LogCategory.DataAccess);
-                }
+			var response = httpClient.GetAsync("rest/api/underwriter").Result;
 
-                response = client.GetAsync("rest/api/riskcode").Result;  // Blocking call! 
-                if (response.IsSuccessStatusCode)
-                {
-                    // Parse the response body. Blocking! 
-                    var risks = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.RiskCode>>().Result;
+			if (response.IsSuccessStatusCode)
+			{
+				var serviceUnderwriters = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.Underwriter>>().Result;
 
-                    foreach (var risk in risks)
-                    {
-                        if (!(_consoleRepository.Query<Validus.Models.RiskCode>().Any(u => u.Code == risk.Code)))
-                        {
-                            _consoleRepository.Add(new Validus.Models.RiskCode { Code = risk.Code, Name = risk.Name });
-                        }
-                        else
-                        {
-                            var updaterisk =
-                                _consoleRepository.Query<Validus.Models.RiskCode>().FirstOrDefault(b => b.Code == risk.Code);
+				foreach (var serviceUnderwriter in serviceUnderwriters)
+				{
+					if (!consoleRepository.Query<Underwriter>().Any(cu => cu.Code == serviceUnderwriter.Code))
+					{
+						consoleRepository.Add(new Underwriter
+						{
+							Code = serviceUnderwriter.Code,
+							Name = serviceUnderwriter.Name
+						});
+					}
+					else
+					{
+						var consoleUnderwriter = consoleRepository.Query<Underwriter>()
+						                                          .FirstOrDefault(b => b.Code == serviceUnderwriter.Code);
 
-                            if (updaterisk != null)
-                            {
-                                updaterisk.Code = risk.Code;
-                                updaterisk.Name = risk.Name;
-                                _consoleRepository.Attach<Validus.Models.RiskCode>(updaterisk);
-                            }
-                        }
-                    }
+						if (consoleUnderwriter != null)
+						{
+							consoleUnderwriter.Code = serviceUnderwriter.Code;
+							consoleUnderwriter.Name = serviceUnderwriter.Name;
 
-                }
-                else
-                {
-                    _logHandler.WriteLog("Get rest/api/risk failed", LogSeverity.Information, LogCategory.DataAccess);
-                }
+							consoleRepository.Attach(consoleUnderwriter);
+						}
+					}
+				}
+			}
+			else
+			{
+				DatabaseInit._LogHandler.WriteLog("Get rest/api/underwriter failed", LogSeverity.Warning, LogCategory.DataAccess);
+			}
+		}
 
-                _consoleRepository.SaveChanges();
-            }
-        }
-    }
+		private static void SyncRiskCodes(HttpClient httpClient, IRepository consoleRepository)
+		{
+			DatabaseInit._LogHandler.WriteLog("SyncRiskCodes()", LogSeverity.Information, LogCategory.DataAccess);
 
+			var response = httpClient.GetAsync("rest/api/riskcode").Result;
+
+			if (response.IsSuccessStatusCode)
+			{
+				var serviceRisks = response.Content.ReadAsAsync<IEnumerable<Validus.Services.Models.RiskCode>>().Result;
+
+				foreach (var serviceRisk in serviceRisks)
+				{
+					if (!consoleRepository.Query<RiskCode>()
+					                      .Any(crc => crc.Code == serviceRisk.Code))
+					{
+						consoleRepository.Add(new RiskCode
+						{
+							Code = serviceRisk.Code,
+							Name = serviceRisk.Name
+						});
+					}
+					else
+					{
+						var consoleRisk = consoleRepository.Query<RiskCode>()
+						                                   .FirstOrDefault(crc => crc.Code == serviceRisk.Code);
+
+						if (consoleRisk != null)
+						{
+							consoleRisk.Code = serviceRisk.Code;
+							consoleRisk.Name = serviceRisk.Name;
+
+							consoleRepository.Attach(consoleRisk);
+						}
+					}
+				}
+			}
+			else
+			{
+				DatabaseInit._LogHandler.WriteLog("Get rest/api/riskcode failed", LogSeverity.Warning, LogCategory.DataAccess);
+			}
+		}
+	}
 }

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Web;
 using System.Xml;
-using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Search.Query;
 using Validus.Console.DTO;
@@ -18,14 +16,14 @@ namespace Validus.Console.Data
     {
         private static string GetContentSourcesSearchCondition(string contentSources)
         {
-            string contentSourcesSearchConditions = string.Empty;
-            string[] sources = contentSources.Split(',');
+            var contentSourcesSearchConditions = string.Empty;
+            var sources = contentSources.Split(',');
 
-            foreach (string source in sources)
+            foreach (var source in sources)
             {
                 if (contentSourcesSearchConditions.Length > 0)
                     contentSourcesSearchConditions += " OR ";
-                contentSourcesSearchConditions += "contentsource=\"" + source + "\"";
+                contentSourcesSearchConditions += Settings.Default.SP2013ContentSourceName + "=\"" + source + "\"";
             }
 
             if (contentSourcesSearchConditions.Length > 0)
@@ -38,7 +36,7 @@ namespace Validus.Console.Data
         {
             SearchResponseDto retVal = null;
 
-            using (ClientContext ctx = new ClientContext(Settings.Default.SP2013SearchUrl))
+            using (var ctx = new ClientContext(Settings.Default.SP2013SearchUrl))
             {
                 // get the content sources for the query
                 var contentSources = string.Empty;
@@ -47,20 +45,22 @@ namespace Validus.Console.Data
                     contentSources = GetContentSourcesSearchCondition(Settings.Default.SP2013ContentSources);
                 }
 
-                KeywordQuery query = new KeywordQuery(ctx);
-                query.QueryText = searchTerm + contentSources;
-                query.StartRow = skip;
-                query.RowLimit = take;
-                string[] returnProps = Settings.Default.SP2013Properties.Split(',');
+                var query = new KeywordQuery(ctx)
+                {
+	                QueryText = searchTerm + contentSources,
+	                StartRow = skip,
+	                RowLimit = take
+                };
+	            var returnProps = Settings.Default.SP2013Properties.Split(',');
 
-                foreach (string prop in returnProps)
+                foreach (var prop in returnProps)
                 {
                     query.SelectProperties.Add(prop);
                 }
 
-                SearchExecutor executor = new SearchExecutor(ctx);
+                var executor = new SearchExecutor(ctx);
 
-                ClientResult<ResultTableCollection> results = executor.ExecuteQuery(query);
+                var results = executor.ExecuteQuery(query);
 
                 ctx.ExecuteQuery();
 
@@ -128,20 +128,20 @@ namespace Validus.Console.Data
         {
             //SPQueryService.QueryService
             XmlDocument retDoc;
-            using (SPQueryService.QueryService svc = new SPQueryService.QueryService())
+            using (var svc = new SPQueryService.QueryService())
             {
                 svc.UseDefaultCredentials = true;
 
                 // get the query xml
-                StringBuilder queryXml = new StringBuilder();
+                var queryXml = new StringBuilder();
 
-                XmlDocument queryDoc = new XmlDocument();
-                // todo move the xml to resource?
+                var queryDoc = new XmlDocument();
+                // TODO: Move the XML to resource ?
                 queryDoc.Load(XmlReader.Create(HttpContext.Current.Server.MapPath("~/Content/xml/SearchQuery.xml")));
 
                 queryXml.AppendFormat(queryDoc.OuterXml, searchTerm, skip + 1, take);
 
-                string resp = svc.Query(queryXml.ToString());
+                var resp = svc.Query(queryXml.ToString());
 
                 // load the xml document
                 retDoc = new XmlDocument();
@@ -149,11 +149,11 @@ namespace Validus.Console.Data
 
                 // we need to add the number of records we expect to see in a row to the xml
                 // get the range node
-                XmlNamespaceManager mgr = new XmlNamespaceManager(retDoc.NameTable);
+                var mgr = new XmlNamespaceManager(retDoc.NameTable);
                 mgr.AddNamespace("resp", "urn:Microsoft.Search.Response");
 
-                XmlNode rangeNode = retDoc.SelectSingleNode("resp:ResponsePacket/resp:Response/resp:Range", mgr);
-                XmlNode statusNode = retDoc.SelectSingleNode("resp:ResponsePacket/resp:Response/resp:Status", mgr);
+                var rangeNode = retDoc.SelectSingleNode("resp:ResponsePacket/resp:Response/resp:Range", mgr);
+                var statusNode = retDoc.SelectSingleNode("resp:ResponsePacket/resp:Response/resp:Status", mgr);
 
                 if (rangeNode == null)
                 {
@@ -168,8 +168,7 @@ namespace Validus.Console.Data
                 }
                 else
                 {
-
-                    XmlNode takeNode = retDoc.CreateElement("Take", "urn:Microsoft.Search.Response");
+                    var takeNode = retDoc.CreateElement("Take", "urn:Microsoft.Search.Response");
                     takeNode.InnerText = take.ToString(CultureInfo.InvariantCulture);
                     rangeNode.AppendChild(takeNode);
                 }
@@ -181,14 +180,14 @@ namespace Validus.Console.Data
         {
             string retVal;
 
-            using (SPQueryService.QueryService svc = new SPQueryService.QueryService())
+            using (var svc = new SPQueryService.QueryService())
             {
                 svc.UseDefaultCredentials = true;
 
                 // get the query xml
-                StringBuilder queryXml = new StringBuilder();
+                var queryXml = new StringBuilder();
 
-                XmlDocument queryDoc = new XmlDocument();
+                var queryDoc = new XmlDocument();
                 queryDoc.Load(XmlReader.Create(@"/Content/xml/SearchQuery.xml"));
 
                 queryXml.AppendFormat(queryDoc.OuterXml, searchTerm, skip + 1, take);
@@ -197,6 +196,7 @@ namespace Validus.Console.Data
                 retVal = svc.Query(queryXml.ToString());
 
             }
+
             return retVal;
         }
     }

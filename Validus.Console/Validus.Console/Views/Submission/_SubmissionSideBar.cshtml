@@ -62,13 +62,20 @@
                                     <tr>
                                         @* TODO: Remove inline styles *@
                                         <td style="padding-top: 20px; padding-bottom: 20px; overflow: visible;">
+                                            
+                                            <div class="val-broker-lossratio-loadMessage">Please provide Broker</div>
+                                            
                                             <div class="container-fluid">
                                                 <div class="row-fluid">
                                                     <div class="span8">
                                                         <div class="val-broker-lossratio-sparkline" style="line-height: 40px" data-bind="click: ShowLossRatioGraph"></div>
-                                                        <img class="val-broker-lossratio-loading" src="~/content/images/animated_progress.gif" style="width: 20px; height: 20px;" alt="" />
+                                                        <p class="val-broker-lossratio-loading">
+                                                            <img class="val-broker-lossratio-loading" src="~/content/images/animated_progress.gif" style="width: 20px; height: 20px;" alt="" />
+                                                            Loading...
+                                                        </p>
                                                     </div>
                                                     <div class="span4">
+                                                       
                                                         <div class="row-fluid">
                                                             <div class="span6">
                                                                 <h2 style="color: #6391B5"><span data-bind="text: BrokerRating"></span></h2>
@@ -76,11 +83,15 @@
                                                             <div class="span6">
                                                                 <h2 style="color: #6391B5"><span data-bind="text: BrokerScore"></span></h2>
                                                             </div>
-                                                        </div>
-                                                        <div class="row-fluid">
-                                                            <div class="span6 offset2">
-                                                                <h5><span data-bind="text: BrokerCreditLimit"></span></h5>
+                                                        
+                                                            <div class="row-fluid">
+                                                                
+                                                                <div class="span12">
+                                                                    <h5><span data-bind="text: BrokerCreditLimit"></span></h5>
+                                                                </div>
+                                                                
                                                             </div>
+                                                        
                                                         </div>
                                                     </div>
                                                 </div>

@@ -39,6 +39,9 @@ namespace Validus.Console.DTO
         [DisplayName("Default Originating Office")]
         public virtual OfficeDto DefaultOrigOffice { get; set; }
 
+        [DisplayName("NonLondonBroker")]
+        public string NonLondonBroker { get; set; }
+
         public List<UserDto> DefaultUWList { get; set; }
         [DisplayName("Default Underwriter")]
         public UserDto DefaultUW { get; set; }

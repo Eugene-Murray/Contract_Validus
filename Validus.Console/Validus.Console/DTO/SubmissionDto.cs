@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using Validus.Console.BusinessLogic;
 using Validus.Models;
 
 namespace Validus.Console.DTO
@@ -40,8 +35,7 @@ namespace Validus.Console.DTO
         public String ExtraProperty1 { get; set; }
         public String ExtraProperty2 { get; set; }
 
-
-        #region wording
+        #region Wordings
 
         public ICollection<MarketWordingSettingDto> SubmissionMarketWordingsList { get; set; }
         public ICollection<MarketWordingSettingDto> CustomSubmissionMarketWordingsList { get; set; }
@@ -54,17 +48,12 @@ namespace Validus.Console.DTO
 
         #endregion
 
-        // ExampleEnergy
-        public String ExampleEnergy_SubExtraProperty1 { get; set; }
-        public String ExampleEnergy_SubExtraProperty2 { get; set; }
-
         // PV
         public String Industry { get; set; }
         public String Situation { get; set; }
         public Decimal? Order { get; set; }
         public Decimal? EstSignPctg { get; set; }
 
-        // AuditTrail
         public List<AuditTrail> AuditTrails { get; set; }
     }
 }

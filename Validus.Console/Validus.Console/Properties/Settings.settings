@@ -49,5 +49,8 @@
     <Setting Name="SP2013Properties" Type="System.String" Scope="Application">
       <Value Profile="(Default)">VALBkrCtc,VALBkrCd,VALBpr,VALCcy,VALLdr,VALDescription,VALDol,VALInsdNm,VALLoccLocn,VALPolID,VALSt,VALUwrPsu,VALReserve,VALPaid,HITHIGHLIGHTEDSUMMARY,VALBkrGrpCd,VALBkrNm,VALBkrPsu,VALBkrSeqId,VALAcctgYr,VALCob,VALDivision,VALEntSt,VALIncpDt,VALOrigOff,VALSt,VALContentType,VALInsdId,VALLastYear,VALFirstYear,VALNoOfRisks,VALNoOfLiveRisks,VALNoOfOtherRisks,VALFirstLiveYear,VALLastLiveYear</Value>
     </Setting>
+    <Setting Name="SP2013ContentSourceName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contentsource</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -5,14 +5,13 @@
         <caption>Cross-selling</caption>
         <thead>
             <tr>
-           
                 <th class="val-cross-selling-title">Underwriter</th>
                 <th class="val-cross-selling-title">Quoting Office</th>
                 <th class="val-cross-selling-title"></th>
             </tr>
         </thead>
         <tbody>
-            @if ((Model != null) && (Model.Count > 0))
+            @if (Model != null && Model.Count > 0)
             {
                 foreach (var submission in Model)
                 {
@@ -24,7 +23,10 @@
                             <div title="@submission.QuotingOffice">@submission.QuotingOffice</div>
                         </td>
                         <td class="val-cross-selling-title">
-                            <a href="#" class="btn btn-small val-edit-submission-cross-selling" title="Edit Submission" data-submission-id="@submission.SubmissionId" data-submission-type="@submission.SubmissionTypeId">Edit</a>
+                            <a href="#" class="btn btn-mini val-edit-submission-cross-selling" title="@submission.ButtonTitle Submission" 
+                               data-submission-id="@submission.SubmissionId" 
+                               data-submission-type="@submission.SubmissionTypeId"
+                               data-isreadonly="@submission.IsReadOnly.ToString().ToLower()">@submission.ButtonTitle</a>
                         </td>
                     </tr>
                 }
@@ -32,4 +34,3 @@
         </tbody>
     </table>
 </form>
-

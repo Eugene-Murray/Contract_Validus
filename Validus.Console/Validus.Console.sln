@@ -24,9 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Validus.Console.vsmdi = Validus.Console.vsmdi
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validus.ConsoleData", "Validus.ConsoleData\Validus.ConsoleData.csproj", "{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validus.ConsoleDataSetup", "Validus.ConsoleDataSetup\Validus.ConsoleDataSetup.csproj", "{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 9
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://uktfsdev01:8080/tfs/defaultdevcollection
 		SccLocalPath0 = .
@@ -48,6 +52,12 @@ Global
 		SccProjectUniqueName6 = Validus.Console.UiTests\\Validus.Console.UiTests.csproj
 		SccProjectName6 = Validus.Console.UiTests
 		SccLocalPath6 = Validus.Console.UiTests
+		SccProjectUniqueName7 = Validus.ConsoleData\\Validus.ConsoleData.csproj
+		SccProjectName7 = Validus.ConsoleData
+		SccLocalPath7 = Validus.ConsoleData
+		SccProjectUniqueName8 = Validus.ConsoleDataSetup\\Validus.ConsoleDataSetup.csproj
+		SccProjectName8 = Validus.ConsoleDataSetup
+		SccLocalPath8 = Validus.ConsoleDataSetup
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Validus.Console.vsmdi
@@ -120,6 +130,26 @@ Global
 		{E193BC39-7D24-490E-93E6-EC537B465397}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E193BC39-7D24-490E-93E6-EC537B465397}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{E193BC39-7D24-490E-93E6-EC537B465397}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0F0196-87C9-4C00-A1E8-5A137C9579FA}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{90ECA8D6-B867-4F67-B839-8D7CD6FECDFB}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

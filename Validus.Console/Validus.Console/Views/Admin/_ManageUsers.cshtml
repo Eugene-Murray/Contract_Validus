@@ -83,12 +83,23 @@
         <div class="row-fluid">
             <div class="span12">
      
-
                 <table border="0" style="border-color: lightgray" width="100%">
                     <tr>
                         <td width="20%">Logon Name:</td>
                         <td width="20%">
                             <input class="typeahead" data-rest="User" type="text" data-bind="value: DomainLogon, enable: $parent.enableUserDetailsEdit" required/>
+                            
+                            <input type="text" data-bind="'bootstrap-typeahead': {
+                                    data: $parent._DomainLogon,
+                                    serviceurl: window.ValidusServicesUrl + 'User',
+                                    options: {
+                                        labelField: 'DisplayName',
+		                                setWithLabel: false,
+		                                valueField: 'UserName'
+                                    },
+                                    callback: $parent.SetUpTypeAheadUser,
+},                                  enable: $parent.enableUserDetailsEdit" required/>
+
                         </td>
                         <td width="10%">
                             <img id="imageProcessing_LoadUser" src="@Url.Content("~/Content/images/animated_progress.gif")"  style="height: 20px; width:20px;"  data-bind="style: {display : $parent.showImageProcessing_LoadUser}" />
@@ -177,8 +188,24 @@
                     </tr>
                     <tr>
                         <td>Primary Office:</td>
-                        <td colspan="2">
+                        <td >
                             <select data-bind="options: PrimaryOfficeList, optionsText: 'Title', value: PrimaryOffice"></select>
+                        </td>
+                        <td>
+                            <div data-bind="visible: $parent.showNonLondonBroker">
+						       <label class="control-label">
+							        Non-London Broker:
+						        </label>
+                                <input type="text" class="nonLondonBroker span10 typeahead" data-bind="'bootstrap-typeahead': {
+                                        data: $parent._NonLondonBroker,
+                                        serviceurl: window.ValidusServicesUrl + 'NonLondonBroker',
+                                        options: {
+                                            labelField: 'Title',
+                                            valueField: 'Value',
+                                        },
+                                        callback: $parent.SetUpTypeAhead
+                                    }" />
+					        </div>
                         </td>
                     </tr>
                     <tr>
@@ -188,15 +215,24 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Default Underwriter</td>
+                        <td>Default Underwriter:</td>
                         <td colspan="2">
                             <select data-bind="options: DefaultUWList, optionsText: 'DomainLogon', value: DefaultUW"></select>
                         </td>
                     </tr>
                     <tr>
-                        <td>Underwriter</td>
+                        <td>Underwriter:</td>
                         <td colspan="2">
-                            <input class="typeahead" data-rest="Underwriter" type="text" data-bind="value: $parent._Underwriter" />
+                           
+                            <input type="text" data-bind="'bootstrap-typeahead': {
+                                  data: $parent._Underwriter,
+                                  serviceurl: window.ValidusServicesUrl + 'Underwriter',
+                                        options: {
+                                            labelField: 'Title',
+                                            valueField: 'Value',
+                                        },
+                                        callback: $parent.SetUpTypeAhead
+                                        }" />
                         </td>
                     </tr>
                     <tr>
@@ -272,8 +308,6 @@
                                                     <caption>Current Filter COBs</caption>
                                                     <thead>
                                                         <tr>
-            
-                                                            @*<th>Id</th>*@
                                                             <th>Narrative</th>
            
                                                         </tr>
@@ -281,7 +315,7 @@
                                                     <tbody data-bind="template: { foreach: FilterCOBs }">
             
                                                         <tr data-bind="event: { click: ConsoleApp.vmManageUsers.onClickSetSelectedItem }">
-                                                            @*   <td><span data-bind="text: $data.Id" ></span></td>*@
+                                                           
                                                             <td>
                                                                 <input type="hidden" data-bind="value: $data.Id" />
                                                                 <span data-bind="text: $data.Narrative" ></span>
@@ -345,15 +379,14 @@
                                                     <thead>
                                                         <tr>
             
-                                                            @* <th>Id</th>*@
+                                                          
                                                             <th>Title</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody data-bind="template: { foreach: FilterOffices }">
             
                                                         <tr data-bind="event: { click: ConsoleApp.vmManageUsers.onClickSetSelectedItem }">
-                                                            @*  <td><span data-bind="text: $data.Id" ></span></td>*@
-                                                            <td>
+                                                         
                                                                 <input type="hidden" data-bind="value: $data.Id" />
                                                                 <span data-bind="text: $data.Title" ></span>
                                                             </td>
@@ -605,8 +638,7 @@
                                                     <caption>All Additional Users</caption>
                                                     <thead>
                                                         <tr>
-            
-     
+           
                                                             <th>DomainLogon</th>
                                                         </tr>
                                                     </thead>

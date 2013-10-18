@@ -582,7 +582,10 @@ namespace Validus.Console.Data.DbInitializer
                 {
                     new SubmissionType { Id = "EN", Title = "EN Submission" },
                     new SubmissionType { Id = "PV", Title = "PV Submission" },
-                    new SubmissionType { Id = "FI", Title = "FI Submission" }
+                    new SubmissionType { Id = "FI", Title = "FI Submission" },
+                    new SubmissionType { Id = "CA", Title = "CA Submission" },
+                    new SubmissionType { Id = "HM", Title = "HM Submission" },
+                    new SubmissionType { Id = "ME", Title = "ME Submission" },
                 };
 
             foreach (var submissionType in submissionTypes)
@@ -604,7 +607,6 @@ namespace Validus.Console.Data.DbInitializer
                 InsuredId = 182396,
                 Brokerage = 1,
                 BrokerContact = "ALLAN MURRAY",
-                Description = "Seed Submission",
                 UnderwriterCode = "AED",
                 UnderwriterContactCode = "JAC",
                 QuotingOfficeId = "LON",
@@ -1741,7 +1743,6 @@ namespace Validus.Console.Data.DbInitializer
                 InsuredId = 182396,
                 Brokerage = 1,
                 BrokerContact = "ALLAN MURRAY",
-                Description = "Seed Submission",
                 UnderwriterCode = "AED",
                 UnderwriterContactCode = "JAC",
                 QuotingOfficeId = "LON",
@@ -2158,7 +2159,10 @@ namespace Validus.Console.Data.DbInitializer
                 {
                     new SubmissionType { Id = "EN", Title = "Energy_Submission" },
                     new SubmissionType { Id = "PV", Title = "PoliticalViolence_Submission" },
-                    new SubmissionType { Id = "FI", Title = "FinancialInstitutions_Submission" }
+                    new SubmissionType { Id = "FI", Title = "FinancialInstitutions_Submission" },
+                    new SubmissionType { Id = "CA", Title = "Cargo_Submission" },
+                    new SubmissionType { Id = "HM", Title = "Hull&Marine_Submission" },
+                    new SubmissionType { Id = "ME", Title = "Marine&EnergyLiabilities_Submission" },
                 };
 
             foreach (var submissionType in submissionTypes)
@@ -2472,7 +2476,10 @@ namespace Validus.Console.Data.DbInitializer
                 new Team { Title = "Developers", QuoteExpiryDaysDefault = 30 ,  CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = null, DefaultPolicyType = "MARINE"    },
                 new Team { Title = "Energy", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => t.Name.Contains("Energy")).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[0].Id, DefaultPolicyType = "MARINE"   },
                 new Team { Title = "Political Violence", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => t.Name.Contains("PV")).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[1].Id, DefaultPolicyType = "NONMARINE"   },
-                new Team { Title = "Financial Institutions", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => t.Name.Contains("FI")).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[2].Id, DefaultPolicyType = "NONMARINE", RelatedRisks = CreateRisksList()   }
+                new Team { Title = "Financial Institutions", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => t.Name.Contains("FI")).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[2].Id, DefaultPolicyType = "NONMARINE", RelatedRisks = CreateRisksList()   },
+                new Team { Title = "Cargo", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => new List<string>{"Fine Art","Specie","Cargo"}.Contains(t.Name)).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[3].Id, DefaultPolicyType = "MARINE"   },
+                new Team { Title = "Hull&Marine", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => new List<string>{"Hull&Marine"}.Contains(t.Name)).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[4].Id, DefaultPolicyType = "MARINE"   },
+                new Team { Title = "Marine&Energy", QuoteExpiryDaysDefault = 30 , RelatedQuoteTemplates = quoteSheetTemplates.Where(t => new List<string>{"Marine&Energy"}.Contains(t.Name)).ToList(), CreatedBy = "InitialSetup", CreatedOn = DateTime.Now, ModifiedBy = "InitialSetup", ModifiedOn = DateTime.Now, SubmissionTypeId = submissionTypes[5].Id, DefaultPolicyType = "MARINE"   },
             };
         }
 
@@ -2483,7 +2490,12 @@ namespace Validus.Console.Data.DbInitializer
                     new QuoteTemplate { Name = "Energy 1", RdlPath = "/Underwriting/Console/QuoteSheet" },
                     new QuoteTemplate { Name = "Energy 2", RdlPath = "/Underwriting/Console/QuoteSheet_EN2" },
                     new QuoteTemplate { Name = "PV 1", RdlPath = "/Underwriting/Console/QuoteSheet_PV" },
-                    new QuoteTemplate { Name = "FI 1", RdlPath = "/Underwriting/Console/QuoteSheet_FI" }
+                    new QuoteTemplate { Name = "FI 1", RdlPath = "/Underwriting/Console/QuoteSheet_FI" },
+                    new QuoteTemplate { Name = "Fine Art", RdlPath = "/Underwriting/Console/QuoteSheet_CA" },
+                    new QuoteTemplate { Name = "Specie", RdlPath = "/Underwriting/Console/QuoteSheet_CA" },
+                    new QuoteTemplate { Name = "Cargo", RdlPath = "/Underwriting/Console/QuoteSheet_CA" },
+                    new QuoteTemplate { Name = "Hull&Marine", RdlPath = "/Underwriting/Console/QuoteSheet_HM" },
+                    new QuoteTemplate { Name = "Marine&Energy", RdlPath = "/Underwriting/Console/QuoteSheet_ME" },
                 };
         }
 

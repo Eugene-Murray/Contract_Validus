@@ -8,9 +8,9 @@
         <tr>
             <th class="val-insddet-polid">Policy Id</th>
             <th class="val-insddet-year">Year</th>
-            <th class="val-insddet-epi">EPI</th>
-            <th class="val-insddet-percpd">%PD</th>
-            <th class="val-insddet-lr">LR%</th>
+            <th class="val-insddet-epi"><span  data-toggle="tooltip" title="Syndicate EPI">EPI</span></th>
+            <th class="val-insddet-percpd"><span  data-toggle="tooltip" title="Percentage Paid">%PD</span></th>
+            <th class="val-insddet-lr"><span  data-toggle="tooltip" title="Loss Ratio">LR%</span></th>
         </tr>
     </thead>
     <tbody>
@@ -21,7 +21,7 @@
 				<tr>
 					<td class="val-insddet-polid"><a class="val-link" href="javascript:OpenWebPolicy('@System.Configuration.ConfigurationManager.AppSettings["WebPolicyURL"]@detail.PolID')">@detail.PolID</a></td>
 					<td class="val-insddet-year">@detail.AccountYear</td>
-					<td class="val-insddet-epi">@String.Format("{0:0,0}", detail.SyndicateEPI)</td>
+					<td class="val-insddet-epi">@String.Format("{0:0}", detail.SyndicateEPI)</td>
 					<td class="val-insddet-epi">@String.Format("{0:0}", detail.PrecentagePaid)</td>
 					<td class="val-insddet-lr">@String.Format("{0:0}", detail.LossRatio)</td>
 				</tr>
