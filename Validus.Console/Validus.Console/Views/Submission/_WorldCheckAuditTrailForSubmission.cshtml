@@ -1,0 +1,26 @@
+﻿@using System.Text.RegularExpressions
+@model System.Collections.Generic.List<Validus.Models.AuditTrail>
+
+<table class="val-worldcheck-auditTrails-datatable table table-condensed table-bordered table-hover datatable">
+    <caption>WorldCheck Audit</caption>
+    <thead style="display: none">
+        <tr>
+            <th class="val-worldcheck-Audit-description">Name</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @if ((Model != null) && (Model.Count > 0))
+        {
+            foreach (var audit in Model)
+            {
+                <tr>
+                    <td>  <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 350px"
+                               title ="@(audit.Description.Replace("World Check requested for insured name: ","")) - @if (audit.CreatedOn != null){@audit.CreatedOn.Value.ToString("dd MMM yyyy HH:mm")} - @(Regex.Replace(audit.CreatedBy,".*\\\\(.*)", "$1",RegexOptions.None))" >
+                              @audit.Description.Replace("World Check requested for insured name: ","") - @if (audit.CreatedOn != null){@audit.CreatedOn.Value.ToString("dd MMM yyyy HH:mm")} - @(Regex.Replace(audit.CreatedBy,".*\\\\(.*)", "$1",RegexOptions.None))
+                          </div></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

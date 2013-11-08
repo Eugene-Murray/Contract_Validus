@@ -1,0 +1,114 @@
+﻿@using Validus.Models
+@model Validus.Console.DTO.RiskPreviewDto
+
+<div class="val-padding">
+    <h5>
+        <span>Policy Ref <a class="val-link" href="javascript:OpenWebPolicy('@Model.WebPolicyURL')">@Model.PolicyId</a></span>
+    </h5>
+    <hr />
+    <div class="row-fluid">
+        <div class="span12">
+            <strong>@Html.DisplayNameFor(model => model.InsuredName)</strong>
+            <br />
+            <span class="insuredname">@Html.DisplayTextFor(model => model.InsuredName)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span12">
+            <strong>@Html.DisplayNameFor(model => model.Description)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Description)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.EntryStatus)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.EntryStatus)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.PolicyStatus)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.PolicyStatus)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.SubmissionStatus)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.SubmissionStatus)</span>
+        </div>
+        <div class="span3">
+            
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.BrokerGroupCode)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.BrokerGroupCode)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.PSU)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.PSU)</span>
+        </div>
+         <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.CD)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.CD)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.Contact)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Contact)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span6">
+            <strong>@Html.DisplayNameFor(model => model.UMR)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.UMR)</span>
+        </div>
+        <div class="span6">
+            <strong>@Html.DisplayNameFor(model => model.Underwriter)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Underwriter)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span12">
+            <strong>@Html.DisplayNameFor(model => model.SubscribeNotes)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.SubscribeNotes)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span12">
+            <strong>@Html.DisplayNameFor(model => model.ConsoleQuoteNotes)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.ConsoleQuoteNotes)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span12">
+                <strong>@Html.DisplayNameFor(model => model.DMSCount) : </strong>
+                <span>@Model.DMSCount (<a class="btn-link val-link" href="@System.Configuration.ConfigurationManager.AppSettings["UWDmsSearchURL"]@Model.PolicyId" target="_blank">Open DMS Search</a>)</span>
+            </div>
+        </div>
+    </div>
+    
+    <hr />
+    <div class="row-fluid">
+       <div class="span12 insureddetails">
+        @*    @Html.Action("_InsuredDetailsPreview", "Insured",new {insuredName = Model.InsuredName})*@
+        </div>
+    </div>
+
+    </div>

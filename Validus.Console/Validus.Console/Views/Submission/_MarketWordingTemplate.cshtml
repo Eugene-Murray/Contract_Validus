@@ -1,0 +1,189 @@
+﻿<div class="row-fluid">
+
+
+    <div class="row-fluid">
+    <div class="span5">
+
+        <table class="val-wordings-datatable table table-condensed table-bordered table-hover"
+            data-bind="dataTable: { rowClick: onClickMarketWordingItem, captionTemplate: 'tableAvailableMarketWordingsCaption', rowTemplate: 'tableAvailableMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'AvailableMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
+    columns:
+	[
+	    { 'name': 'WordingRefNumber' },
+	    { 'name': 'Title' }
+	]
+,
+    options:
+    { 'bSort': true,'sAjaxSource': '/Admin/GetMarketWordingsByPaging','bServerSide':true }
+}">
+            <caption>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="span2 pagination-centered">
+        <p>
+            <a href="#" title="Remove Market Wording From Submission" data-bind="click: click_RemoveMarketWordingFromSubmission , enable: enableRemoveMarketWordingFromSubmission" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></a>
+            <a href="#" title="Add Market Wording From Submission" data-bind="click: click_AddMarketWordingToSubmission, enable: enableAddMarketWordingToSubmission " class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></a>
+        </p>
+    </div>
+    <div class="span5">
+
+        <table class="table table-condensed table-bordered table-hover"
+               data-bind="dataTable: {
+dataSource: Model.SubmissionMarketWordingsList, rowClick: onClickSubmissionMarketWordingItem, rowTemplate: 'tableSubmissionMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'SubmissionMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
+    columns:
+	[
+	    { 'name': 'WordingRefNumber' },
+	    { 'name': 'Title' }
+	]
+,
+    options:
+    { 'bSort': false }
+}">
+            <caption>
+                <span>Selected Market Wordings</span>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+        </div>
+    
+    <div class="row-fluid">
+        <div class="span5">
+        </div>
+        <div class="span2">
+        </div>
+        <div class="span5 pagination-centered">
+            <a href="#" title="Move up" data-bind="click: onClick_selectedSubmissionMarketWordingMoveUp,enable:enableSelectedSubmissionMarketWordingMoveUp" class="btn btn-primary">Move up</a>
+            <a href="#" title="Move down" data-bind="click: onClick_selectedSubmissionMarketWordingMoveDown,enable:enableSelectedSubmissionMarketWordingMoveDown" class="btn btn-primary">Move down</a>
+        </div>
+    </div>
+    
+    <div class="row-fluid">
+        <div class="span12">
+            <hr />
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span5">
+            <p>
+                <span class="label label-info">Custom Market Wording</span>
+                <br />
+                <input type="text" data-bind='value: customMarketWordingRef' class="form-control input-small span12" placeholder="Enter Custom Code">
+                <textarea  data-bind='value: customMarketWording' class="form-control input-xlarge span12" rows="9" placeholder="Enter Custom Description" />
+            </p>
+        </div>
+        <div class="span2 pagination-centered">
+            <p>
+                <a href="#" title="Remove Custom Condition" data-bind="click: onClick_RemoveCustomMarketWordingToSubmission ,enable: enableRemoveCustomMarketWordingFromSubmission" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></a>
+                <a href="#" title="Add Custom Condition" data-bind="click: onClick_AddCustomMarketWordingToSubmission, enable: enableAddCustomMarketWordingToSubmission" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></a>
+            </p>
+        </div>
+        <div class="span5">
+            <table class="table table-condensed table-bordered table-hover"
+                   data-bind="dataTable: {
+dataSource: Model.CustomSubmissionMarketWordingsList, rowClick: onClick_CustomSubmissionMarketWordingItem, rowTemplate: 'tableCustomSubmissionMarketWordingsList', iDisplayLength: 4, sPaginationType: 'bootstrap', gridId: 'CustomSubmissionMarketWordingsListGrid', sDom: 't<\'row-fluid\'<\'span12 paginateRight\'ip>',
+    columns:
+	[
+	    { 'name': 'WordingRefNumber' },
+	    { 'name': 'Title' }
+	]
+,
+    options:
+    { 'bSort': false }
+}">
+                <caption>
+                    <span>Selected Market Wordings</span>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span5">
+        </div>
+        <div class="span2">
+        </div>
+        <div class="span5 pagination-centered">
+            <a href="#" title="Move up" data-bind="click: onClick_selectedCustomSubmissionMarketWordingMoveUp,enable:enableSelectedCustomSubmissionMarketWordingMoveUp " class="btn btn-primary">Move up</a>
+            <a href="#" title="Move down" data-bind="click: onClick_selectedCustomSubmissionMarketWordingMoveDown,enable:enableSelectedCustomSubmissionMarketWordingMoveDown" class="btn btn-primary">Move down</a>
+        </div>
+    </div>
+    
+    <div class="row-fluid">
+         <div class="span12">
+            <br />
+        </div>
+    </div>
+    <script id="tableAvailableMarketWordingsCaption" type="text/html">
+        <caption >
+            <span>Available Market Wordings</span>
+                  <div class="val-refresh"> <input type="text" data-bind="value: searchText" /> <span>&nbsp;</span><a href="#" title="Search"class="icon-search icon-white" data-bind="    event: { click : refreshTable}"/> </div>
+        </caption>
+    </script>
+    
+    <script id="tableAvailableMarketWordingsList" type="text/html">
+        <td>
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 150px"
+                data-bind="attr: { title: WordingRefNumber }, text: WordingRefNumber ">
+            </div>
+        </td>
+        <td>
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 250px"
+                data-bind="attr: { title: Title }, text: Title ">
+            </div>
+        </td>
+    </script>
+    
+    <script id="tableSubmissionMarketWordingsList" type="text/html">
+        <td >
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 150px"
+                 data-bind="attr: { title: WordingRefNumber }, text: WordingRefNumber ">
+            </div>
+        </td>
+        <td>
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 250px"
+                data-bind="attr: { title: Title }, text: Title ">
+            </div>
+        </td>
+    </script>
+
+    <script id="tableCustomSubmissionMarketWordingsList" type="text/html">
+        <td>
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 150px"
+                 data-bind="attr: { title: WordingRefNumber }, text: WordingRefNumber ">
+            </div>
+            </td>
+        <td>
+            <div style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; height: 21px; width: 250px"
+                data-bind="attr: { title: Title }, text: Title ">
+            </div>
+        </td>
+    </script>
+
+</div>
+

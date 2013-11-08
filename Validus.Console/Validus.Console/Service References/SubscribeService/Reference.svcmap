@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="62214147-a5f1-4587-a5ff-b125d63504b6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>true</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="f42d683b-aa03-4362-ba90-aded713d9e4e" SourceId="1" SourceUrl="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="995b8c7a-396d-4889-8438-83727294d2fe" SourceId="1" SourceUrl="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="157e66e8-3e02-4a8e-92ba-a061b08d5e4a" SourceId="1" SourceUrl="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" />
+    <MetadataFile FileName="Subscribe.Service.DataContract.xsd" MetadataType="Schema" ID="cfe56070-c58f-4317-a79c-45986b4d49b5" SourceId="1" SourceUrl="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" />
+    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="9a6e177e-be09-4f56-94c6-e380d8699f30" SourceId="1" SourceUrl="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" />
+    <MetadataFile FileName="Subcribe.Services.BusinessLogic.xsd" MetadataType="Schema" ID="4e5bc047-c9b8-475c-a1e0-6eaf05f77259" SourceId="1" SourceUrl="net.tcp://uksp10appdev01.talbotdev.com:6868/SubscribeServices/PolicyService.svc/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

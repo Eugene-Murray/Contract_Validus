@@ -1,0 +1,55 @@
+﻿@model Validus.Console.DTO.SearchResultSubscribeDto
+<div class="val-display-risk-preview" data-target="/Policy/_RiskPreview?polId=@Model.PolicyId">    
+    <a href="@System.Configuration.ConfigurationManager.AppSettings["WebPolicyURL"]@Model.PolicyId" target="_blank" title="@Model.PolicyId">@Model.PolicyId (Subscribe) </a>
+    <span class="text-info">@Model.Description</span><span> @(@Model.InceptionDate.HasValue ? @Model.InceptionDate.Value.ToShortDateString() : "")@(@Model.ExpiryDate.HasValue ? " - " + @Model.ExpiryDate.Value.ToShortDateString() : "")</span>
+    <div>@Model.InsuredName</div>
+    <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+        <tbody>
+            <tr style="color: #FFFFFF; font-size: 8pt; text-align: left; font-family: Tahoma">
+@*                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Description</td>
+                <td />*@
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Ent St</td>
+                <td />
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Status</td>
+                <td />
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Uwr</td>
+                <td />
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Ldr</td>
+                <td />
+@*                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Description</td>
+                <td />
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Ent St</td>
+                <td />*@
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Broker</td>
+                <td />
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Limit</td>
+                <td />
+                <td style="border-width: 0; color: #444444; font-weight: bold; padding: 0px 4px;">Excess</td>
+                <td />
+            </tr>
+            <tr style="color: #FFFFFF; font-size: 8pt; text-align: left; font-family: Tahoma">
+@*                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px; border-left: 1px solid #73AEE6;">@Model.Description</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />*@
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.EntryStatus</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Status</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Underwriter</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Leader</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px;" />
+@*                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Limit</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.Excess</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />*@
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@Model.BrokerName</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@(@Model.Limit.HasValue ? @Model.Limit.Value.ToString("N0") : "")</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px" />
+                <td style="border-bottom: 1px solid #73AEE6; color: #000000; font-weight: normal; padding: 0px 4px;">@(@Model.Excess.HasValue ? @Model.Excess.Value.ToString("N0") : "")</td>
+                <td style="border-bottom: 1px solid #73AEE6; font-size: 1pt; padding: 0px 4px; width: 8px;" />
+            </tr>
+        </tbody>
+    </table>
+
+</div>

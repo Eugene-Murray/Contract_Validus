@@ -1,0 +1,592 @@
+﻿refi
+/* All sections
+----------------------------------------------------------*/
+.val-input-clear
+{
+	
+}
+
+/* Header section
+----------------------------------------------------------*/
+
+/* Body section
+----------------------------------------------------------*/
+#val-body
+{
+    font-size: 0.8em
+}
+.tabbable .val-home-tabs li
+{
+    width: 120px;
+    white-space: nowrap;
+}
+    .tabbable .val-home-tabs li .close
+    {
+        margin-top: -5px;
+        margin-right: -8px;
+    }
+    .tabbable .val-home-tabs li span
+    {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        /* TODO: -moz-binding: url('/assets/xml/ellipsis.xml#ellipsis'); */
+    }
+.val-caption
+{
+    background-color: #6391B5;
+    color: #FFF;
+    padding: 1px 4px;
+    font-weight: bold;
+    text-align: left;
+    border: 1px solid #dddddd;
+    -webkit-border-top-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+}
+.val-search-results,
+.val-preview-pane
+{
+    border: 1px solid #dddddd;
+    border-top: 0;
+    -webkit-border-bottom-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    -moz-border-radius-bottomright: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.val-xslt-spacer
+{
+    padding-bottom: 5px
+}
+.val-insured-details
+{
+    border: 1px solid #dddddd;
+    border-top: 0;
+    -webkit-border-bottom-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    -moz-border-radius-bottomright: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.val-loading
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+}
+.val-loading.val-loading-14x14
+{
+    width: 14px;
+    height: 14px;
+}
+.val-loading.val-loading-20x20
+{
+    width: 20px;
+    height: 20px;
+}
+.val-loading.val-loading-100x100
+{
+    width: 100px;
+    height: 100px;
+}
+i.val-loading-icon
+{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    margin-top: 0 \0/; /* IE <= 9 */
+    *margin-right: .3em;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url("/content/images/loading-14x14.gif");
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+}
+input.val-loading-icon
+{
+    background-image: url("/content/images/loading-14x14.gif");
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+	background-position: 99% 50%;
+}
+.val-currency
+{
+    text-align: right
+}
+.val-search form.val-advanced-quicksearch
+{
+	margin: 0;
+	width: 300px;
+}
+.val-search .popover
+{
+	width: auto;
+}
+.val-search .val-searchlabel
+{
+	display: none;
+}
+.val-search.val-advanced-search .val-searchlabel
+{
+	display: inline;
+}
+.val-search.val-advanced-search .control-label
+{
+	width: 300px;
+}
+.val-advanced-quicksearch .controls.controls-row
+{
+	margin-top: 3px;
+}
+.val-advanced-quicksearch a.btn,
+.val-advanced-quicksearch a.btn:active,
+.val-advanced-quicksearch a.btn:hover,
+.val-advanced-quicksearch a.btn:visited,
+.val-advanced-quicksearch a.btn:first-child,
+.val-advanced-quicksearch a.btn:last-child
+{
+	/* TODO: Remove the important attributes */
+	background: none !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	-webkit-border-radius: 0 !important;
+}
+
+/* Tables */
+caption div.btn-group,.val-caption div.btn-group
+{
+    color: black;
+    font-weight:normal;
+    cursor: pointer;
+}
+
+/* Search related */
+.val-workflowtasks-datatable i, 
+.val-renewals-datatable i, .val-renewals-datatable input[type=checkbox], 
+.val-recentquotes-datatable i, .val-recentquotes-datatable input[type=checkbox],
+.val-essearchresults i.icon-refresh,.val-essearchresults i.icon-resize-small,.val-essearchresults i.icon-resize-full, .val-essearchresults input[type=checkbox]
+{
+    margin: 5px 3px 0px 3px !important;
+    cursor: pointer;
+}
+.val-essearchresults .val-caption
+{
+    height: 24px;
+}
+
+.refinerSection ul
+{
+    min-height: 120px;
+    height:    120px;
+    overflow: hidden;
+}
+.refinerSection ul:hover
+{    
+    min-height: 120px;
+    height:    120px;
+    overflow-y: scroll;
+}
+#searchArea
+{
+    border-radius:4px;
+    /*background-color: rgb(217, 217, 217);*/
+    margin-bottom:10px;
+}
+#searchArea form
+{
+    margin-bottom: 5px;
+}
+#mainSearchFilter span12
+{
+    padding-bottom: 5px;
+}
+#advancedFilters div.advFiltersContainer
+{
+    margin: 10px 0px 0px 10px;
+}
+.val-search.input-append
+{
+    margin: 10px 0px 0px 10px;
+}
+#wfActivityFilter
+{
+    height: 24px;
+}
+
+.val-advanced-quicksearch.form-horizontal .control-group
+{
+	margin-left: 0;
+	margin-bottom: 5px;
+}
+.val-advanced-quicksearch.form-horizontal .controls
+{
+	margin: 0;
+}
+.val-advanced-quicksearch.form-horizontal .control-label
+{
+	text-align: left;
+}
+.val-processing,
+.val-searching
+{
+    float: right;
+    margin: 0;
+    font-style: italic;
+}
+.val-minimize,
+.val-maximize,
+.val-refresh
+{
+    float: right;
+    margin: 0;
+    cursor: pointer;
+}
+.val-insddet-padding
+{
+    padding: 0px 2px 0px 2px
+}
+.val-padding
+{
+    padding: 5px
+}
+.val-optioncomparison-datatable
+{
+    cursor: default
+}
+    .val-optioncomparison-datatable th
+    {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+    }
+
+/* Footer section
+----------------------------------------------------------*/
+.val-search-results
+{
+    border: 1px solid #dddddd;
+    border-collapse: separate;
+    *border-collapse: collapse;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.val-worklist-startdate,
+.val-worklist-policyid,
+.val-renewal-policyid,
+.val-insddet-polid
+{
+    width: 100px
+}
+.val-renewal-expydt,
+.val-renewal-incpdt
+{
+    min-width: 90px
+}
+.val-insddet-polid-border
+{
+    border-left: 0px solid #dddddd
+}
+.val-insddet-lr-border
+{
+    border-right: 0px solid #dddddd
+}
+.val-worklist-uwr,
+.val-worklist-bpc,
+.val-worklist-status,
+.val-worklist-office,
+.val-renewal-uwr,
+.val-renewal-cob,
+.val-renewal-leader,
+.val-renewal-office
+{
+    width: 50px
+}
+.val-renewal-list-uwr
+{
+    width: 40px
+}
+.val-insddet-year
+{
+    width: 40px
+}
+.table td.val-insddet-lr
+{
+    text-align: right;
+    width: 40px;
+}
+.table td.val-insddet-epi
+{
+    text-align: right;
+    width: 50px;
+}
+.table td.val-insddet-percpd
+{
+    text-align: right;
+    width: 50px;
+}
+.table td.val_submission_quoted_premium
+{
+    text-align: right;
+    width: 50px;
+}
+.table th.val-cross-selling-title
+{
+    text-align: left;
+    width: 270px;
+}
+.table td.val-cross-selling-title
+{
+    text-align: left;
+    width: 270px;
+}
+.table td.val-worldcheck-match-name
+{
+    text-align: left;
+    width: 270px;
+}
+.table td.val-worldcheck-match-firstname
+{
+    text-align: left;
+    width: 270px;
+}
+.table td.val-worldcheck-match-country
+{
+    text-align: left;
+}
+.table td.val-worldcheck-match-category
+{
+    text-align: left;
+}
+.table td.val-worldcheck-match-sanction
+{
+    text-align: right;
+    width: 10px;
+}
+.table td.val-worldcheck-match-log
+{
+    text-align: right;
+    width: 10px;
+}
+.val-worklist-viewflow
+{
+    width: 40px
+}
+.val-worklist-activity
+{
+    width: 150px
+}
+.btn.btn-small.val-open-webpolicy
+{
+    background-image: url("/content/images/subscribe.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    padding-left: 24px;
+}
+.btn.btn-small.val-open-task
+{
+    background-image: url("/content/images/viewitem.gif");
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-position-x: 2px;
+    padding-left: 20px;
+}
+.btn.btn-small.val-open-viewflow
+{
+    background-image: url("/content/images/k2icon.gif");
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    padding-left: 24px;
+}
+.val-add-renewal-tab,
+.val-add-workflowtasks-tab,
+.val-add-submissions-detailed-tab
+{
+    cursor: pointer
+}
+
+.search-found 
+{
+     background-color: #DBD59C;
+}
+
+/*  Added by FB to stop tables becoming too tall, need non-absolute width alternative? */
+.val-worldcheck-detail-alias-datatable td > div,
+.val-worldcheck-detail-spelling-datatable td > div,
+.val-worldcheck-detail-locations-datatable td > div,
+.val-worldcheck-detail-companies-datatable td > div,
+.val-worldcheck-detail-infosource-datatable td > div,
+.val-worldcheck-detail-linkedto-datatable td > div
+{
+    height: 21px;
+    width: 240px;
+    overflow: hidden;
+}
+.val-workflowtasks-datatable th > div,
+.val-workflowtasks-datatable td > div
+{
+    height: 21px;
+    overflow: hidden;
+}
+.val-renewals-datatable td > div,
+.val-renewals-detailed-datatable td > div
+{
+    height: 21px;
+    width: 180px;
+    overflow: hidden;
+}
+.val-recentquotes-datatable td > div
+{
+    height: 21px;
+    width: 100px;
+    overflow: hidden;
+}
+.val-worldcheck-match-name td > div
+{
+    height: 21px;
+    width: 280px;
+    overflow: hidden;
+}
+.val-renewals-datatable caption input[type=text]
+{
+    width: 20px;
+    height: 14px;
+    padding: 0px 1px 6px 1px;
+    border: 0px 0px 0px 0px;
+    text-align: center;
+}
+.val-wordings-datatable caption div input
+{
+    width: 200px;
+    height: 14px;
+    padding: 0px 1px 6px 1px;
+    border: 0px 0px 0px 0px;
+}
+/* DEBUG
+
+.span1, .span2, .span3, .span4,
+.span5, .span6, .span7, .span8,
+.span9, .span10, .span11, .span12
+{
+    border: 1px solid black !important;
+}
+
+*/
+#BrokerLossRatioGraph_ModalAlert
+{
+    width: 850px; /* SET THE WIDTH OF THE MODAL */
+    /*margin: -250px 0 0 -280px; */ /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+}
+.table-hover tbody tr:hover > td,
+.table-hover tbody tr:hover > th
+{
+    cursor: pointer
+}
+.table-hover tbody tr.ui-selected td,
+.table-hover tbody tr.ui-selected:hover td
+{
+    background-color: #B8CEC4 !important
+}
+.nav-tabs > li .close
+{
+    margin: -2px 0 0 10px;
+    font-size: 18px;
+}
+.val-preview-pane-container > div
+{
+    border-color: #CC6600
+}
+.val-preview-pane-container .val-caption
+{
+    background-color: #CC6600
+}
+.val-preview-pane-container caption
+{
+    background-color: #d9d9d9;
+    color: #1b232a;
+}
+.val-link
+{
+    color: #0089d1
+}
+.val-worldcheck-header
+{
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 12px;
+    vertical-align: middle;
+    padding-top: 5px;
+}
+.val-log-worldcheck
+{
+    border-bottom: 1px solid rgb(204, 102, 0);
+    border-top: 1px solid rgb(204, 102, 0);
+    border-left: 1px solid rgb(204, 102, 0);
+}
+.val-worldcheck-detail-lists-value
+{
+    color: red
+}
+c0
+{
+    font-weight: bold
+}
+.val-search-row:hover
+{
+    background-color: #f5f5f5
+}
+.val-display-broker-preview,
+.val-display-insured-preview
+{
+    cursor: pointer
+}
+.val-search-selected-row
+{
+    background-color: #B8CEC4
+}
+
+.val-refine-pane-container > div {
+    border-color: #CC6600;
+}
+
+#refinerPane {
+    padding-top: 5px;
+}
+
+.val-refine-pane-container .val-caption {
+    background-color: #FFFFFF;
+    border-top: 1px solid #CC6600;
+    border-left: 1px solid #CC6600;
+    border-right: 1px solid #CC6600;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #000000;
+    font-weight: bold;
+    padding: 1px 4px;
+    text-align: left;
+}
+.val-refine-pane {    
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-left: 1px solid #DDDDDD;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}

@@ -1,0 +1,24 @@
+﻿@model Validus.Models.User
+@{
+    ViewBag.Title = "PersonalSettings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="divPersonalSetttings">
+    
+    @Html.Partial("_ManageUsers")
+
+</div>
+
+@section scripts {
+  <script>
+
+      $(document).ready(function () {
+          ConsoleApp.vmManageUsers.Initialize({ pageMode: 'EDIT_FROM_PERSONALSETTINGS', selectedUser: null });
+          ko.applyBindings(ConsoleApp.vmManageUsers, document.getElementById("divPersonalSetttings"));
+
+          ConsoleApp.GetUserTeamLinksHelper();
+
+      });
+    </script>
+}

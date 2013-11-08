@@ -1,0 +1,56 @@
+﻿@model  Validus.Console.DTO.CreateBrokerContactDto
+<form class="form" action="#" id="formCreateBrokerContact" >
+<div class="popover_content_wrapper">
+    <div class="row-fluid">
+        <div class="span12">
+            <label class="control-label">
+                @Html.DisplayNameFor(model => model.NewBrokerContactName)
+                <abbr title="New Broker Contact is required">*</abbr>
+            </label>
+            @Html.TextBoxFor(model => model.NewBrokerContactName, new Dictionary<string, object> 
+                { 
+                    { "id", ""},
+                    { "class", "span12 new-broker-contact-name" },
+                    { "data-bind", "value: Model.NewBrokerContactName" }
+                })
+            @Html.ValidationMessageFor(model => model.NewBrokerContactName, null, new { @class = "help-block" })
+        </div>
+    </div>  
+
+    <div class="row-fluid">   
+        <div class="span12">
+            <label class="control-label">
+                @Html.DisplayNameFor(model => model.NewBrokerContactEmail)
+                <abbr title="Email is required">*</abbr>
+            </label>
+            @Html.TextBoxFor(model => model.NewBrokerContactEmail, new Dictionary<string, object> 
+                { 
+                    { "id", ""},
+                    { "class", "span12 new-broker-contact-email" },
+                    { "data-bind", "value: Model.NewBrokerContactName, validate: IsInitialised" }
+                })
+            @Html.ValidationMessageFor(model => model.NewBrokerContactEmail, null, new { @class = "help-block" })
+        </div>
+    </div>  
+    <div class="row-fluid">
+        <div class="span12">
+            <label class="control-label">
+                @Html.DisplayNameFor(model => model.NewBrokerContactPhoneNumber)
+                <abbr title="Phone Number is required">*</abbr>
+            </label>
+            @Html.TextBoxFor(model => model.NewBrokerContactPhoneNumber, new Dictionary<string, object> 
+                { 
+                    { "id", ""},
+                    { "class", "span12 new-broker-contact-phonenumber" },
+                    { "data-bind", "value: Model.NewBrokerContactPhoneNumber, validate: IsInitialised" }
+                })
+            @Html.ValidationMessageFor(model => model.NewBrokerContactPhoneNumber, null, new { @class = "help-block" })
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <a href="#" title="Use New Broker Contact" class="btn btn-primary createBrokerContact" ><i class="icon-pencil icon-white"></i>Use New Contact</a>
+        </div>
+    </div>
+</div>
+</form>

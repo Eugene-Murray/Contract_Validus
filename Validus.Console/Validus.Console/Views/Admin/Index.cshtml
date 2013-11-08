@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Console Administration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="outerContainer">
+
+    <div class="navbar">
+        <div class="navbar-inner">
+
+            <ul class="nav" data-bind="foreach: views">
+
+                <li data-bind="css: { active: $data.active }"><a href="#" data-bind="    text: $data.title, click: $root.selectedView"></a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div data-bind="with: selectedView">
+        <div data-bind="template: { name: templateName, data: data }"></div>
+    </div>
+
+    <div id="divPartialContainerTeams" class="container-fluid">
+        <script type="text/html" id="ManageTeams.Template">
+            @Html.Partial("_ManageTeams")
+        </script>
+    </div>
+
+
+    <div id="divPartialContainerUsers" class="container-fluid">
+        <script type="text/html" id="ManageUsers.Template">
+            @Html.Partial("_ManageUsers")
+        </script>
+    </div>
+
+    <div id="divPartialContainerLinks" class="container-fluid">
+        <script type="text/html" id="ManageLinks.Template">
+            @Html.Partial("_ManageLinks")
+        </script>
+    </div>
+
+    <div id="divPartialContainerQuoteTemplates" class="container-fluid">
+        <script type="text/html" id="ManageQuoteTemplates.Template">
+            @Html.Partial("_ManageQuoteTemplates")
+        </script>
+    </div>
+
+    <div id="divPartialContainerAccelerators" class="container-fluid">
+        <script type="text/html" id="ManageAccelerators.Template">
+            @Html.Partial("_ManageAccelerators")
+        </script>
+    </div>
+    
+     <div id="divPartialContainerMarketWordings" class="container-fluid">
+        <script type="text/html" id="ManageMarketWordings.Template">
+            @Html.Partial("_ManageMarketWordings")
+        </script>
+    </div>
+    
+    <div id="divPartialContainerTermsNConditionWordings" class="container-fluid">
+        <script type="text/html" id="ManageTermsNConditionWordings.Template">
+            @Html.Partial("_ManageTermsNConditionWordings")
+        </script>
+    </div>
+    
+    <div id="divPartialContainerSubjectToClauseWordings" class="container-fluid">
+        <script type="text/html" id="ManageSubjectToClauseWordings.Template">
+            @Html.Partial("_ManageSubjectToClauseWordings")
+        </script>
+    </div>
+     <div id="divPartialContainerUnderwriterSignature" class="container-fluid">
+        <script type="text/html" id="ManageUnderwriterSignature.Template">
+            @Html.Partial("_ManangeUnderwriterSignature")
+        </script>
+    </div>
+</div>
+@section scripts {
+
+    <script>
+
+        $(document).ready(function () {
+            ConsoleApp.vmManageTeams.Initialize();
+            ConsoleApp.vmManageUsers.Initialize();
+            ConsoleApp.vmManageLinks.Initialize();
+            ConsoleApp.vmManageQuoteTemplates.Initialize();
+            ConsoleApp.vmManageAccelerators.Initialize();
+            ConsoleApp.vmManageMarketWordings.Initialize();
+            ConsoleApp.vmManageTermsNConditionWordings.Initialize();
+            ConsoleApp.vmManageSubjectToClauseWordings.Initialize();
+            ConsoleApp.vmManageUnderwriterSignature.Initialize();
+            ko.applyBindings(ConsoleApp.vmAdminIndex(), document.getElementById("outerContainer"));
+
+            ConsoleApp.GetUserTeamLinksHelper();
+        });
+
+    </script>
+
+}

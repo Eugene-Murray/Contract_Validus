@@ -1,0 +1,83 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Validus.Console.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DomainPrefix" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">talbotdev</Value>
+    </Setting>
+    <Setting Name="SubscribeSQL" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=ukroomdev01;Initial Catalog=Subscribe;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=ukroomdev01;Initial Catalog=Subscribe;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="ServicesHostUrl" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://uksp10webdev01:6262/</Value>
+    </Setting>
+    <Setting Name="WorkflowServerConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Integrated=True;IsPrimaryLogin=True;Authenticate=True;EncryptedPassword=False;Host=UKWFK2DEV02;Port=5252</Value>
+    </Setting>
+    <Setting Name="Validus_Console_SPQueryService_QueryService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://spintranet.talbotdev.com/_vti_bin/search.asmx</Value>
+    </Setting>
+    <Setting Name="WorkflowServerManagementConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Integrated=True;IsPrimaryLogin=True;Authenticate=True;EncryptedPassword=False;Host=UKWFK2DEV02;Port=5555</Value>
+    </Setting>
+    <Setting Name="Validus_Console_DocumentManagementService_DMSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://services.talbotdev.com/FileNetService/DMSService.asmx</Value>
+    </Setting>
+    <Setting Name="Validus_Console_ReportingService_ReportExecutionService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ukbirsdev01:80/ReportServer/ReportExecution2005.asmx</Value>
+    </Setting>
+    <Setting Name="Validus_Console_WorldCheckService_WorldCheckService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://services.talbotdev.com/WorldCheck/WorldCheckService.asmx</Value>
+    </Setting>
+    <Setting Name="Validus_Console_SubscribeSoapService_Subscribe" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://services.talbotdev.com/Subscribe.asmx</Value>
+    </Setting>
+    <Setting Name="SP2013RestUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://intranet.globaldev.local/sites/searchcenter/_api/search/query?querytext='{0}'&amp;selectproperties='{1}'</Value>
+    </Setting>
+    <Setting Name="SP2013SearchUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://intranet.globaldev.local/sites/searchcenter</Value>
+    </Setting>
+    <Setting Name="SP2013Properties" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">VALBkrCtc,VALBkrCd,VALBpr,VALCcy,VALLdr,VALDescription,VALDol,VALInsdNm,VALLoccLocn,VALPolID,VALSt,VALUwrPsu,VALReserve,VALPaid,HITHIGHLIGHTEDSUMMARY,VALBkrGrpCd,VALBkrNm,VALBkrPsu,VALBkrSeqId,VALAcctgYr,VALCob,VALDivision,VALEntSt,VALIncpDt,VALOrigOff,VALSt,VALContentType,VALInsdId,VALLastYear,VALFirstYear,VALNoOfRisks,VALNoOfLiveRisks,VALNoOfOtherRisks,VALFirstLiveYear,VALLastLiveYear,VALBkrNm,VALLmtAmt,VALExsAmt,VALExpydt</Value>
+    </Setting>
+    <Setting Name="SP2013ContentSourceName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contentsource</Value>
+    </Setting>
+    <Setting Name="SearchRefinersList" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">COB,BkrPsu,UwrPsu</Value>
+    </Setting>
+    <Setting Name="ActivityNameFilterOptions" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;Binder Missing Docs&lt;/string&gt;
+  &lt;string&gt;Capita&lt;/string&gt;
+  &lt;string&gt;Data Entry&lt;/string&gt;
+  &lt;string&gt;Data Entry QC&lt;/string&gt;
+  &lt;string&gt;Data Entry Mumbai&lt;/string&gt;
+  &lt;string&gt;Input Validation&lt;/string&gt;
+  &lt;string&gt;Peer Review&lt;/string&gt;
+  &lt;string&gt;Pre-Bind CC&lt;/string&gt;
+  &lt;string&gt;Post-Bind CC&lt;/string&gt;
+  &lt;string&gt;Post-Bind CC Fail&lt;/string&gt;
+  &lt;string&gt;Post-Bind CC Resubmission&lt;/string&gt;
+  &lt;string&gt;Post-Bind Resubmission CC&lt;/string&gt;
+  &lt;string&gt;Queries&lt;/string&gt;
+  &lt;string&gt;Treaty Data Entry&lt;/string&gt;
+  &lt;string&gt;URO Review&lt;/string&gt;
+  &lt;string&gt;UTS Data Entry&lt;/string&gt;
+  &lt;string&gt;UW Review&lt;/string&gt;
+  &lt;string&gt;Wordings External&lt;/string&gt;
+  &lt;string&gt;Wordings Internal&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="SP2013ContentSources" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Risks#PolicyDetails,Insureds#SubscribeInsured,Brokers#SubscribeBroker,Claims#Claims</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://talbotuw.com/webservices" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://talbotuw.com/webservices" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://talbotuw.com/webservices">
+      <s:element name="GetWorkflowHistory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorkflowHistoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorkflowHistoryResult" type="tns:ArrayOfWorkflowHistory" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfWorkflowHistory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="WorkflowHistory" nillable="true" type="tns:WorkflowHistory" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="WorkflowHistory">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="RiskId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Underwriter" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OverSeasOfficeCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProcessInstanceId" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProcessStartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProcessFinishDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProcessStatus" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityInstanceId" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityInstanceStartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityInstanceFinishDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityInstanceStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityInstanceDestinationStartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityInstanceDestinationFinishDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comment" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPolicyResult" type="tns:Policy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Policy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitPsu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsdNm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PolTy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntSt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="St" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Uwr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ldr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Boc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Broker" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BrokerContact" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AcctgYr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AggXSBasis" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AggXSCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExsBoa" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExsCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LmtBoa" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LmtCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PmCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Ccy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OurShareCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OurLmtCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GnEpiCcy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsdDmcl" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GeoCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderWhole" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RnstDesc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RenewalRate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CnclDys" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RnstNo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rnst1" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rnst2" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AttLen" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Dor" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Mor" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PmAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="GnEpiAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OurLmtAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="LmtAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExsAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Bkrage" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="WtnLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="WtnOrdPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="CalcLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SgndLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SgndOrdPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AdjRate" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rol" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OurShareEpi" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OtherDiscounts" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rnst1pctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rnst2pctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="EstSgn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncpDt" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpyDt" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="WtnDt" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="SettDueDt" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="CnclDt" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAnlyCodes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAnlyCodesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAnlyCodesResult" type="tns:ArrayOfAnlyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnlyCode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AnlyCode" nillable="true" type="tns:AnlyCode" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AnlyCode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPremium">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPremiumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPremiumResult" type="tns:ArrayOfPremium" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPremium">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Premium" nillable="true" type="tns:Premium" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Premium">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DueDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="OCC" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MktPrm" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Scc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OurSharePremium" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OurShareSCC" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDeductions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDeductionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDeductionsResult" type="tns:ArrayOfDeduction" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDeduction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Deduction" nillable="true" type="tns:Deduction" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Deduction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DedType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DedAmt" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="CalcUse" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GrNet" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActualDedAmt" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Period" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetClaims">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClaimsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClaimsResult" type="tns:ArrayOfClaim" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfClaim">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Claim" nillable="true" type="tns:Claim" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Claim">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BPR" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccYr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BkrCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RskCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Scc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Ptd" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OS" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="DolFr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DolTo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MRN" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Insd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BprRef" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SynPTDAdjd" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SynOSAdjd" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetHistory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetHistoryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetHistoryResult" type="tns:ArrayOfHistory" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfHistory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="History" nillable="true" type="tns:History" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="History">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Reference" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LmtCcy" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LmtAmt" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExsCcy" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExsAmt" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="PmCcy" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PmAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="WtnLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SgndLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="WtnOrgPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="CalcLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Bkrage" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetStatistics">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStatisticsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStatisticsResult" type="tns:ArrayOfStatistic" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfStatistic">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Statistic" nillable="true" type="tns:Statistic" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Statistic">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Reference" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Inception" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Epi" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EstPremium" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActPremium" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="PdClaims" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OsClaims" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncClaims" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrPdSettPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrIncSettPctg" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetReInsurance">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReInsuranceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReInsuranceResult" type="tns:ArrayOfReInsurance" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfReInsurance">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ReInsurance" nillable="true" type="tns:ReInsurance" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ReInsurance">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RiRef" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CededPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="TtyPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetCededPctg" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="PctgOfWhole" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LmtCCY" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LmtAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OrderPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiCalc" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="CvrnoteNo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetNotes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNotesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetNotesResult" type="tns:ArrayOfNote" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfNote">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Note" nillable="true" type="tns:Note" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Note">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastModified" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRevisions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRevisionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRevisionsResult" type="tns:ArrayOfRevision" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRevision">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Revision" nillable="true" type="tns:Revision" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Revision">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Date" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAggregates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAggregatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAggregatesResult" type="tns:ArrayOfAggregate" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAggregate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Aggregate" nillable="true" type="tns:Aggregate" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Aggregate">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Peril" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Domicile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GeoCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GeoLevel" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="InceptionDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpiryDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExposureCCY" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Exposure" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="PML" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="COB" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetGroupedPolicies">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGroupedPoliciesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGroupedPoliciesResult" type="tns:ArrayOfGroupPolicy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfGroupPolicy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GroupPolicy" nillable="true" type="tns:GroupPolicy" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GroupPolicy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ClashAmt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OtherPolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Insured" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InceptionDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CCY" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Limit" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="SCC" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OurExposure" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRenewalInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRenewalInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRenewalInformationResult" type="tns:RenewalInformation" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RenewalInformation">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="HasPrevRenewal" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Prev" type="tns:OldRenewal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Current" type="tns:CurrentRenewal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OldRenewal">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Rate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Discount" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Deductibles" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Limits" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Exposure" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Expenses" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Inflation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RateIndex" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BreakEvenIndex" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Total" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CurrentRenewal">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Rate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Deductibles" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Exposure" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BaseRenewalRate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FullRenewalRate" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVessels">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVesselsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVesselsResult" type="tns:ArrayOfVessel" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVessel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Vessel" nillable="true" type="tns:Vessel" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Vessel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DdWtTge" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="FmaDdWt" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrTge" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetTge" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NoProp" type="s:unsignedByte" />
+          <s:element minOccurs="1" maxOccurs="1" name="CvgeAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Itr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Ddbl" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amd" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Arr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tlr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Pm" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Pr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Speed" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="GrtPrm" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="VslTyCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Yrbld" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Conditions" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SurveyDt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AcqYr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PiClub" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CtryBld" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Propulsion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BowThrr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HullTy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IncpDt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpDt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FlagCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClaCdLLP1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrShNm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Uvn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CcyPsu" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUSMs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUSMsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUSMsResult" type="tns:ArrayOfUSM" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfUSM">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="USM" nillable="true" type="tns:USM" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="USM">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="LpsoNm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LpsoDt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mrn" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TrnTy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Desc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccYr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccPrd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RiskCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BkrPsu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BkrCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SCC" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusCgyTy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusCgy" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SgndLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SgndOrd" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ROE" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMonitors">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMonitorsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMonitorsResult" type="tns:ArrayOfMonitor" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMonitor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Monitor" nillable="true" type="tns:Monitor" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Monitor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BinderType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="QuestionNo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Limit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Created" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetConstruction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetConstructionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetConstructionResult" type="tns:Construction" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Construction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitPsu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CCY" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PMLEvtCd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OthNt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OccuDtlsNt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocNt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PMLEvtDsc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PDAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="TPLAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DSUAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="PDPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="TPLPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DSUPctg" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="CalcLn" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaintPrd" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LatDegrees" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LatMins" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LatSecs" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="LongDegrees" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LongMins" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LongSecs" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="PDOSPMLAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="TPLOSPMLAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="DSUOSPMLAmt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalAmtOs" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetWorkflows">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorkflowsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorkflowsResult" type="tns:ArrayOfIBMWorkflow" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfIBMWorkflow">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="IBMWorkflow" nillable="true" type="tns:IBMWorkflow" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="IBMWorkflow">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Thread" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CommentDtTmStp" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetWorkflowDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorkflowDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWorkflowDetailsResult" type="tns:ArrayOfIBMWorkflowDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfIBMWorkflowDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="IBMWorkflowDetails" nillable="true" type="tns:IBMWorkflowDetails" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="IBMWorkflowDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldEntSt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldSt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewEntSt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewSt" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LogDtTmStp" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetLimits">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLimitsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLimitsResult" type="tns:ArrayOfLimit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLimit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Limit" nillable="true" type="tns:Limit" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Limit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitPsu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LmtTy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CCY" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="OS" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nt" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ROE" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetInsureds">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInsuredsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInsuredsResult" type="tns:ArrayOfInsured" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInsured">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Insured" nillable="true" type="tns:Insured" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Insured">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitPsu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsdNm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsdAKA" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsdTy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InsdSeg" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InstPnt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InsdId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetWorkflowHistorySoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorkflowHistory" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowHistorySoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorkflowHistoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicySoapIn">
+    <wsdl:part name="parameters" element="tns:GetPolicy" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicySoapOut">
+    <wsdl:part name="parameters" element="tns:GetPolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAnlyCodesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAnlyCodes" />
+  </wsdl:message>
+  <wsdl:message name="GetAnlyCodesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAnlyCodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPremiumSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPremium" />
+  </wsdl:message>
+  <wsdl:message name="GetPremiumSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPremiumResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDeductionsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDeductions" />
+  </wsdl:message>
+  <wsdl:message name="GetDeductionsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDeductionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClaimsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClaims" />
+  </wsdl:message>
+  <wsdl:message name="GetClaimsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClaimsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetHistorySoapIn">
+    <wsdl:part name="parameters" element="tns:GetHistory" />
+  </wsdl:message>
+  <wsdl:message name="GetHistorySoapOut">
+    <wsdl:part name="parameters" element="tns:GetHistoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStatisticsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStatistics" />
+  </wsdl:message>
+  <wsdl:message name="GetStatisticsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStatisticsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReInsuranceSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReInsurance" />
+  </wsdl:message>
+  <wsdl:message name="GetReInsuranceSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReInsuranceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNotesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNotes" />
+  </wsdl:message>
+  <wsdl:message name="GetNotesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRevisionsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRevisions" />
+  </wsdl:message>
+  <wsdl:message name="GetRevisionsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRevisionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAggregatesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAggregates" />
+  </wsdl:message>
+  <wsdl:message name="GetAggregatesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAggregatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupedPoliciesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGroupedPolicies" />
+  </wsdl:message>
+  <wsdl:message name="GetGroupedPoliciesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGroupedPoliciesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRenewalInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRenewalInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetRenewalInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRenewalInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVesselsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVessels" />
+  </wsdl:message>
+  <wsdl:message name="GetVesselsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVesselsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUSMsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUSMs" />
+  </wsdl:message>
+  <wsdl:message name="GetUSMsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUSMsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMonitorsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMonitors" />
+  </wsdl:message>
+  <wsdl:message name="GetMonitorsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMonitorsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetConstructionSoapIn">
+    <wsdl:part name="parameters" element="tns:GetConstruction" />
+  </wsdl:message>
+  <wsdl:message name="GetConstructionSoapOut">
+    <wsdl:part name="parameters" element="tns:GetConstructionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorkflows" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorkflowsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorkflowDetails" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkflowDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorkflowDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLimitsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLimits" />
+  </wsdl:message>
+  <wsdl:message name="GetLimitsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLimitsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuredsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInsureds" />
+  </wsdl:message>
+  <wsdl:message name="GetInsuredsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInsuredsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PolicyServiceSoap">
+    <wsdl:operation name="GetWorkflowHistory">
+      <wsdl:input message="tns:GetWorkflowHistorySoapIn" />
+      <wsdl:output message="tns:GetWorkflowHistorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicy">
+      <wsdl:input message="tns:GetPolicySoapIn" />
+      <wsdl:output message="tns:GetPolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnlyCodes">
+      <wsdl:input message="tns:GetAnlyCodesSoapIn" />
+      <wsdl:output message="tns:GetAnlyCodesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPremium">
+      <wsdl:input message="tns:GetPremiumSoapIn" />
+      <wsdl:output message="tns:GetPremiumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDeductions">
+      <wsdl:input message="tns:GetDeductionsSoapIn" />
+      <wsdl:output message="tns:GetDeductionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClaims">
+      <wsdl:input message="tns:GetClaimsSoapIn" />
+      <wsdl:output message="tns:GetClaimsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHistory">
+      <wsdl:input message="tns:GetHistorySoapIn" />
+      <wsdl:output message="tns:GetHistorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStatistics">
+      <wsdl:input message="tns:GetStatisticsSoapIn" />
+      <wsdl:output message="tns:GetStatisticsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReInsurance">
+      <wsdl:input message="tns:GetReInsuranceSoapIn" />
+      <wsdl:output message="tns:GetReInsuranceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNotes">
+      <wsdl:input message="tns:GetNotesSoapIn" />
+      <wsdl:output message="tns:GetNotesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRevisions">
+      <wsdl:input message="tns:GetRevisionsSoapIn" />
+      <wsdl:output message="tns:GetRevisionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAggregates">
+      <wsdl:input message="tns:GetAggregatesSoapIn" />
+      <wsdl:output message="tns:GetAggregatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupedPolicies">
+      <wsdl:input message="tns:GetGroupedPoliciesSoapIn" />
+      <wsdl:output message="tns:GetGroupedPoliciesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRenewalInformation">
+      <wsdl:input message="tns:GetRenewalInformationSoapIn" />
+      <wsdl:output message="tns:GetRenewalInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVessels">
+      <wsdl:input message="tns:GetVesselsSoapIn" />
+      <wsdl:output message="tns:GetVesselsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUSMs">
+      <wsdl:input message="tns:GetUSMsSoapIn" />
+      <wsdl:output message="tns:GetUSMsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMonitors">
+      <wsdl:input message="tns:GetMonitorsSoapIn" />
+      <wsdl:output message="tns:GetMonitorsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConstruction">
+      <wsdl:input message="tns:GetConstructionSoapIn" />
+      <wsdl:output message="tns:GetConstructionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflows">
+      <wsdl:input message="tns:GetWorkflowsSoapIn" />
+      <wsdl:output message="tns:GetWorkflowsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowDetails">
+      <wsdl:input message="tns:GetWorkflowDetailsSoapIn" />
+      <wsdl:output message="tns:GetWorkflowDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLimits">
+      <wsdl:input message="tns:GetLimitsSoapIn" />
+      <wsdl:output message="tns:GetLimitsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInsureds">
+      <wsdl:input message="tns:GetInsuredsSoapIn" />
+      <wsdl:output message="tns:GetInsuredsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PolicyServiceSoap" type="tns:PolicyServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetWorkflowHistory">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetWorkflowHistory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicy">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetPolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnlyCodes">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetAnlyCodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPremium">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetPremium" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeductions">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetDeductions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClaims">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetClaims" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHistory">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetHistory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatistics">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetStatistics" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReInsurance">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetReInsurance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNotes">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetNotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRevisions">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetRevisions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAggregates">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetAggregates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupedPolicies">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetGroupedPolicies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRenewalInformation">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetRenewalInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVessels">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetVessels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUSMs">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetUSMs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMonitors">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetMonitors" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConstruction">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetConstruction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflows">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetWorkflows" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowDetails">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetWorkflowDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLimits">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetLimits" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsureds">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetInsureds" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PolicyServiceSoap12" type="tns:PolicyServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetWorkflowHistory">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetWorkflowHistory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicy">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetPolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnlyCodes">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetAnlyCodes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPremium">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetPremium" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDeductions">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetDeductions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClaims">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetClaims" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHistory">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetHistory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatistics">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetStatistics" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReInsurance">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetReInsurance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNotes">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetNotes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRevisions">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetRevisions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAggregates">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetAggregates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupedPolicies">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetGroupedPolicies" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRenewalInformation">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetRenewalInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVessels">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetVessels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUSMs">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetUSMs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMonitors">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetMonitors" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConstruction">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetConstruction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflows">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetWorkflows" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkflowDetails">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetWorkflowDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLimits">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetLimits" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInsureds">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetInsureds" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PolicyService">
+    <wsdl:port name="PolicyServiceSoap" binding="tns:PolicyServiceSoap">
+      <soap:address location="http://services.talbotdev.com/WebPolicy/PolicyService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PolicyServiceSoap12" binding="tns:PolicyServiceSoap12">
+      <soap12:address location="http://services.talbotdev.com/WebPolicy/PolicyService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

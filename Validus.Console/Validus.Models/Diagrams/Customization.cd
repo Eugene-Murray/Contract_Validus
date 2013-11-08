@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Validus.Models.Submission" Collapsed="true">
+    <Position X="3.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAgAgAEAAARPCAGCMAQQAAMgAACAACAFwIAE=</HashCode>
+      <FileName>Submission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Validus.Models.SubmissionEN">
+    <Position X="1" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>SubmissionEN.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Validus.Models.SubmissionPV">
+    <Position X="5.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAABAIAAAAAAAEAAA=</HashCode>
+      <FileName>SubmissionPV.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Validus.Models.Quote" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iABGDAAkRAdAKESEAWECAAAgigAAAEQAAEAAAABAAAI=</HashCode>
+      <FileName>Quote.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Validus.Models.QuoteEN">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QuoteEN.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Validus.Models.SubmissionType">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SubmissionType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

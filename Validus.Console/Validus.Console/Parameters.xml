@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<parameters>
+  <parameter name="Log File Location" description="Enter the full path for the log file" defaultValue="c:\logs\validus.rolling.log">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/loggingConfiguration/listeners/add[@name='Rolling Flat File Trace Listener']/@fileName"/>
+  </parameter>
+  <parameter name="External Wording Tasks" description="Enter the list of external wordings tasks" defaultValue="CC PBQA,CC PBQA Resubmission,CC PBQA Query,CC PBQA Reject,CC PBQA Fail,Pre-Bind CC,Pre-Bind CC Resubmission,Pre-Bind CC Query,Pre-Bind CC Reject,Pre-Bind CC Fail,Pre-Bind CC Failure,Post-Bind CC,Post-Bind CC Resubmission,Post-Bind CC Query,Post-Bind CC Reject,Post-Bind CC Fail,Post-Bind CC Failure,Post-Bind Fail CC Query,Post-Bind Resubmission CC Query">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='EWTasks']/@value"/>
+  </parameter>
+  <parameter name="WebPolicy URL" description="Enter the URL for WebPolicy" defaultValue="http://webpolicy.talbotdev.com/webpolicy.aspx?policyId=">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='WebPolicyURL']/@value"/>
+  </parameter>
+  <parameter name="WorldCheck URL" description="Enter the URL for WorldCheck" defaultValue="http://worldcheck.talbotuw.com/Default.aspx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='WorldCheckURL']/@value"/>
+  </parameter>
+  <parameter name="CMS URL" description="Enter the URL for CMS" defaultValue="http://intra.talbotdev.com/apps/cms/claimDetails.jsp?bpr=">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='CMSURL']/@value"/>
+  </parameter>
+  <parameter name="Viewflow URL" description="Enter the URL for WebPolicy" defaultValue="http://k2workspace.talbotdev.com/Workspace/TasklistControl/GetSilverLight.aspx?ViewType=ProcessView&amp;ProcessID=">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='ViewflowURL']/@value"/>
+  </parameter>
+  <parameter name="Workflow Normal Tasks List URL" description="Enter the URL for Workflow tasks page" defaultValue="http://apps.talbotdev.com/sites/workflow/Pages/NewK2Worklist.aspx?ActivityName=">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='WorkflowTasklistNormal']/@value"/>
+  </parameter>
+  <parameter name="Workflow External Wordings Tasks List URL" description="Enter the URL for EW Workflow tasks page" defaultValue="http://apps.talbotdev.com/sites/workflow/Pages/EWWorklist.aspx?ActivityName=">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='WorkflowTasklistCC']/@value"/>
+  </parameter>
+  <parameter name="Underwriting DMS Search URL" description="Enter the URL for Underwiting DMS Search" defaultValue="http://dms.talbotdev.com/underwriting/Pages/UnderwritingDMSSearch.aspx?initPolId=">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='UWDmsSearchURL']/@value"/>
+  </parameter>
+  <parameter name="Underwriting DMS Download URL" description="Enter the URL for Underwriting DMS document download" defaultValue="http://services.talbotdev.com/FileNetService/DownloadHandler.ashx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='UWDmsFileDownloadURL']/@value"/>
+  </parameter>
+  <parameter name="Web Api Location" description="Enter the location Web API" defaultValue="http://uksp10webdev01:6262/rest/api/">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='serviceURL']/@value"/>
+  </parameter>
+  <parameter name="Help Files Location" description="Enter the locations of the help files" defaultValue="http://teams.talbotdev.com/sites/Agincourt/Documents/Forms/AllItems.aspx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/appSettings/add[@key='helpURL']/@value"/>
+  </parameter>
+  <parameter name="Domain Prefix" description="Enter the domain prefix" defaultValue="globaldev">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='DomainPrefix']/value/text()"/>
+  </parameter>
+  <parameter name="WEB Api Services Host url" description="Enter the services host url" defaultValue="http://uksp10webdev01:6262/">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='ServicesHostUrl']/value/text()"/>
+  </parameter>
+  <parameter name="K2 Server Connection String" description="Enter the K2 client connection string" defaultValue="Integrated=True;IsPrimaryLogin=True;Authenticate=True;EncryptedPassword=False;Host=UKWFK2DEV02;Port=5252">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='WorkflowServerConnectionString']/value/text()"/>
+  </parameter>
+  <parameter name="K2 Management Server Connection String" description="Enter the K2 Management connection string" defaultValue="Integrated=True;IsPrimaryLogin=True;Authenticate=True;EncryptedPassword=False;Host=UKWFK2DEV02;Port=5555">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='WorkflowServerManagementConnectionString']/value/text()"/>
+  </parameter>
+  <parameter name="Search Service URL" description="Enter the url for the search service" defaultValue="http://spintranet.talbotdev.com/_vti_bin/search.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='Validus_Console_SPQueryService_QueryService']/value/text()"/>
+  </parameter>
+  <parameter name="DMS Service URL" description="Enter the DMS Webservice URL" defaultValue="http://services.talbotdev.com/FileNetService/DMSService.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='Validus_Console_DocumentManagementService_DMSService']/value/text()"/>
+  </parameter>
+  <parameter name="SSRS Service URL" description="Enter the SSRS service url" defaultValue="http://ukbirsdev02.globaldev.local:80/ReportServer/ReportExecution2005.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='Validus_Console_ReportingService_ReportExecutionService']/value/text()"/>
+  </parameter>
+  <parameter name="WorldCheck Service URL" description="Enter the WorldCheck Webservice URL" defaultValue="http://services.talbotdev.com/WorldCheck/WorldCheckService.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='Validus_Console_WorldCheckService_WorldCheckService']/value/text()"/>
+  </parameter>
+  <parameter name="Subscribe SOAP Service URL" description="Enter the Subscribe SOAP Webservice URL" defaultValue="http://services.talbotdev.com/Subscribe.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='Validus_Console_SubscribeSoapService_Subscribe']/value/text()"/>
+  </parameter>
+  <parameter name="SharePoint 2013 Rest URL" description="Enter the SharePoint 2013 Rest URL" defaultValue="http://intranet.globaldev.local/sites/searchcenter/_api/search/query?querytext='{0}'&amp;selectproperties='{1}'">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='SP2013RestUrl']/value/text()"/>
+  </parameter>
+  <parameter name="SharePoint 2013 Search URL" description="Enter the SharePoint 2013 Search URL" defaultValue="http://intranet.globaldev.local/sites/searchcenter">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='SP2013SearchUrl']/value/text()"/>
+  </parameter>
+  <parameter name="SharePoint 2013 Returned Metadata" description="Enter the metadata returned by the SharePoint Search" defaultValue="VALBkrCtc,VALBkrCd,VALBpr,VALCcy,VALLdr,VALDescription,VALDol,VALInsdNm,VALLoccLocn,VALPolID,VALSt,VALUwrPsu,VALReserve,VALPaid,HITHIGHLIGHTEDSUMMARY,VALBkrGrpCd,VALBkrNm,VALBkrPsu,VALBkrSeqId,VALAcctgYr,VALCob,VALDivision,VALEntSt,VALIncpDt,VALOrigOff,VALSt,VALContentType,VALInsdId,VALLastYear,VALFirstYear,VALNoOfRisks,VALNoOfLiveRisks,VALNoOfOtherRisks,VALFirstLiveYear,VALLastLiveYear,VALBkrNm,VALLmtAmt,VALExsAmt,VALExpydt">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='SP2013Properties']/value/text()"/>
+  </parameter>
+  <parameter name="SharePoint 2013 Search filter" description="Enter the SharePoint 2013 Content Sources search filter" defaultValue="contentsource">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='SP2013ContentSourceName']/value/text()"/>
+  </parameter>
+  <parameter name="SharePoint 2013 Search Refiners" description="Enter the SharePoint 2013 Search Refiners" defaultValue="COB,BkrPsu,UwrPsu">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='SearchRefinersList']/value/text()"/>
+  </parameter>
+  <parameter name="SharePoint 2013 Search Content Sources" description="Enter the Content Sources to Search" defaultValue="Risks#PolicyDetails,Claims#Claims,Insureds#SubscribeInsured,Brokers#SubscribeBroker">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/applicationSettings/Validus.Console.Properties.Settings/setting[@name='SP2013ContentSources']/value/text()"/>
+  </parameter>
+  <parameter name="Caching Server Name 1" description="Enter the full name of caching server 1" defaultValue="UKIISDEV01.globaldev.local">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/dataCacheClient/hosts/host[@name='UKIISDEV01.globaldev.local']/@name"/>
+  </parameter>
+  <parameter name="Caching Server Name 2" description="Enter the full name of caching server 2" defaultValue="UKIISDEV02.globaldev.local">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/dataCacheClient/hosts/host[@name='UKIISDEV02.globaldev.local']/@name"/>
+  </parameter>
+  <parameter name="Document WCF Service URL" description="Enter the URL for the Document WCF Webservice" defaultValue="net.tcp://ukiissvcdev01.globaldev.local:6868/WCF/DocumentService.svc">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='DocumentService.IDocumentService']/@address"/>
+  </parameter>
+  <parameter name="Broker WCF Service URL" description="Enter the URL for the Broker WCF Webservice" defaultValue="net.tcp://ukiissvcdev01.globaldev.local:6868/WCF/BrokerService.svc">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='BrokerService.IBrokerService']/@address"/>
+  </parameter>
+  <parameter name="Insured WCF Service URL" description="Enter the URL for the Insured WCF Webservice" defaultValue="net.tcp://ukiissvcdev01.globaldev.local:6868/WCF/InsuredService.svc">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='InsuredService.IInsuredService']/@address"/>
+  </parameter>
+  <parameter name="Subscribe WCF Service URL" description="Enter the URL for Subscribe Webservice" defaultValue="net.tcp://ukiissvcdev01.globaldev.local:6868/SubscribeServices/PolicyService.svc">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='SubscribeService.IPolicyService']/@address"/>
+  </parameter>
+  <parameter name="Version WCF Service URL" description="Enter the URL for the Version WCF Webservice" defaultValue="net.tcp://ukiissvcdev01.globaldev.local:6868/WCF/VersionService.svc">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='VersionService.IVersionService']/@address"/>
+  </parameter>
+  <parameter name="Policy WCF Service URL" description="Enter the URL for the Policy WCF Webservice" defaultValue="net.tcp://ukiissvcdev01.globaldev.local:6868/WCF/PolicyService.svc">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='PolicyDataService.IPolicyService']/@address"/>
+  </parameter>
+  <parameter name="Policy ASMX Service URL" description="Enter the URL for the Policy ASMX Webservice" defaultValue="http://services.globaltest.local/WebPolicy/PolicyService.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@bindingConfiguration='PolicyServiceSoap']/@address"/>
+  </parameter>
+  <parameter name="Validus WCF Services SPN" description="Enter the SPN for the Validus WCF services" defaultValue="HOST/VALIDUSWCF.talbotdev.com">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='DocumentService.IDocumentService']/identity/servicePrincipalName/@value" />
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='BrokerService.IBrokerService']/identity/servicePrincipalName/@value"/>
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='InsuredService.IInsuredService']/identity/servicePrincipalName/@value"/>
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='VersionService.IVersionService']/identity/servicePrincipalName/@value"/>
+  </parameter>
+  <parameter name="Subscribe WCF Service SPN" description="Enter the SPN for Subscribe Webservice" defaultValue="SUBS/WEBSERVICES.talbotdev.com">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='SubscribeService.IPolicyService']/identity/servicePrincipalName/@value"/>
+  </parameter>
+  <parameter name="WebPolicy Service URL" description="Enter the URL for the WebPolicy service" defaultValue="http://services.talbotdev.com/WebPolicy/PolicyService.asmx">
+    <parameterEntry kind="XmlFile" scope="\\web.config$" match="/configuration/system.serviceModel/client/endpoint[@contract='WebPolicy.PolicyServiceSoap']/@address"/>
+  </parameter>
+</parameters>

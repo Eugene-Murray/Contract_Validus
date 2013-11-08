@@ -1,0 +1,29 @@
+﻿@using Validus.Console.InsuredService
+
+@model List<InsuredDetails>
+
+<table class="val-insured-detailed-datatable table table-condensed table-bordered table-hover datatable">
+    <caption>Insured Loss Ratios</caption>
+    <thead>
+        <tr>
+            <th class="val-insddet-polid">Policy Id</th>
+            <th class="val-insddet-year">Year</th>
+            <th class="val-insddet-epi">EPI</th>
+            <th class="val-insddet-lr">LR%</th>
+        </tr>
+    </thead>
+    <tbody>
+		@if ((Model != null) && (Model.Count > 0))
+		{
+			foreach (InsuredDetails detail in Model)
+			{
+				<tr>
+					<td class="val-insddet-polid" title="@detail.Dsc"><a class="val-link" href="javascript:OpenWebPolicy('@System.Configuration.ConfigurationManager.AppSettings["WebPolicyURL"]@detail.PolID')">@detail.PolID</a></td>
+					<td class="val-insddet-year">@detail.AccountYear</td>
+					<td class="val-insddet-epi">@String.Format("{0:0,0}", detail.SyndicateEPI)</td>
+					<td class="val-insddet-lr">@String.Format("{0:0.000}", detail.LossRatio)</td>
+				</tr>
+			}
+		}
+    </tbody>
+</table>

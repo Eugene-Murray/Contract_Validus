@@ -1,0 +1,46 @@
+﻿@using Validus.Console.WorldCheckService
+
+@model List<SearchResult>
+
+<table class="val-worldcheck-searchresults-datatable table table-condensed table-bordered table-hover datatable">
+    <caption>WorldCheck Matches</caption>
+    <thead>
+        <tr>
+            <th class="val-worldcheck-match-name">Name</th>
+            <th class="val-worldcheck-match-firstname">First Name</th>
+            <th class="val-worldcheck-match-country">Country</th>
+            <th class="val-worldcheck-match-category">Category</th>
+            <th class="val-worldcheck-match-sanction"></th>
+        </tr>
+    </thead>
+    <tbody>
+		@if ((Model != null) && (Model.Count > 0))
+		{
+			foreach (SearchResult detail in Model)
+        {
+            <tr>
+                <td class="val-worldcheck-match-name">
+                    <div title="@detail.LastName">@detail.LastName</div>
+                </td>
+                <td class="val-worldcheck-match-firstname">
+                    <div title="@detail.FirstName">@detail.FirstName</div>
+                </td>
+                <td class="val-worldcheck-match-country">
+                    <div title="@detail.Country">@detail.Country</div>
+                </td>
+                <td class="val-worldcheck-match-category">
+                    <div title="@detail.Category">@detail.Category</div>
+                </td>
+                @if (detail.Sanctioned)
+                {
+                    <td class="val-worldcheck-match-sanction"><a href="javascript:DisplayWorldCheckDetails('/Worldcheck/_WorldCheckDetailsModal?uid=@detail.UID');"><i class="icon-warning-sign"></i></a></td>
+                }
+                else
+                {
+                    <td class="val-worldcheck-match-sanction"><a href="javascript:DisplayWorldCheckDetails('/Worldcheck/_WorldCheckDetailsModal?uid=@detail.UID');"><i class="icon-info-sign"></i></a></td>
+                }
+            </tr>
+        }
+		}
+    </tbody>
+</table>

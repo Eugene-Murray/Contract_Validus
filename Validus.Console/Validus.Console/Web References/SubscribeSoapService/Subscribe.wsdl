@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://talbotuw.com/webservices" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://talbotuw.com/webservices" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://talbotuw.com/webservices">
+      <s:element name="ValidatePolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidatePolicyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ValidatePolicyResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedsPeerReview">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedsPeerReviewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NeedsPeerReviewResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedsDouReview">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedsDouReviewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NeedsDouReviewResult" type="tns:DouReview" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DouReview">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReviewRequired" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LimitException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetLimitException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyTypeException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="RiskCodeException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="PercentException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="PremiumException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountYearException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="LongRiskException" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupOverLimit" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="GroupPremiumException" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NeedsInternalWordings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NeedsInternalWordingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NeedsInternalWordingsResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AreLeadOnPolicy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AreLeadOnPolicyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AreLeadOnPolicyResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPoliciesWithMissingDocuments">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetPoliciesWithMissingDocumentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPoliciesWithMissingDocumentsResult" type="tns:ArrayOfPolicy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPolicy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Policy" nillable="true" type="tns:Policy" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Policy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Insured" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnderwriterPseudonym" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClassOfBusiness" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountYear" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InceptionDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EntryStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BrokerPseudonym" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WrittenDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Leader" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OverseasOfficeCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DivisionCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessPlan" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPolicyDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPolicyDetailResult" type="tns:Policy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyDetailJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="policyId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPolicyDetailJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPolicyDetailJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PolicySearch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="searchCriteria" type="tns:Policy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PolicySearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PolicySearchResult" type="tns:ArrayOfPolicy" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ValidatePolicySoapIn">
+    <wsdl:part name="parameters" element="tns:ValidatePolicy" />
+  </wsdl:message>
+  <wsdl:message name="ValidatePolicySoapOut">
+    <wsdl:part name="parameters" element="tns:ValidatePolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="NeedsPeerReviewSoapIn">
+    <wsdl:part name="parameters" element="tns:NeedsPeerReview" />
+  </wsdl:message>
+  <wsdl:message name="NeedsPeerReviewSoapOut">
+    <wsdl:part name="parameters" element="tns:NeedsPeerReviewResponse" />
+  </wsdl:message>
+  <wsdl:message name="NeedsDouReviewSoapIn">
+    <wsdl:part name="parameters" element="tns:NeedsDouReview" />
+  </wsdl:message>
+  <wsdl:message name="NeedsDouReviewSoapOut">
+    <wsdl:part name="parameters" element="tns:NeedsDouReviewResponse" />
+  </wsdl:message>
+  <wsdl:message name="NeedsInternalWordingsSoapIn">
+    <wsdl:part name="parameters" element="tns:NeedsInternalWordings" />
+  </wsdl:message>
+  <wsdl:message name="NeedsInternalWordingsSoapOut">
+    <wsdl:part name="parameters" element="tns:NeedsInternalWordingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AreLeadOnPolicySoapIn">
+    <wsdl:part name="parameters" element="tns:AreLeadOnPolicy" />
+  </wsdl:message>
+  <wsdl:message name="AreLeadOnPolicySoapOut">
+    <wsdl:part name="parameters" element="tns:AreLeadOnPolicyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPoliciesWithMissingDocumentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPoliciesWithMissingDocuments" />
+  </wsdl:message>
+  <wsdl:message name="GetPoliciesWithMissingDocumentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPoliciesWithMissingDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPolicyDetail" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPolicyDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDetailJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPolicyDetailJSON" />
+  </wsdl:message>
+  <wsdl:message name="GetPolicyDetailJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPolicyDetailJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="PolicySearchSoapIn">
+    <wsdl:part name="parameters" element="tns:PolicySearch" />
+  </wsdl:message>
+  <wsdl:message name="PolicySearchSoapOut">
+    <wsdl:part name="parameters" element="tns:PolicySearchResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SubscribeSoap">
+    <wsdl:operation name="ValidatePolicy">
+      <wsdl:input message="tns:ValidatePolicySoapIn" />
+      <wsdl:output message="tns:ValidatePolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NeedsPeerReview">
+      <wsdl:input message="tns:NeedsPeerReviewSoapIn" />
+      <wsdl:output message="tns:NeedsPeerReviewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NeedsDouReview">
+      <wsdl:input message="tns:NeedsDouReviewSoapIn" />
+      <wsdl:output message="tns:NeedsDouReviewSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NeedsInternalWordings">
+      <wsdl:input message="tns:NeedsInternalWordingsSoapIn" />
+      <wsdl:output message="tns:NeedsInternalWordingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AreLeadOnPolicy">
+      <wsdl:input message="tns:AreLeadOnPolicySoapIn" />
+      <wsdl:output message="tns:AreLeadOnPolicySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPoliciesWithMissingDocuments">
+      <wsdl:input message="tns:GetPoliciesWithMissingDocumentsSoapIn" />
+      <wsdl:output message="tns:GetPoliciesWithMissingDocumentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetail">
+      <wsdl:input message="tns:GetPolicyDetailSoapIn" />
+      <wsdl:output message="tns:GetPolicyDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetailJSON">
+      <wsdl:input message="tns:GetPolicyDetailJSONSoapIn" />
+      <wsdl:output message="tns:GetPolicyDetailJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PolicySearch">
+      <wsdl:input message="tns:PolicySearchSoapIn" />
+      <wsdl:output message="tns:PolicySearchSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SubscribeSoap" type="tns:SubscribeSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ValidatePolicy">
+      <soap:operation soapAction="http://talbotuw.com/webservices/ValidatePolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedsPeerReview">
+      <soap:operation soapAction="http://talbotuw.com/webservices/NeedsPeerReview" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedsDouReview">
+      <soap:operation soapAction="http://talbotuw.com/webservices/NeedsDouReview" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedsInternalWordings">
+      <soap:operation soapAction="http://talbotuw.com/webservices/NeedsInternalWordings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AreLeadOnPolicy">
+      <soap:operation soapAction="http://talbotuw.com/webservices/AreLeadOnPolicy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPoliciesWithMissingDocuments">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetPoliciesWithMissingDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetail">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetPolicyDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetailJSON">
+      <soap:operation soapAction="http://talbotuw.com/webservices/GetPolicyDetailJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PolicySearch">
+      <soap:operation soapAction="http://talbotuw.com/webservices/PolicySearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SubscribeSoap12" type="tns:SubscribeSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ValidatePolicy">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/ValidatePolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedsPeerReview">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/NeedsPeerReview" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedsDouReview">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/NeedsDouReview" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NeedsInternalWordings">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/NeedsInternalWordings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AreLeadOnPolicy">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/AreLeadOnPolicy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPoliciesWithMissingDocuments">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetPoliciesWithMissingDocuments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetail">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetPolicyDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicyDetailJSON">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/GetPolicyDetailJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PolicySearch">
+      <soap12:operation soapAction="http://talbotuw.com/webservices/PolicySearch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Subscribe">
+    <wsdl:port name="SubscribeSoap" binding="tns:SubscribeSoap">
+      <soap:address location="http://services.talbotdev.com/Subscribe.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SubscribeSoap12" binding="tns:SubscribeSoap12">
+      <soap12:address location="http://services.talbotdev.com/Subscribe.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

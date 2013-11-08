@@ -1,0 +1,32 @@
+﻿@model Validus.Models.OptionVersionHM
+
+<div class="span2">
+	<label class="control-label">
+	    @Html.DisplayNameFor(model => model.TSICurrency)
+	</label>
+	@Html.TextBoxFor(model => model.TSICurrency, new Dictionary<string, object> 
+	{ 
+		{ "id", ""},
+		{ "class", "input-large span12" },
+		{ "data-bind", "bootstrap-typeahead: " +
+						"{ " +
+							"url: window.ValidusServicesUrl + 'Currency#TSI', " +
+							"data: TSICurrency, " +
+							"options: { uniqueField: 'Psu', labelField: 'Psu', valueField: 'Psu' }, " +
+							"onInvalid: $root.Functions.InvalidCurrencySelected " +
+						"}, " +
+						"enable: !IsLocked()" }
+	})
+</div>
+<div class="span2">
+	<label class="control-label">
+	    @Html.DisplayNameFor(model => model.TSIAmount)
+	</label>
+	@Html.TextBoxFor(model => model.TSIAmount, new Dictionary<string, object> 
+	{ 
+	    { "id", ""},
+	    { "class", "input-large span12" },
+	    { "data-bind", "auto-numeric: { data: TSIAmount }, " +
+	                   "enable: !IsLocked()" }
+	})
+</div>

@@ -1,0 +1,199 @@
+﻿@model Validus.Models.TermsNConditionWording
+
+@*<h4><span data-bind="text: Title"> </span></h4>*@
+
+<div class="container-fluid">
+
+    <div class="row-fluid">
+        <div class="span4">
+            <a href="#" title="Create TermsNConditionWording" data-bind="click: click_OpenCreateEditTermsNConditionWordingModal_Create" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i>Create New TermsNConditionWording</a>
+            <hr />
+        </div>
+    </div>
+
+    <div class="span6">
+        <div data-bind="pageGrid: ConsoleApp.vmManageTermsNConditionWordings.allTermsNConditionWordingsList,
+    columns: [{ headerText: 'Code', rowText: 'WordingRefNumber' }, { headerText: 'Title', rowText: 'Title' }],
+    caption: 'All Terms and Conditions',
+    pageGridTemplate: 'tableAllTermsNConditionWordingList'">
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <hr />
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <!-- span -->
+        <div class="span5">
+            <div class="row-fluid">
+                <select data-bind="options: teamList, optionsText: 'name', optionsValue: 'key', optionsCaption: 'Select Team', value: selectedTeam"></select>
+                <select data-bind="options: officeList, optionsText: 'name', optionsValue: 'key', optionsCaption: 'Select Office', value: selectedOffice"></select>
+            </div>
+
+            <div data-bind="pageGrid: ConsoleApp.vmManageTermsNConditionWordings.teamOfficeTermsNConditionWordingsList,
+    columns: [{ headerText: 'Code', rowText: 'WordingRefNumber' }, { headerText: 'Title', rowText: 'Title' }],
+    caption: 'Additional TermsNConditionWordings for Team',
+    pageGridTemplate: 'tableAdditionalTermsNConditionWordingsForTeam'">
+            </div>
+        </div>
+
+        <!-- end span -->
+
+        <!-- span -->
+        <div class="span2">
+            <fieldset style="align-content: center">
+                <center><span class="label label-info">Add / Remove TermsNConditionWordings to Teams</span></center>
+                <p></p>
+                <br />
+                <center>
+                    <p>
+                        <a href="#" title="Remove TermsNConditionWording From Team" data-bind="click: click_RemoveTermsNConditionWordingFromTeam " class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></a>
+                        <a href="#" title="Add TermsNConditionWording To Team" data-bind="click: click_AddTermsNConditionWordingToTeamOffice" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></a>
+                    </p>
+
+                </center>
+            </fieldset>
+        </div>
+
+        <!-- end span -->
+
+        <!-- span -->
+
+        <div class="span5">
+            <div class="row-fluid"> <br /><br /></div>
+            <div data-bind="pageGrid: ConsoleApp.vmManageTermsNConditionWordings.termsNConditionWordingsForTeamOfficeSelectList,
+    columns: [{ headerText: 'Code', rowText: 'WordingRefNumber' }, { headerText: 'Title', rowText: 'name' }],
+    caption: 'Selected TermsNConditionWordings for Team Office',
+    pageGridTemplate: 'tableSelectedTermsNConditionWordingsForTeamOffice'">
+            </div>
+            <div class="container">
+            <a href="#" title="Move up" data-bind="click: click_selectedTermsNConditionWordingForTeamOfficeSelectListMoveUp" class="btn btn-primary">Move up</a>
+            <a href="#" title="Move down" data-bind="click: click_selectedTermsNConditionWordingForTeamOfficeSelectListMoveDown" class="btn btn-primary">Move down</a>
+        </div>
+            <p><a href="#" title="Edit" data-bind="click: click_SaveTeamOfficeTermsNConditionWordings" class="btn btn-primary"><i class="icon-pencil icon-white"></i>Save Team TermsNConditionWordings</a></p>
+        </div>
+
+        <!-- end span -->
+
+    </div>
+
+</div>
+
+
+
+
+
+<!-- Add / Edit Links -->
+
+<div id="CreateEditTermsNConditionWording_ModalAlert" class="val-alert modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <i class="icon-remove"></i>
+        </button>
+        <span data-bind="text: createEditTitle"></span>
+    </div>
+    <div class="modal-body">
+
+        <!-- Create Team Body -->
+
+        <form id="formCreateEditTermsNConditionWording">
+
+            <table data-bind="with: selectedAllTermsNConditionWording">
+
+                <tr>
+                    <td>Title </td>
+                    <td>
+                        <p>
+                             <input type="text" data-bind="value: WordingRefNumber" required>
+                            @Html.ValidationMessageFor(model => model.WordingRefNumber, null, new { @class = "help-inline" })
+                            <input type="text" data-bind="value: Title" required>
+                            @Html.ValidationMessageFor(model => model.Title, null, new { @class = "help-inline" })
+                        </p>
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+        <!-- Create Team Body -->
+
+
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-small" data-dismiss="modal" data-bind="click: click_CancelCreateEdit">Cancel</a>
+        <a href="#" class="btn btn-small btn-primary" data-bind="click: click_CreateTermsNConditionWording, visible: createButtonVisible">Save TermsNConditionWording</a>
+        <a href="#" class="btn btn-small btn-primary" data-bind="click: click_EditTermsNConditionWording, visible: editButtonVisible">Save TermsNConditionWording</a>
+    </div>
+</div>
+
+<!-- grid templates -->
+<script type="text/html" id="002"></script>
+<script type="text/html" id="tableAllTermsNConditionWordingList">
+    <table class="table table-condensed table-striped table-bordered table-hover">
+        <caption><span data-bind="text: caption"></span></caption>
+        <thead>
+            <tr>
+                <!-- ko foreach:  columns -->
+                <th data-bind="text: headerText"></th>
+                <!-- /ko -->
+                <th></th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: itemsOnCurrentPage">
+            <tr data-bind="event: { click: ConsoleApp.vmManageTermsNConditionWordings.onClickAllTermsNConditionWordingsItem }">
+                <!-- ko foreach:  $parent.columns -->
+                <td data-bind="text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]"></td>
+                <!-- /ko -->
+                <td>
+                    <a href="#" title="Edit" data-bind="click: ConsoleApp.vmManageTermsNConditionWordings.click_OpenCreateEditTermsNConditionWordingModal_Edit, css: { 'disabled': ConsoleApp.vmManageTermsNConditionWordings.editTermsNConditionWordingButton_Status() }" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a>
+                    <a href="#" title="Delete" data-bind="click: ConsoleApp.vmManageTermsNConditionWordings.click_DeleteTermsNConditionWording" class="btn btn-primary"><i class="icon-trash icon-white"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/html" id="tableAdditionalTermsNConditionWordingsForTeam">
+    <table class="table table-condensed table-striped table-bordered table-hover">
+        <caption><span data-bind="text: caption"></span></caption>
+        <thead>
+            <tr>
+                <!-- ko foreach:  columns -->
+                <th data-bind="text: headerText"></th>
+                <!-- /ko -->
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: itemsOnCurrentPage">
+            <tr data-bind="event: { click: ConsoleApp.vmManageTermsNConditionWordings.onClickTeamOfficeTermsNConditionWordingItem }, css: { 'ui-selected': ConsoleApp.vmManageTermsNConditionWordings.selectedTeamTermsNConditionWording().Id() == $data.Id() }">
+                <!-- ko foreach:  $parent.columns -->
+                <td data-bind="text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]"></td>
+                <!-- /ko -->
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/html" id="tableSelectedTermsNConditionWordingsForTeamOffice">
+    <table class="table table-condensed table table-bordered table-hover">
+        <caption><span data-bind="text: caption"></span></caption>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Title</th>
+                <th>Strike Through</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: itemsOnCurrentPage">
+            <tr data-bind="event: { click: ConsoleApp.vmManageTermsNConditionWordings.onClickSelectedTeamOfficeTermsNConditionWordingItem }, css: { 'ui-selected': ConsoleApp.vmManageTermsNConditionWordings.selectedTermsNConditionWordingForTeamOfficeSelectList() == $data.key }" >
+                 <td data-bind="text: $data.WordingRefNumber"></td>
+                 <td data-bind="text: $data.name"></td>
+                 <td><input type="checkbox" data-bind="checked: IsStrikeThrough, event: { click: ConsoleApp.vmManageTermsNConditionWordings.onClickSelectedTeamOfficeTermsNConditionWordingItemToggleIsStrikeThrough }" /></td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+
+

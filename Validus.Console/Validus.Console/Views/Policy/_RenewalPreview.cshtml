@@ -1,0 +1,162 @@
+﻿@using Validus.Models
+@model Validus.Console.DTO.RenewalPolicyDetailed
+
+<div class="val-padding">
+    <h5>
+        <span>Expiring Policy <a class="val-link" href="javascript:OpenWebPolicy('@Model.WebPolicyURL')">@Model.PolicyId</a></span>
+    </h5>
+    <hr />
+    <div class="row-fluid">
+        <div class="span12">
+            <strong>@Html.DisplayNameFor(model => model.InsuredName)</strong>
+            <br />
+            <span class="insuredname">@Html.DisplayTextFor(model => model.InsuredName)</span>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <strong>@Html.DisplayNameFor(model => model.Description)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Description)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.COB)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.COB)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.OriginatingOffice)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.OriginatingOffice)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.Underwriter)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Underwriter)</span>
+        </div>
+        <div class="span3">
+            <strong>@Html.DisplayNameFor(model => model.Leader)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Leader)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span6">
+            <strong>@Html.DisplayNameFor(model => model.Broker)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Broker)</span>
+        </div>
+        <div class="span6">
+            <strong>@Html.DisplayNameFor(model => model.BrokerContact)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.BrokerContact)</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span6">
+            <strong>@Html.DisplayNameFor(model => model.InceptionDate)</strong>
+            <br />
+            <span>@Model.InceptionDate.ToString("dd MMM yyyy")</span>
+        </div>
+        <div class="span6">
+            <strong>@Html.DisplayNameFor(model => model.ExpiryDate)</strong>
+            <br />
+            <span>@Model.ExpiryDate.ToString("dd MMM yyyy")</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        <div class="span4">
+            <strong>@Html.DisplayNameFor(model => model.St)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.St)</span>
+        </div>
+        <div class="span4">
+            <strong>@Html.DisplayNameFor(model => model.Line)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Line)</span>
+        </div>
+        <div class="span4">
+            <strong>@Html.DisplayNameFor(model => model.Currency)</strong>
+            <br />
+            <span>@Html.DisplayTextFor(model => model.Currency)</span>
+        </div>
+    </div>
+    <hr />
+        <div class="row-fluid">
+            <div class="span12 insureddetails">
+                @*@Html.Action("_InsuredDetailsPreview","Insured",new { insuredName = Model.InsuredName})*@
+            </div>
+        </div>
+    
+    @if (!string.IsNullOrEmpty(Model.RenewalNotes))
+    {
+        <hr />
+        <div class="row-fluid">
+            <div class="span12">
+                <strong>@Html.DisplayNameFor(model => model.RenewalNotes)</strong>
+                <br />
+                <span>@Html.DisplayTextFor(model => model.RenewalNotes)</span>
+            </div>
+        </div>
+    }
+    
+    @if (User.IsInRole("ConsoleUW"))
+    {
+        <hr />
+        
+        <div class="row-fluid">
+            <div class="span12">
+                
+             @if (ViewBag.TeamMemberships != null)
+             {
+                 if (ViewBag.TeamMemberships.Length == 1)
+                 {
+                     if (!String.IsNullOrEmpty(ViewBag.TeamMemberships[0].Team.SubmissionTypeId))
+                        {
+                         <div class="row-fluid">
+                             <div class="span12">
+                                 <button class="btn btn-small val-renewal-renew" title="Create submission as @ViewBag.TeamMemberships[0].Team.SubmissionTypeId renewal" 
+                                         data-renewalpolicyid="@Model.PolicyId" data-submissionTypeId="@ViewBag.TeamMemberships[0].Team.SubmissionTypeId">
+                                     Renew as @ViewBag.TeamMemberships[0].Team.SubmissionTypeId
+                                 </button>
+                             </div>
+                         </div>
+                     }
+                }
+                 else if (ViewBag.TeamMemberships.Length > 1)
+                 {
+
+                     <div class="btn-group">
+                         <button class="btn btn-small" type="button">Renew as...</button>
+                         <button class="btn btn-small dropdown-toggle" type="button" data-toggle="dropdown">
+                             <span class="caret"></span>
+                         </button>
+                         <ul class="dropdown-menu">
+
+                             @foreach (var teamMembership in ViewBag.TeamMemberships)
+                             {
+                                if (!String.IsNullOrEmpty(teamMembership.Team.SubmissionTypeId))
+                                 {
+	                                 <li>
+		                                 <a class="val-renewal-renew" 
+											data-renewalpolicyid="@Model.PolicyId" 
+											data-submissionTypeId="@teamMembership.Team.SubmissionTypeId">@teamMembership.Team.SubmissionTypeId Submission</a>
+	                                 </li>
+                                 }
+                             }
+
+                         </ul>
+                     </div>
+                 }
+             }
+            </div>
+           </div>
+    }
+  
+</div>

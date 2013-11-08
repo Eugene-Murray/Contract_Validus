@@ -1,0 +1,180 @@
+﻿@using System.Configuration
+@using System.Web.Configuration
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+	    <title>Validus Holdings - Console - @ViewBag.Title</title>
+
+        <link href="@Url.Content("~/favicon.ico")" rel="shortcut icon" type="image/x-icon" />
+
+		@Styles.Render("~/bundles/css")
+        
+    </head>
+    <body>
+        <header>
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="container">
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</a>
+						<div class="nav-collapse collapse navbar-responsive-collapse">
+							<ul class="nav pull-left">
+								<li class="val-console-menu dropdown">
+									<a href="#" class="brand dropdown-toggle" data-toggle="dropdown">
+										Console
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href="/Home/">Home</a></li>
+										<li><a target="_blank" href="@WebConfigurationManager.AppSettings["helpURL"]">Help</a></li>
+										<li><a href="#About">About</a></li>
+									</ul>
+								</li>
+							</ul>
+                            @RenderSection("Actions", false)
+                        @*    @RenderSection("Min", false)*@
+							<ul class="nav pull-right">
+								<li class="val-personal-menu dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										@User.Identity.Name
+										<b class="caret"></b>
+									</a>
+									<!-- TODO: Rename Id -->
+									<ul id="userTeamLinksList" class="dropdown-menu"></ul>
+								</li>
+								<li class="val-admin-menu dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<i class="icon-cog"></i>
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a target="_blank" href="/Admin/PersonalSettings">Personal Settings</a></li>
+										@if (User.IsInRole("ConsoleAdmin"))
+										{
+											<li class="divider"></li>
+											<li><a target="_blank" href="/Admin/Index">Site Admin</a></li>
+										}
+                                        <li class="divider"></li>
+									    <li><a href="#dlgAccelerator" data-toggle="modal">Accelerator</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!-- /.nav-collapse -->
+					</div>
+				</div>
+				<!-- /.navbar-inner -->
+			</div>
+			<!-- /.navbar -->
+        </header>
+
+	    <div id="val-body" class="container-fluid">
+		    <div class="row-fluid">
+			    @RenderBody()
+		    </div>
+		    <!-- /.row-fluid -->
+	    </div>
+
+	    <div class="val-about-modal modal hide" role="dialog" aria-hidden="true">
+		    <div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				    <i class="icon-remove"></i>
+			    </button>
+			    <h5>About</h5>
+		    </div>
+		    <div class="modal-body">
+			    <div class="row-fluid">
+				    <div class="span12">
+					    <img class="val-loading val-loading-100x100" 
+							src="@Url.Content("~/Content/images/loading-100x100.gif")" 
+							alt="Loading..." title="Loading..." />
+				    </div>
+			    </div>
+		    </div>
+		    <div class="modal-footer">
+				<div class="row-fluid">
+					<div class="span8">
+						<p>&copy; @DateTime.Now.Year Validus Holdings</p>
+					</div>
+					<div class="span4">
+						<a href="#" class="btn btn-small" data-dismiss="modal">Close</a>
+					</div>
+				</div>
+		    </div>
+	    </div>
+
+        <div class="val-error-modal modal hide" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="icon-remove"></i>
+                </button>
+                <h5>Internal Server Error</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <a href="#" class="btn btn-small" style="float:left;">Report Error</a>
+                    </div>
+                    <div class="span6">
+                        <a href="#" class="btn btn-small" data-dismiss="modal">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="val-accelerator-modal modal hide" id="dlgAccelerator" role="dialog" aria-labelledby="dlgTitle" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="dlgTitle">Accelerator</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <img class="val-loading val-loading-100x100" 
+                             src="@Url.Content("~/Content/images/loading-100x100.gif")" 
+                             alt="Loading..." title="Loading..." />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+
+	    <footer class="footer container-fluid">
+			<div class="row-fluid">
+			    <div class="span12">
+			        <p>&copy; @DateTime.Now.Year Validus Holdings</p>
+			    </div>
+			</div>
+        </footer>
+		
+	    <script type="text/javascript">
+    		/*
+				Global variables
+			*/
+    		ValidusServicesUrl = "@ConfigurationManager.AppSettings["serviceURL"]";
+	    	WebPolicyUrl = "@ConfigurationManager.AppSettings["WebPolicyURL"]";
+	        WorldCheckUrl = "@ConfigurationManager.AppSettings["WorldCheckURL"]";
+    	</script>
+
+		@Scripts.Render("~/bundles/min")
+		@Scripts.Render("~/bundles/app")
+		@Scripts.Render("~/bundles/vm")
+
+        @RenderSection("scripts", false) @* TODO: Remove *@
+
+		@Scripts.Render("~/bundles/main")
+
+    </body>
+</html>

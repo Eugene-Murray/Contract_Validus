@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="tabbable tabs-left">
+	<ul class="val-home-tabs nav nav-tabs">
+		<li class="active">
+			<a href="#tab1-home" data-toggle="tab">@ViewBag.Title</a>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div id="tab1-home" class="tab-pane active">
+			<div class="row-fluid" style="padding-bottom:100px;">
+                <div class="span8">
+                    <div id="searchArea" class="row-fluid">
+                        <div class="span12">
+                            <form>
+                                <div class="row-fluid" id="mainSearchFilter">
+                                    <div class="span9">
+                                        <div class="val-search input-append">
+                                            <input type="text" class="val-searchterm val-clear-input input-xlarge" placeholder="Search" data-bind="value: Keywords, valueUpdate: 'keyup'" />
+                                            <button class="val-searchbutton btn" type="button">
+                                                <span class="val-searchlabel">Advanced </span><i class="icon-search"></i>
+                                            </button>
+                                            <button id="advancedFiltersToggle" class="btn" type="button" data-bind="html: ButtonHtml()">
+                                                <span>Extra Filters </span><i class="icon-chevron-down"></i>
+                                            </button>
+                                            @*<label class="checkbox" data-bind="attr: { title: ProfileFilterSummary() }">
+                                                    <input type="checkbox" data-bind="checked: ApplyProfileFilters"> Apply Profile Filters
+                                            </label>                                             
+                                            <div class="btn-group" data-bind="visible: SavedSearches().length > 0">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Saved Searches
+                                                <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" data-bind="foreach: SavedSearches">
+                                                    <li>
+                                                        <a href="#" data-bind="click: $parent.removePerson, text: Name"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>*@
+                                        </div>
+                                    </div>
+                                      <div class="offset1 span2" >
+                                          <div class="val-search" style=" margin: 10px 0px 0px 10px;" >
+                                              <button class="btn val-minimize-all val-minimize" style="float: right; margin-right: 10px" type="button"><i class="icon-resize-small"></i></button>
+                                              <button class="btn val-maximize-all val-maximize hide" style="float: right; margin-right: 10px" type="button"><i class="icon-resize-full"></i></button>    
+                                          </div>
+                                      </div>
+                                </div>
+                                <!-- TODO: partial for use elsewhere? -->
+                                <div class="row-fluid collapse" id="advancedFilters">
+                                    <div class="span12">
+                                        <div class="advFiltersContainer">
+                                            <p>
+                                                <button class="btn btn-small" data-bind="click: addFilter">Add</button>
+                                                <button class="btn btn-small" data-bind="click: ClearFilters">Clear</button>
+                                            </p>
+                                            <table id="advancedFiltersTable" data-bind="foreach: filters">
+                                                <tr>
+                                                    <td>
+                                                        <select class="control-label input-medium" data-bind="options:$parent.PropertyOptions, optionsValue:'val', optionsText:'name', value: Prop"></select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="control-label input-medium" 
+                                                            data-bind="options: Fns, optionsText: 'label', optionsValue: 'val', value: Fn, enable: Fns().length > 1">
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="input-medium" data-bind="value: Val" />
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-mini" data-bind="click: $parent.removeFilter">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <p>
+                                                <button class="btn btn-small btn-primary val-searchbutton">Search</button>
+                                                @*<button class="btn btn-small" data-bind="click: Save, visible: NonEmptyFilterCount() > 0">Save this search</button>*@
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            @* TODO: Partial View to workflow tasks *@
+                            <table class="val-workflowtasks-datatable table table-condensed table-bordered table-hover">
+                                <caption>
+                                    <strong class="val-add-workflowtasks-tab">Workflow Tasks</strong>
+                                    @Html.DropDownList("test", (SelectList)ViewBag.ActivityNames, new { id = "wfActivityFilter", @class = "input-medium pull-right"})
+                                    <i class="icon-refresh icon-white pull-right" title="Refresh" data-bind="click: RefreshWorklist"></i>
+                                    <i class="icon-resize-full icon-white pull-right" title="Maximize" data-bind="css: { hide: WFMin() === false }, click: function() {WFMin(false);}"></i>
+                                    <i class="icon-resize-small icon-white pull-right" title="Minimize" data-bind="css: { hide: WFMin() === true }, click: function() {WFMin(true);}"></i>
+                                </caption>
+                                <tbody data-bind="css: { hide: WFMin() === true }"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span7">
+                            @* TODO: Partial View to renewals *@
+                            <table class="val-renewals-datatable table table-condensed table-bordered table-hover">
+                                <caption>
+                                    <strong class="val-add-renewal-tab">Renewals</strong>
+                                    <span>expiring in next <input type="text" data-bind="value: RenewalLimitDays" /> days.</span>
+                                    @*<input type="checkbox" class="pull-right" title="Apply Profile Filters" data-bind="checked: RenApplyProfileFilters, attr: { title: ProfileFilterSummary }" />*@
+                                    <i class="icon-refresh icon-white pull-right" title="Refresh" data-bind="click: RefreshRenewals"></i>
+                                    <i class="icon-resize-full icon-white pull-right" title="Maximize" data-bind="css: { hide: RenMin() === false }, click: function() {RenMin(false);}"></i>
+                                    <i class="icon-resize-small icon-white pull-right" title="Minimize" data-bind="css: { hide: RenMin() === true }, click: function() {RenMin(true);}"></i>
+                                </caption>
+                                <tbody data-bind="css: { hide: RenMin() === true }"></tbody>
+                            </table>
+                        </div>
+                        <div class="span5">
+                            @* TODO: Partial View to quotes *@
+                            <table class="val-recentquotes-datatable table table-condensed table-bordered table-hover">
+                                <caption>
+                                    <strong class="val-add-submissions-detailed-tab">Recent Submissions</strong>
+                                    @*<input type="checkbox" class="pull-right" title="Apply Profile Filters" data-bind="checked: SubApplyProfileFilters, attr: { title: ProfileFilterSummary }" />*@
+                                    <i class="icon-refresh icon-white pull-right" title="Refresh" data-bind="click: RefreshSubmissions"></i>
+                                    <i class="icon-resize-full icon-white pull-right" title="Maximize" data-bind="css: { hide: SubMin() === false }, click: function() {SubMin(false);}"></i>
+                                    <i class="icon-resize-small icon-white pull-right" title="Minimize" data-bind="css: { hide: SubMin() === true }, click: function() {SubMin(true);}"></i>
+                                </caption>
+                                <tbody data-bind="css: { hide: SubMin() === true }"></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="row-fluid val-essearchresults">
+                        <div class="span12">
+                            <div class="val-caption">
+                                <strong>Search Results</strong>
+                                    @*<input type="checkbox" class="pull-right" title="Apply Profile Filters" data-bind="checked: ESApplyProfileFilters, attr: { title: ProfileFilterSummary }" />*@
+                                    <i class="icon-refresh icon-white pull-right" title="Refresh" data-bind="click: function() { Val_Search();}"></i>
+                                    <i class="icon-resize-full icon-white pull-right" title="Maximize" data-bind="css: { hide: ESMin() === false }, click: function() {ESMin(false);}"></i>
+                                    <i class="icon-resize-small icon-white pull-right" title="Minimize" data-bind="css: { hide: ESMin() === true }, click: function() {ESMin(true);}"></i>             
+                                <div class="val-searching hide">Searching...</div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="val-search-results span12" data-bind="css: { hide: ESMin() === true }">
+                                    <div class="val-padding">
+                                        <span>No search term</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<br />
+                     TODO: Remove all of these break lines and use CSS instead 
+                    <br />
+                    <br />
+                    <br />*@
+                </div>
+				<div class="span4">
+                    <div class="val-preview-pane-container" >
+							<div class="val-caption">
+								<strong>Preview Pane</strong>
+							    <div class="val-preview-minimize val-minimize" data-bind="css: { hide: PrevMin() === true }, click: function() {PrevMin(true);}"><i class="icon-resize-small icon-white"></i></div>
+                                <div class="val-preview-maximize val-maximize" data-bind="css: { hide: PrevMin() === false }, click: function() {PrevMin(false);}"><i class="icon-resize-full icon-white"></i></div>
+								<div class="val-processing hide">Processing...</div>
+							</div>
+							<div class="val-preview-pane" data-bind="css: { collapse: PrevMin() === true }">
+								<div class="val-padding">
+									<span>No preview loaded</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- /.tab-content -->
+</div>
+<!-- /.tabbable -->
+
+@section Actions
+{
+<div class="val-actionmenu btn-group">
+	<button class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">
+		Action <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu">
+		@if (User.IsInRole("ConsoleAdmin"))
+        {
+            <li><a class="val-new-submission" href="#CA">CA Submission</a></li>
+            <li><a class="val-debug-submission-CA1" href="#CA">CA Submission - Debug 1</a></li>
+            <li class="divider"></li>
+			<li><a class="val-new-submission" href="#EN">EN Submission</a></li>
+			<li><a class="val-debug-submission-EN1" href="#EN">EN Submission - Debug 1</a></li>
+            <li class="divider"></li>
+            <li><a class="val-new-submission" href="#FI">FI Submission</a></li>
+			<li><a class="val-debug-submission-FI1" href="#FI">FI Submission - Debug 1</a></li>
+            <li class="divider"></li>
+            <li><a class="val-new-submission" href="#HM">HM Submission</a></li>
+            <li><a class="val-debug-submission-HM1" href="#HM">HM Submission - Debug 1</a></li>
+            <li class="divider"></li>
+            <li><a class="val-new-submission" href="#ME">ME Submission</a></li>
+            <li><a class="val-debug-submission-ME1" href="#ME">ME Submission - Debug 1</a></li>
+            <li class="divider"></li>
+			<li><a class="val-new-submission" href="#PV">PV Submission</a></li>
+			<li><a class="val-debug-submission-PV1" href="#PV">PV Submission - Debug 1</a></li>
+            <li class="divider"></li>
+        }		
+                            
+        @if (ViewBag.TeamMemberships != null && ViewBag.TeamMemberships.Count > 0)
+        {
+            foreach (var teamMembership in ViewBag.TeamMemberships)
+			{
+                if (!string.IsNullOrEmpty(teamMembership.Team.SubmissionTypeId))
+                {
+	                <li>
+		                <a class="val-new-submission" href="#@teamMembership.Team.SubmissionTypeId">
+			                @teamMembership.Team.SubmissionTypeId Submission
+		                </a>
+	                </li>
+                }
+            }
+        }
+		else
+		{
+			<li><i class="icon-exclamation-sign"></i> User not member of a Submission team</li>
+		}
+        @if (User.IsInRole("SG-UKDEVWorldCheckUser"))
+        {
+            <li class="divider"></li>
+            <li><a class="val-new-worldcheck" href="#WorldCheck">WorldCheck</a></li>
+            <li class="divider"></li>
+        }
+	</ul>
+</div>    
+}
+
+@*@section Min
+{
+    <button class="btn btn-small val-minimize-all val-minimize" type="button"><i class="icon-resize-small"></i></button>
+    <button class="btn btn-small val-maximize-all val-maximize hide" type="button"><i class="icon-resize-full"></i></button>    
+}*@
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/home")
+}
+
+<div class="val-worldcheck-detail-panel val-alert val-worldcheck-detail-modal modal hide"></div>
